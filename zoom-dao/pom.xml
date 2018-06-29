@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.jzoom.zoom</groupId>
+	<artifactId>zoom-dao</artifactId>
+	<version>${zoomVersion}</version>
+	<packaging>jar</packaging>
+
+	<name>zoom-dao</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<zoomVersion>0.0.1-SNAPSHOT</zoomVersion>
+	</properties>
+
+	<dependencies>
+
+
+		<dependency>
+
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-common</artifactId>
+			<version>${zoomVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.16</version>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+
+
+	</dependencies>
+</project>

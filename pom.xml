@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.joom.zoom</groupId>
+	<artifactId>zoom-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>zoom-parent</name>
+
+	<modules>
+		<module>zoom-web</module>
+		<module>zoom-caster</module>
+		<module>zoom-ioc</module>
+		<module>zoom-aop</module>
+		<module>zoom-timer</module>
+		<module>zoom-async</module>
+		<module>zoom-common</module>
+		<module>zoom-dao</module>
+		<module>zoom-server</module>
+		<module>zoom-http</module>
+		<module>zoom-admin</module>
+	</modules>
+
+	<!-- maven依赖 -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.jzoom.zoom</groupId>
+				<artifactId>web</artifactId>
+			</dependency>
+
+
+
+
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-timer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-ioc</artifactId>
+		</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
