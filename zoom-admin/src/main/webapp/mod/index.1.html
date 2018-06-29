@@ -1,0 +1,16 @@
+<div class="flex column container">
+            <div class="curd-pan">
+                <add-button url="\${mod}" title="增加模块"></add-button>
+                <edit-button v-if="current != null" :id="id" url="\${mod}" title="修改模块"></edit-button>
+                <del-button  v-if="current != null" :id="id" url="\${mod}" confirm="真的要删除吗,本操作不能撤销?" title="删除模块" />
+                <el-button v-if="current != null" type="danger" size="medium" icon="el-icon-delete">删除</el-button>
+            </div>
+            <div class="flex" style="background: #fff; padding:10px; flex:1; overflow:auto">
+                <el-tree 
+                    @node-click="handleSelect" 
+                    :highlight-current="true" 
+                    default-expand-all 
+                    style="width:100%" 
+                    :data="list"></el-tree>
+            </div>
+        </div>

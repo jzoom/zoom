@@ -1,6 +1,5 @@
 package com.jzoom.zoom.ioc.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.jzoom.zoom.ioc.IocContainer;

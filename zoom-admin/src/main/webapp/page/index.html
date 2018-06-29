@@ -1,0 +1,15 @@
+<div class="flex column container">
+    <curd-pane module="/page" 
+        :fullscreen="true" 
+        comment="页面" 
+        :current="current"></curd-pane>
+    
+    <simple-table 
+        :list="list" 
+        :loading="loading" 
+        @change="handleSelect"
+        :columns="[['id','编号'],['url','路径']]" 
+        />
+    <simple-pagination :search="search" :total="total" @refresh="refresh" />
+    
+</div>

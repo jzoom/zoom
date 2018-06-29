@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nprogress.css" />
+</head>
+
+<body>
+
+
+    <div id="app">
+        <div class="flex container" style="height:500px;width:100%">
+            <div class="flex container column">
+                <div class="flex container">
+                        <monaco-editor 
+                            @mounted="changeTemplate"
+                            @change="changeTemplate"
+                            code="<template></template>" 
+                            :changethrottle="500"
+                            language="html" theme="vs" 
+                            class="flex container" 
+                            style="border: 1px solid #ccc"></monaco-editor>
+                </div>
+                <div class="flex container" style="padding-left: 10px">
+                        <monaco-editor 
+                        @mounted="changeData"
+                        @change="changeData"
+                        :code="`{\n//在这里输入vue数据\n}`" 
+                        :changethrottle="500"
+                        language="javascript" theme="vs" 
+                        class="flex container" 
+                        style="border: 1px solid #ccc"></monaco-editor>
+                </div>
+            </div>
+            <div class="flex container" style="overflow: auto;">
+                <!--展示结果-->
+                <div style="display: block">
+                    <custom-router :route="route"></custom-router>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+    <script>
+       
+    </script>
+   
+    <script src="js/vue.min.js"></script>
+    <script src="js/ele.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/api.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/nprogress.js"></script>
+    <script src="/js/components.js"></script>
+    <script src="/js/debounce.js"></script>
+    <script src="/js/monacoloader.js"></script>
+    
+    <script>
+       
+        new Vue({
+            el:'#app',
+            data(){
+                return {
+                    form:{
+                        template:'',
+                        data:''
+                    },
+                    route:null
+                }
+            },
+            mounted(){
+                var self = this;
+                var oldConsole = console;
+                console={
+                    log:function(e){
+
+                    },
+                    error:function(e){
+                        oldConsole.log(e.stack);
+                        self.route = Vue.component( 'test-test',{
+                            template:`<pre>${e.stack}</pre>`
+                        });
+                    },
+                    warn:function(e){
+
+                    }
+                }  
+            },
+            methods:{
+                submit(){
+                    console.log('submit!!!!!!!!1');
+                },
+                changeTemplate(editor){
+                    this.form.template = editor.getModel().getValue();
+                    this.calcRoute();
+                },
+                changeData(editor){
+                    this.form.data = editor.getModel().getValue();
+                    this.calcRoute();
+                },
+                calcRoute(){
+                    if(!this.form.data){
+                        this.route = null;
+                        return;
+                    }
+                    try{
+                        eval(`var $data=${this.form.data}`);
+                        this.route =Vue.component( 'test-test',  Object.assign({
+                            template:this.form.template,
+                        },$data));
+                    }catch(e){
+                        console.log(e.stack);
+                        this.route = Vue.component( 'test-test',{
+                            template:`<pre>${e.stack}</pre>`
+                        });
+                    }
+                }
+             
+            },
+        });
+    </script>
+</body>
+
+</html>

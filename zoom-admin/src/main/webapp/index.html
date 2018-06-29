@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nprogress.css" />
+</head>
+
+<body>
+
+
+    <div id="app">
+        <main-frame ref="main"></main-frame>
+    </div>
+
+   
+    <script src="js/vue.min.js"></script>
+    <script src="js/ele.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/api.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/nprogress.js"></script>
+    <script src="/js/components.js"></script>
+    <script src="/js/debounce.js"></script>
+    <script src="/js/monacoloader.js"></script>
+    
+    <script>
+        new Vue({
+            el:'#app',
+            data: function () {
+                return {
+                    routes: {}, //所有模板(路由)
+                }
+            },
+            methods: {
+                openDialog(props) {
+                    return this.$refs.main.openDialog( props);
+                },
+                go(url, props) {
+                    return this.$refs.main.go(url,props);
+                },
+                refresh(){
+                    return this.$refs.main.refresh();
+                },
+                getCurrentData(){       //当前页面被选中的数据
+                    return this.$refs.main.getCurrentData();
+                },
+                $handleError(e){
+                    if(e.code=='server'){
+                        this.$message.error(`服务器错误:${JSON.stringify(e.error)}`);
+                    }else{
+                        
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

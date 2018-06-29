@@ -3,7 +3,6 @@ package com.jzoom.zoom.ioc.impl;
 import java.lang.reflect.Field;
 
 import com.jzoom.zoom.caster.Caster;
-import com.jzoom.zoom.caster.Caster.CasterException;
 import com.jzoom.zoom.ioc.IocContainer;
 import com.jzoom.zoom.ioc.IocInjector;
 import com.jzoom.zoom.ioc.value.IocValue;

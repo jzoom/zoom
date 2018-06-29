@@ -1,0 +1,8 @@
+<el-form :model="form" ref="submit" :rules="rules">
+    <form-input label="模块名称" v-model="form.title" />
+    <form-input label="路由" v-model="form.url" />
+    <el-form-item label="是否菜单" label-width="120px">
+        <el-switch v-model="form.menu"></el-switch>
+    </el-form-item>
+    <tree-select label="父级模块" placeholder="请选择" api="/mod/index" v-model="form.p_id"></tree-select>
+</el-form>

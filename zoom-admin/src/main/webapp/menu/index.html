@@ -1,0 +1,73 @@
+<el-scrollbar style="width:100%">
+    <div class="flex column">
+        <el-breadcrumb separator="/" style="background: #ffffff; padding: 10px;">
+            <el-breadcrumb-item :to="{path:'/'}">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>
+                <a href="/">活动管理</a>
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div style="background: #fff; padding: 10px;">
+            <el-form :inline="true" class="demo-form-inline" size="medium">
+                <el-form-item label="审批人">
+                    <el-input placeholder="审批人"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域">
+                    <el-select v-model="search.active" placeholder="活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="refresh">查询</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div style="margin-top: 15px; margin-bottom: 15px;">
+            <el-button 
+                type="primary" 
+                size="medium" 
+                icon="el-icon-plus" 
+                @click="add">增加</el-button>
+            <el-button 
+                v-if="current != null" 
+                type="info" 
+                size="medium" 
+                @click="()=>{}"
+                icon="el-icon-edit">修改</el-button>
+            <el-button 
+                v-if="current != null" 
+                type="danger" 
+                @click="()=>{}"
+                size="medium" 
+                icon="el-icon-delete">删除</el-button>
+        </div>
+
+        <el-table 
+            v-loading="loading" 
+            style="width:100%" 
+            :data="list" 
+            highlight-current-row 
+            @current-change="handleSelect">
+            <el-table-column prop="date" label="日期"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="address" label="地址"></el-table-column>
+        </el-table>
+
+        <div class="pannel" >
+            <el-pagination 
+                style="float:right" 
+                @size-change="refresh" 
+                @current-change="refresh" 
+                :current-page="search._page" 
+                :page-sizes="[20, 50, 100,200]"
+                :page-size="search._pageSize" 
+                layout="total, sizes, prev, pager, next, jumper" 
+                :total="total">
+            </el-pagination>
+        </div>
+
+        
+    </div>
+</el-scrollbar>

@@ -1,0 +1,17 @@
+<div class="flex container">
+            <div class="flex container column">
+                <div class="navigation">
+                    <img src="img/logo.jpg" class="logo" />
+                </div>
+                <div class="flex container row" style="margin-top:10px">
+                    <div class="left">
+                        <side-bar class="sidebar-container"></side-bar>
+                    </div>
+                    <div class="flex container" style="margin-left:10px; margin-right: 10px;">
+                        <main-router ref="main" class="flex container"></main-router>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <submit-dialog ref="dialog"></submit-dialog>

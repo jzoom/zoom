@@ -1,11 +1,5 @@
 package com.jzoom.zoom.ioc;
 
-
-import org.jzoom.zoom.common.Destroyable;
-import org.jzoom.zoom.common.Initable;
-
-import com.jzoom.zoom.ioc.impl.IocMethod;
-
 /**
  * ioc 对象工厂，使用本接口创建的对象自动完成依赖注入
  * @author jzoom

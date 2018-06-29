@@ -1,11 +1,6 @@
 package com.jzoom.zoom.ioc.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-
-import org.apache.commons.logging.Log;
-import org.jzoom.zoom.common.Destroyable;
 
 import com.jzoom.zoom.ioc.IocDestroy;
 

@@ -7,13 +7,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jzoom.zoom.common.Destroyable;
-
 import com.jzoom.zoom.ioc.ClassEnhance;
 import com.jzoom.zoom.ioc.IocClass;
 import com.jzoom.zoom.ioc.IocClassFactory;
 import com.jzoom.zoom.ioc.IocContainer;
-import com.jzoom.zoom.ioc.IocDestroy;
 import com.jzoom.zoom.ioc.IocObject;
 
 public class SimpleIocContainer implements IocContainer {

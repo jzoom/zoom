@@ -15,7 +15,6 @@ import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.ioc.IocContainer;
 import com.jzoom.zoom.ioc.IocDestroy;
 import com.jzoom.zoom.ioc.IocInjector;
-import com.jzoom.zoom.ioc.IocSetting;
 import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.ioc.value.IocClassValue;
 import com.jzoom.zoom.ioc.value.IocRefValue;

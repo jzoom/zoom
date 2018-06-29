@@ -1,0 +1,71 @@
+设计原理：
+
+将vue的控件保存在表中，之后可以使用在线编辑的方式
+1、创建新的控件
+2、组合页面
+
+比如：element-ui中有组件a
+
+1、将a保存在表中
+
+
+2、创建新的控件b
+
+b依赖a
+保存template:  <b><a></a></b>
+保存数据:  { data:xxxx,methods:{ onXX:xxx ,onYY : yyy } }
+
+3、加载:根据依赖顺序：
+
+基础库：vue.js  element-ui.js
+控件：b,需要加载    /component/b =>  data = { template:'',data:xxx  },
+于是可以用 Vue.component( b, data  ) 定义一个组件b
+
+假设 c依赖b，那么需要先加载b
+
+那么就会有一个加载队列：
+
+[b,c]
+
+Promise.sequence( [b,c] ).then( 渲染页面 )
+
+
+4、视图：
+
+主框架：
+/admin/main
+
+iframe:
+/admin/module1/index
+/admin/module1/add
+/admin/module1/edit
+/admin/module1/detail
+
+
+
+表结构：
+
+component:对应于某一个组件
+id name template data depedency
+
+view:对应于某一个路由
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

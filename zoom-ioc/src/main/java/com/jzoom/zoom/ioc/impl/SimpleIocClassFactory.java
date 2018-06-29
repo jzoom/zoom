@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.jzoom.zoom.ioc.ClassEnhance;
 import com.jzoom.zoom.ioc.IocClass;
 import com.jzoom.zoom.ioc.IocClassFactory;
-import com.jzoom.zoom.ioc.IocDestroy;
 import com.jzoom.zoom.ioc.IocInjector;
 import com.jzoom.zoom.ioc.annonation.IocBean;
 

@@ -3,7 +3,6 @@ package com.jzoom.zoom.ioc.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jzoom.zoom.common.Destroyable;
-import org.jzoom.zoom.common.Initable;
 
 import com.jzoom.zoom.ioc.IocDestroy;
 import com.jzoom.zoom.ioc.IocObject;

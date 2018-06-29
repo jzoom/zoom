@@ -1,0 +1,56 @@
+  load([{
+                id: 'side-bar',
+                data: {
+                    data() {
+                        return {
+                            data: [],
+                        };
+                    },
+                    mounted() {
+                        this.refresh();
+                    },
+                    methods: {
+                        handleSelect(key, keyPath) {
+                            console.log(key, keyPath);
+                            var data = keyPath[1];
+                            if (data) {
+                                this.$root.go("/" + data);
+                            }
+                        },
+                        async refresh() {
+                            try {
+                                var list = await api('menu/list');
+                                this.data = list;
+                            } catch (e) {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        ], {
+            mounted() {
+                this.go("/mod/index", getCurdData("/mod/index"));
+            },
+            data: function () {
+                return {
+                    routes: {}, //所有模板(路由)
+                    url:null,       //当前加载的url
+                    props:null,     //当前加载url的数据
+                }
+            },
+            methods: {
+                async openDialog(props) {
+                    this.$refs.dialog.loadDialog( props);
+                },
+                async go(url, props) {
+                    this.url = url;
+                    this.props = props || getCurdData(url);
+                    this.$refs.main.load(url,this.props);
+                },
+                async refresh(){
+                    this.$refs.main.load(this.url,this.props);
+                }
+            }
+        });
