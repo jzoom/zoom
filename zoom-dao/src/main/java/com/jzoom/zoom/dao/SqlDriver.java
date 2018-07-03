@@ -1,6 +1,9 @@
 package com.jzoom.zoom.dao;
 
+import java.util.List;
+
 import com.jzoom.zoom.dao.adapter.StatementAdapter;
+import com.jzoom.zoom.dao.meta.TableMeta;
 
 public interface SqlDriver {
 
@@ -9,7 +12,7 @@ public interface SqlDriver {
 	 * @param name
 	 * @return
 	 */
-	StringBuilder protectColumn( StringBuilder sb, String name);
+	StringBuilder protectName( StringBuilder sb, String name);
 	
 	/**
 	 * 获取数据适配器
@@ -18,5 +21,13 @@ public interface SqlDriver {
 	 * @return
 	 */
 	StatementAdapter get( Class<?> dataClass, Class<?> columnClass );
+
+	void fill(TableMeta meta);
+
+
+	/**
+	 * 获取表数据
+	 */
+	List<TableMeta> getTableMetas();
 	
 }

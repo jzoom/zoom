@@ -7,15 +7,31 @@ package com.jzoom.zoom.dao.meta;
  */
 public class ColumnMeta {
 	
+	public static enum KeyType{
+		PRIMARY,
+		UNIQUE,
+		INDEX
+	}
+	
 	/**
 	 * 数据库中的类型
 	 */
-	private Class<?> type;
+	private Class<?> clazz;
+	
+	
+	private int type;
 	
 	/**
 	 * 是否主键
 	 */
 	private boolean primary;
+	
+	private KeyType keyType;
+	
+	private boolean nullable;
+	
+	private int maxLen;
+	
 	/**
 	 * 是否自动提交
 	 */
@@ -41,12 +57,12 @@ public class ColumnMeta {
 	 */
 	private String rawType;
 
-	public Class<?> getType() {
-		return type;
+	public Class<?> getClazz() {
+		return clazz;
 	}
 
-	public void setType(Class<?> type) {
-		this.type = type;
+	public void setClazz(Class<?> type) {
+		this.clazz = type;
 	}
 
 	public boolean isPrimary() {
@@ -96,5 +112,48 @@ public class ColumnMeta {
 	public void setRawType(String rawType) {
 		this.rawType = rawType;
 	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	private String comment;
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+
+	public KeyType getKeyType() {
+		return keyType;
+	}
+
+	public void setKeyType(KeyType keyType) {
+		this.keyType = keyType;
+	}
+
+	public boolean isNullable() {
+		return nullable;
+	}
+
+	public void setNullable(boolean nullable) {
+		this.nullable = nullable;
+	}
+
+	public int getMaxLen() {
+		return maxLen;
+	}
+
+	public void setMaxLen(int maxLen) {
+		this.maxLen = maxLen;
+	}
+
+	
 	
 }

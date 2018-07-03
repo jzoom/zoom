@@ -182,5 +182,12 @@ public class PatternFilterFactoryTest {
 		assertTrue(filter.accept("cd"));
 		assertTrue(filter.accept("a"));
 	}
+	
+	@Test
+	public void test2() {
+		Filter<String> filter;
+		filter = PatternFilterFactory.createFilter("*api*controllers*");
+		assertTrue(filter.accept("com.czc.ecard.api.shimin.controllers.ShiminController"));
+	}
 
 }

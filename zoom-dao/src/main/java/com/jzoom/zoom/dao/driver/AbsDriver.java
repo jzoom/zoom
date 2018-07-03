@@ -24,7 +24,6 @@ public abstract class AbsDriver implements SqlDriver {
 
 	}
 
-	@Override
 	public StatementAdapter get(Class<?> dataClass, Class<?> columnClass) {
 		return defaultStatementAdapter;
 	}

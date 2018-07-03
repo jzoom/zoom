@@ -2,6 +2,8 @@ package com.jzoom.zoom.web.action;
 
 import java.lang.reflect.Method;
 
+import com.jzoom.zoom.common.filter.impl.ClassAndMethodFilter;
+
 public interface ActionInterceptorFactory {
 
 	/**
@@ -10,6 +12,7 @@ public interface ActionInterceptorFactory {
 	 * @param pattern 类、方法过滤，形式{@code *} {@code *#*} {@code com.xx.*#*Test} {@link com.jzoom.zoom.common.filter.impl#ClassAndMethodFilter }
 	 */
 	void add( ActionInterceptor interceptor, String pattern ,int order );
+	
 	
 	/**
 	 * 根据控制器class和方法创建ActionInterceptor

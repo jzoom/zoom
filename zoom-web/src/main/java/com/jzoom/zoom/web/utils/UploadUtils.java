@@ -1,4 +1,4 @@
-package com.jzoom.zoom.web.upload;
+package com.jzoom.zoom.web.utils;
 
 import java.util.List;
 

@@ -19,7 +19,7 @@ import com.jzoom.zoom.dao.SqlDriver;
 import com.jzoom.zoom.dao.adapter.EntityAdapter;
 
 
-class DaoUtil {
+class BuilderKit {
 	
 	public static List<EntityAdapter> buildInsert(
 			StringBuilder sql,
@@ -78,7 +78,7 @@ class DaoUtil {
 				sql.append(COMMA);
 			}
 			values.add(value);
-			driver.protectColumn(sql,name);
+			driver.protectName(sql,name);
 		}
 		//?
 		join(sql.append(") VALUES ("),record.size()).append(')');
@@ -103,7 +103,7 @@ class DaoUtil {
 		return sql;
 	}
 
-	private static final Log log = LogFactory.getLog(DaoUtil.class);
+	private static final Log log = LogFactory.getLog(BuilderKit.class);
 	
 	public static PreparedStatement prepareStatement(Connection connection,String sql, List<Object> values) throws SQLException {
 		
@@ -151,17 +151,7 @@ class DaoUtil {
 		return result;
 	}
 
-	public static void close(ResultSet rs) {
-		if(rs!=null)try {rs.close();}catch (Exception e) {}
-	}
 
-	public static void close(PreparedStatement ps) {
-		if(ps!=null)try {ps.close();}catch (Exception e) {}
-	}
-
-	public static void close(Connection connection) {
-		if(connection!=null)try {connection.close();}catch (Exception e) {}
-	}
 
 	public static void buildUpdate(StringBuilder sql, List<Object> values, SqlDriver driver, String table, StringBuilder where, Record record) {
 		sql.append("UPDATE ").append(table);
@@ -176,7 +166,7 @@ class DaoUtil {
 				sql.append(COMMA);
 			}
 			values.add( index++,value);
-			driver.protectColumn(sql,entry.getKey()).append("=?");
+			driver.protectName(sql,entry.getKey()).append("=?");
 		}
 
 		sql.append(where);

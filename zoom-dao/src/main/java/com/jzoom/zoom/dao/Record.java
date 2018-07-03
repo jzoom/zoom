@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jzoom.zoom.caster.Caster;
+import com.sun.tools.doclets.internal.toolkit.resources.doclets;
 
 public class Record extends HashMap<String, Object> {
 	
@@ -56,27 +57,27 @@ public class Record extends HashMap<String, Object> {
 	}
 
 	public long getLong(String key) {
-		return Caster.to(get(key), Long.class);
+		return Caster.to(get(key), long.class);
 	}
 
 	public double getDouble(String key) {
-		return Caster.to(get(key), Double.class);
+		return Caster.to(get(key), double.class);
 	}
 
 	public int getInt(String key) {
-		return Caster.to(get(key), Integer.class);
+		return Caster.to(get(key), int.class);
 	}
 
 	public boolean getBoolean(String key) {
-		return Caster.to(get(key), Boolean.class);
+		return Caster.to(get(key), boolean.class);
 	}
 	
 	public float getFloat(String key) {
-		return Caster.to(get(key), Float.class);
+		return Caster.to(get(key), float.class);
 	}
 	
 	public short getShort(String key) {
-		return Caster.to(get(key), Short.class);
+		return Caster.to(get(key), short.class);
 	}
 	
 	public byte getByte(String key) {

@@ -8,6 +8,10 @@
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<zoomVersion>0.0.1-SNAPSHOT</zoomVersion>
+	</properties>
 
 	<repositories>
 		<repository>
@@ -124,6 +128,13 @@
 			<artifactId>zoom-http</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-token</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
@@ -158,6 +169,11 @@
 			<version>1.6.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-token</artifactId>
+			<version>${zoomVersion}</version>
+		</dependency>
 
 	</dependencies>
 </project>

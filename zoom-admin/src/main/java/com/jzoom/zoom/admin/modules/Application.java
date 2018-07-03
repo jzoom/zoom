@@ -14,6 +14,7 @@ import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.driver.mysql.MysqlConnDescription;
 import com.jzoom.zoom.dao.impl.ZoomDao;
 import com.jzoom.zoom.dao.provider.DruidDataSourceProvider;
+import com.jzoom.zoom.ioc.IocContainer;
 import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.ioc.annonation.IocBean;
 import com.jzoom.zoom.ioc.annonation.Module;
@@ -73,8 +74,10 @@ public class Application{
 	
 
 	@Inject
-	public void config( ActionInterceptorFactory factory ) {
+	public void config( ActionInterceptorFactory factory ,IocContainer ioc) {
+		factory.add(ioc.get(AdminActionInterceptor.class), "!*LoginController*#*", 0);
 		factory.add(new ActionInterceptorAdapter() {
+			
 			
 			@Override
 			public boolean preParse(ActionContext context) throws Exception {

@@ -3,12 +3,15 @@ package com.jzoom.zoom.web.parameter.parser.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.jzoom.zoom.common.Destroyable;
 
 import com.jzoom.zoom.web.annotation.Param;
 import com.jzoom.zoom.web.parameter.ParameterParser;
 import com.jzoom.zoom.web.parameter.ParameterParserFactory;
 import com.jzoom.zoom.web.parameter.adapter.ParameterAdapter;
+import com.jzoom.zoom.web.parameter.adapter.impl.BasicParameterAdapter;
 
 public abstract class AbsParameterParserFactory<T> implements ParameterParserFactory,Destroyable {
 	private static final EmptyParamterParser EMPTY = new EmptyParamterParser();
@@ -33,7 +36,7 @@ public abstract class AbsParameterParserFactory<T> implements ParameterParserFac
 				String name = names[i];
 				Annotation[] annotations = paramAnnotations[i];
 				Class<?> type = types[i];
-				adapters[i] = createAdapter(name, type, annotations);
+				adapters[i] = getAdapter(name, type, annotations);
 			}
 			return new DefaultParameterParser(names,types,adapters);
 			
@@ -41,6 +44,19 @@ public abstract class AbsParameterParserFactory<T> implements ParameterParserFac
 			return EMPTY;
 		}
 	}
+	
+	
+	protected ParameterAdapter<?> getAdapter(String name,Class<?> type,Annotation[] annotations){
+		ParameterAdapter<?> adapter = BasicParameterAdapter.getAdapter(type);
+		if(adapter!=null) {
+			return adapter;
+		}
+		
+		return createAdapter(name, type, annotations);
+		
+	}
+	
+	
 	protected boolean isPathVariable(String name,Annotation[] annotations) {
 		for (Annotation annotation : annotations) {
 			if(annotation instanceof Param) {

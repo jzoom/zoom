@@ -16,6 +16,7 @@ import com.jzoom.zoom.web.annotation.ActionFactory;
 import com.jzoom.zoom.web.annotation.Controller;
 import com.jzoom.zoom.web.annotation.Mapping;
 import com.jzoom.zoom.web.annotation.Template;
+import com.jzoom.zoom.web.router.Router;
 import com.jzoom.zoom.web.router.impl.SimpleRouter;
 
 public class SimpleActionBuilder extends ClassResolver{
@@ -27,7 +28,7 @@ public class SimpleActionBuilder extends ClassResolver{
 	private ActionInterceptorFactory factory;
 	
 	@Inject
-	private SimpleRouter router;
+	private Router router;
 	
 	private Class<? extends com.jzoom.zoom.web.action.ActionFactory> defaultActionFactoryClass = SimpleActionFactory.class;
 	
@@ -43,14 +44,15 @@ public class SimpleActionBuilder extends ClassResolver{
 	public SimpleActionBuilder() {
 		setClassFilter(new AnnotationFilter(Controller.class));
 		setClassNameFilter(PatternFilterFactory.createFilter("*.controllers.*"));
-		factory = new SimpleActionInterceptorFactory();
+		
 	}
 	
 	
 	@Inject
 	public void setIoc(IocContainer ioc) {
 		this.ioc = ioc;
-		ioc.register(ActionInterceptorFactory.class.getName(), factory);
+		ioc.register(ActionInterceptorFactory.class, SimpleActionInterceptorFactory.class);
+		factory = ioc.get(ActionInterceptorFactory.class);
 	}
 	
 	

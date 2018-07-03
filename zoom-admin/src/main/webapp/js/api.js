@@ -1,18 +1,30 @@
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+
+
+
 var instance = axios.create({
   baseURL: '/',
   timeout: 5000,
-  headers: {'X-Custom-Header': 'foobar'}
 });
 
 
-var token;
+var token = localStorage.getItem("token");
+
+function isLogin(){
+	return token;
+}
+
+function setToken(_token){
+	token = _token;
+	localStorage.setItem('token',token);
+}
 
 // 拦截request,设置全局请求为ajax请求
 instance.interceptors.request.use(function(config){
   config.headers['token'] = token;
   config.headers['Content-Type'] = 'application/json';
+  console.log(config);
   return config
 });
 
@@ -22,7 +34,7 @@ instance.interceptors.response.use(function(response){
 		resolve(response);
 	});
 },function(error){
-	
+	return Promise.reject(error);
 });
 
 /**
@@ -31,28 +43,41 @@ instance.interceptors.response.use(function(response){
 async function api( api,data ={}){
 	try{
 		NProgress.start();
-		var response = await axios.post(api,JSON.stringify(data));
+		var response = await instance.post(api,JSON.stringify(data));
 		return response.data;
 	}catch(e){
-		var response = e.response;
+		return parseError(e);
+	}finally{
+		NProgress.done();
+	}
+
+}
+
+function parseError(e){
+	var response = e.response;
 		if(response){
 			var status = response.status;
 			var data = response.data;
 			if(status == 500){
 				return Promise.reject({code:'server',error:data});
 			}
+			if(status == 401){
+				return Promise.reject({code:'auth',error:"没有登录"});
+			}
+			if(status == 402){
+				return Promise.reject({code:'auth',error:"登录过期"});
+			}
 			if(status == 404){
 				return Promise.reject({code:'server',error:"本接口未找到"});
 			}
 			//其他错误
+			if(status == 418){
+				return Promise.reject({code:'message',error:data.error});
+			}
 			return Promise.reject({code:'unresolved',error:data});
 		}else{
 			return Promise.reject({code:'http'});
 		}
-	}finally{
-		NProgress.done();
-	}
-
 }
 
 async function load( ids ,data){
@@ -68,7 +93,7 @@ async function load( ids ,data){
  */
 async function getTemplate( id ,props = {}){
 	try{
-		var response = await axios.get(id);
+		var response = await instance.get(id);
 		var data = response.data;
 		if(data.startsWith('var')){
 			eval(data);
@@ -76,7 +101,7 @@ async function getTemplate( id ,props = {}){
 		}
 		return Vue.component(id, Object.assign({template: data,},props));
 	}catch(e){
-		return Promise.reject(e);
+		return parseError(e);
 	}
 }
 

@@ -11,8 +11,8 @@ public class StatusException extends Exception implements RestException {
 	 */
 	public static class TooManyRequestsException extends StatusException {
 
-		public TooManyRequestsException(int status, String code, String error) {
-			super(429, code, error);
+		public TooManyRequestsException() {
+			super(429);
 			// TODO Auto-generated constructor stub
 		}
 
@@ -31,9 +31,8 @@ public class StatusException extends Exception implements RestException {
 	 */
 	public static class UnAuthException extends StatusException {
 
-		public UnAuthException(String code, String error) {
-			super(401, code, error);
-			// TODO Auto-generated constructor stub
+		public UnAuthException() {
+			super(401);
 		}
 
 		/**
@@ -51,9 +50,8 @@ public class StatusException extends Exception implements RestException {
 	 */
 	public static class UnImplementedException extends StatusException {
 
-		public UnImplementedException(String code, String error) {
-			super(501, code, error);
-			// TODO Auto-generated constructor stub
+		public UnImplementedException() {
+			super(501);
 		}
 
 		/**
@@ -88,9 +86,9 @@ public class StatusException extends Exception implements RestException {
 	 * @author jzoom
 	 *
 	 */
-	public static class ParameterException extends StatusException {
+	public static class BadRequest extends StatusException {
 
-		public ParameterException(String code, String error) {
+		public BadRequest(String code, String error) {
 			super(400, code, error);
 		}
 
@@ -147,8 +145,8 @@ public class StatusException extends Exception implements RestException {
 	 */
 	public static class AuthException extends StatusException {
 
-		public AuthException(String code, String error) {
-			super(403, code, error);
+		public AuthException() {
+			super(403);
 			// TODO Auto-generated constructor stub
 		}
 
@@ -167,7 +165,9 @@ public class StatusException extends Exception implements RestException {
 	private int status;
 	private String code;
 	private String error;
-
+	public StatusException(int status) {
+		this.status = status;
+	}
 	public StatusException(int status, String code, String error) {
 		this.status = status;
 		this.code = code;

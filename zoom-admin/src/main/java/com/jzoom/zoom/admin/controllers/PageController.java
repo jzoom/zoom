@@ -6,4 +6,9 @@ import com.jzoom.zoom.web.annotation.Controller;
 @Controller(key="page")
 public class PageController extends BaseDaoController<PageDao>{
 	
+	
+	public void template() {
+		
+	}
+	
 }

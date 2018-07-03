@@ -41,6 +41,7 @@ public interface Ar  {
 	
 	<T> Page<T> page(Class<T> classOfT,int position,int pageSize);
 	
+	List<Record> executeQuery(String sql,Object...args);
 	/**
 	 * 更新记录
 	 * @param record
@@ -82,7 +83,7 @@ public interface Ar  {
 	 */
 	Ar table(String table);
 
-	void execute(ConnectionExecutor executor);
+	<T> T execute(ConnectionExecutor executor);
 	
 	/**
 	 * 删除
@@ -99,6 +100,7 @@ public interface Ar  {
 	Ar orderBy(String field, Sort sort);
 
 	Ar select(String...select);
+	
 	
 	
 }

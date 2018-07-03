@@ -9,7 +9,10 @@ import java.util.Map;
  *
  */
 public class TableMeta {
-
+	
+	/**
+	 * 如果有comment，表示的是已经拿到注释了
+	 */
 	private String comment;
 	
 	private String name;

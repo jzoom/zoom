@@ -21,16 +21,16 @@ public class GroupActionHandler implements ActionHandler {
 		if(handler1 instanceof GroupActionHandler) {
 			return from( (GroupActionHandler)handler1 , handler2);
 		}
-		return new  GroupActionHandler(handler1,handler2);
+		return new GroupActionHandler(handler2,handler1);
 	}
 	
 	public static GroupActionHandler from( GroupActionHandler groupActionHandler,ActionHandler handler ) {
 		int len = groupActionHandler.actionHandlers.length ;
 		ActionHandler[] actionHandlers = new ActionHandler[ len + 1 ];
-		for(int i=0; i < len ;++i) {
+		for(int i=1; i <= len ;++i) {
 			actionHandlers[i] = groupActionHandler.actionHandlers[i];
 		}
-		actionHandlers[len] = handler;
+		actionHandlers[0] = handler;
 		Arrays.fill(groupActionHandler.actionHandlers, null);
 		groupActionHandler.actionHandlers = null;
 		return new GroupActionHandler(actionHandlers);

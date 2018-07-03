@@ -3,6 +3,13 @@ package com.jzoom.zoom.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.crypto.Mac;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder;
@@ -49,6 +56,8 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		orderBy.setLength(0);
 		join.setLength(0);
 		groupBy.setLength(0);
+		
+		record.clear();
 		
 		select.clear();
 		values.clear();
@@ -274,9 +283,47 @@ public class SimpleSqlBuilder implements SqlBuilder{
 			}else {
 				sql.append(',');
 			}
-			sql.append(field);
+			parseSelect(sql,field);
 		}
 		return this;
+	}
+	
+	private static final Log log = LogFactory.getLog(SimpleSqlBuilder.class);
+	
+	public static final Pattern AS_PATTERN = Pattern.compile("([a-zA-Z_\\(\\)\\.\\[\\]]+[\\s]+as[\\s]+)([a-zA-Z_]+)",Pattern.CASE_INSENSITIVE);
+	
+	/**
+	 * select 中的形式有   函数(字段,字段) as 字段  , 字段 as 字段, 
+	 * @param sql
+	 * @param select
+	 */
+	private void parseSelect(StringBuilder sql,String select) {
+		if("*".equals(select)) {
+			sql.append("*");
+			return;
+		}
+		String[] parts = select.split(",");
+		Matcher matcher = null;
+		boolean first = true;
+		for (String part : parts) {
+			if(first ) {
+				first = false;
+			}else {
+				sql.append(",");
+			}
+			if( (matcher =  AS_PATTERN.matcher(part) ) .matches()) {
+				sql.append(matcher.group(1));
+				driver.protectName(sql, matcher.group(2));
+			}else {
+				if(part.contains("(")) {
+					sql.append(part);
+				}else {
+					
+					driver.protectName(sql, part);
+				}
+				
+			}
+		}
 	}
 	
 	public void buildSelect() {
@@ -314,20 +361,20 @@ public class SimpleSqlBuilder implements SqlBuilder{
 	
 	public void buildUpdate(Map<String, Object> record) {
 		if(record!=null)setAll(record);
-		DaoUtil.buildUpdate( sql,values, driver, table,  where,this.record );
+		BuilderKit.buildUpdate( sql,values, driver, table,  where,this.record );
 	}
 	public void buildUpdate() {
-		DaoUtil.buildUpdate( sql,values, driver, table,  where,this.record );
+		BuilderKit.buildUpdate( sql,values, driver, table,  where,this.record );
 	}
 
 
 	public void buildInsert(Map<String, Object> record) {
 		if(record!=null)setAll(record);
-		DaoUtil.buildInsert(sql, values, driver, table, this.record);
+		BuilderKit.buildInsert(sql, values, driver, table, this.record);
 	}
 
 	public void buildDelete() {
-		DaoUtil.buildDelete(sql,table,where);
+		BuilderKit.buildDelete(sql,table,where);
 	}
 
 	@Override

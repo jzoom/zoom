@@ -453,6 +453,15 @@ public class Classes {
 		}
 	}
 
+	public static Class<?> forName(String className) {
+		
+		try {
+			return Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	
 
 }

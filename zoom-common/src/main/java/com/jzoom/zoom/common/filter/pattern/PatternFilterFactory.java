@@ -36,7 +36,7 @@ public class PatternFilterFactory {
 	/**
 	 * 用来替换字符串中的*
 	 */
-	private static String EXP = "[a-zA-Z_\\/0-9\\+\\-]*";
+	private static String EXP = "[a-zA-Z0-9_\\.\\/\\+\\-]*";
 	public static void clear() {
 		Classes.destroy(filterMap);
 		filterMap = null;
@@ -188,7 +188,7 @@ public class PatternFilterFactory {
 			}
 			
 		}
-		
+		pattern = pattern.replace(".", "\\.");
 		pattern = pattern.replace("*", EXP);
 		
 		return new PatternFilter(pattern);

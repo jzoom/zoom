@@ -25,9 +25,19 @@ public class BaseDao {
 				.orderBy("id", Sort.DESC )
 				.get();
 	}
+
+	public List<Record> getList(Map<String, Object> search) {
+		Record record = new Record(search);
+		String select  = record.getString("_select");
+		return dao
+				.table(table)
+				.select(select == null ? "*" : select)
+				.orderBy("id", Sort.DESC )
+				.get();
+	}
 	
-	public void put(String id,Map<String, Object> data) {
-		dao.table(table).where("id", id).setAll(data).update();
+	public int put(String id,Map<String, Object> data) {
+		return dao.table(table).where("id", id).setAll(data).update();
 	}
 
 	public int add(Map<String, Object> data) {
@@ -49,6 +59,6 @@ public class BaseDao {
 	public void setDao(Dao dao) {
 		this.dao = dao;
 	}
-	
+
 	
 }

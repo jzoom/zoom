@@ -26,6 +26,7 @@ public class MapParameterParserFactory extends AbsParameterParserFactory<Map<Str
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected ParameterAdapter<Map<String, Object>> createAdapter(String name,Class<?> type,Annotation[] annotations ) {
+		
 		if(isRequestBody(name, annotations)) {
 			if(Map.class == type) {
 				return (ParameterAdapter)BasicParameterAdapter.EQ;

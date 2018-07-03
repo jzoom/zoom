@@ -1,7 +1,12 @@
 package com.jzoom.zoom.dao.impl;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -15,8 +20,11 @@ import com.jzoom.zoom.dao.Databases;
 import com.jzoom.zoom.dao.Entity;
 import com.jzoom.zoom.dao.EntityManager;
 import com.jzoom.zoom.dao.SqlDriver;
+import com.jzoom.zoom.dao.driver.DbStructFactory;
+import com.jzoom.zoom.dao.driver.mysql.MysqlDbStrict;
 import com.jzoom.zoom.dao.driver.mysql.MysqlDriver;
 import com.jzoom.zoom.dao.meta.TableMeta;
+import com.jzoom.zoom.dao.utils.DaoUtils;
 
 /**
  * dao
@@ -30,6 +38,10 @@ public class ZoomDao implements Dao {
 	private SqlDriver sqlDriver;
 	private DataSource dataSource;
 	private EntityManager entityManager;
+	private DbStructFactory dbStructFactory;
+	private boolean lazyLoad;
+	private String tableCat;
+	private Collection<String> names;
 	
 	/**
 	 * 创建一个Dao对象
@@ -39,6 +51,7 @@ public class ZoomDao implements Dao {
 	public ZoomDao(DataSource dataSource,boolean lazyLoad) {
 		this.dataSource = dataSource;
 		this.entityManager = new SimpleEntityManager();
+		this.lazyLoad =lazyLoad;
 		if(lazyLoad) {
 			return;
 		}
@@ -50,27 +63,53 @@ public class ZoomDao implements Dao {
 		ar().execute( executor );
 	}
 	
-	@Override
-	public TableMeta getTableMeta(String table) {
-		
-		return null;
+
+	public DbStructFactory getDbStructFactory() {
+		lazyLoad();
+		return dbStructFactory;
 	}
+
+
+	
+	
 	private void load() {
 		Connection connection = null;
 		//需要绑定entities
 		try {
 			connection = dataSource.getConnection();
-			String name = connection.getMetaData().getDatabaseProductName();
+			DatabaseMetaData metaData = connection.getMetaData();
+			String name = metaData.getDatabaseProductName();
 			log.info(String.format("检测到数据库产品名称%s",name));
-			sqlDriver = createDriver(name);
-			
+			SqlDriver sqlDriver = createDriver(name);
+			parseDatabaseStruct(metaData);
+			this.sqlDriver = sqlDriver;
 		} catch (SQLException e) {
 			throw new RuntimeException("创建Dao失败,连接数据库错误",e);
 		}finally {
-			DaoUtil.close(connection);
+			DaoUtils.close(connection);
 		}
 		
 	}
+	private void parseDatabaseStruct(DatabaseMetaData metaData) throws SQLException {
+		ResultSet rs = null;
+		try {
+			rs = metaData.getTables(null, null, null, null);
+			List<String> names = new ArrayList<String>();
+			String cat = null;
+			while(rs.next()) {
+				String name = rs.getString("TABLE_NAME");
+				cat = rs.getString("TABLE_CAT");
+				names.add(name);
+			}
+			this.names = names;
+			this.tableCat = cat;
+			dbStructFactory = new MysqlDbStrict(tableCat, lazyLoad);
+		}finally {
+			DaoUtils.close(rs);
+		}
+		
+	}
+	
 	
 	private SqlDriver createDriver(String productName) {
 		if(Databases.MYSQL.equals(productName)) {
@@ -89,13 +128,11 @@ public class ZoomDao implements Dao {
 			ar = createAr();
 			local.set(ar);
 		}
-		
-		
 		return ar;
 	}
 
 
-	private Ar createAr() {
+	private void lazyLoad() {
 		if(sqlDriver==null) {
 			synchronized (this) {
 				if(sqlDriver == null) {
@@ -103,7 +140,11 @@ public class ZoomDao implements Dao {
 				}
 			}
 		}
-		return new ActiveRecord(dataSource, sqlDriver,entityManager );
+	}
+	
+	private Ar createAr() {
+		lazyLoad();
+		return new ActiveRecord(dataSource, sqlDriver,entityManager);
 	}
 
 
@@ -118,6 +159,21 @@ public class ZoomDao implements Dao {
 		return ar().table(table);
 	}
 
+	public String getTableCat() {
+		return tableCat;
+	}
+
+	public void setTableCat(String tableCat) {
+		this.tableCat = tableCat;
+	}
+
+	public Collection<String> getTableNames() {
+		return names;
+	}
+
+	public void setTableNames(Collection<String> names) {
+		this.names = names;
+	}
 
 
 

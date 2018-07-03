@@ -1,9 +1,7 @@
 package com.jzoom.zoom.http;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -23,11 +21,13 @@ import com.jzoom.zoom.common.json.JSON;
  */
 public class Http {
 
-	public static final String CONTENT_TYPE = "Content-Type";
+	public static final String Content_Type = "Content-Type";
 
 	public static final String APPLICATION_JSON = "application/json; charset=utf-8";
 	public static final String APPLICATION_FORM = "application/x-www-form-urlencoded; charset=utf-8";
 	public static final String APPLICATION_MULTIPART = "multipart/form-data; boundary=";
+
+	public static final String X_Forward_For = "X-Forward-For";
 
 	/**
 	 * 
@@ -60,6 +60,15 @@ public class Http {
 		@SuppressWarnings("unchecked")
 		public Map<String, Object> jsonMap() throws IOException {
 			return json(Map.class);
+		}
+
+		public int getStatusCode() throws IOException {
+			return connection.getResponseCode();
+		}
+
+		public String getUrl() {
+			
+			return connection.getURL().toString();
 		}
 
 	}
@@ -139,7 +148,7 @@ public class Http {
 			});
 		}
 		private String getUrl(String url) {
-			return baseUrl + url;
+			return baseUrl == null ? url : baseUrl + url;
 		}
 
 		private HttpURLConnection createConnection(String url) throws ConnectionException {
@@ -157,6 +166,8 @@ public class Http {
 
 		private Response execute(String url, String method, HttpHandler handler) throws IOException {
 			HttpURLConnection connection = null;
+			final HttpCallback callback = this.callback;
+			final Map<String, String> headers = this.headers;
 			try {
 				connection = createConnection(url);
 				connection.setRequestMethod(method);
@@ -227,12 +238,18 @@ public class Http {
 		}
 		connection.setDoInput(true);
 		connection.setUseCaches(false);
-		connection.setInstanceFollowRedirects(true);
+		connection.setInstanceFollowRedirects(false);
 		return connection;
 	}
 
 	public static Client newClient() {
 		return new Client();
+	}
+	
+	private static Client CLIENT = newClient();
+
+	public static Response get( String url ) throws IOException {
+		return CLIENT.get(url);
 	}
 
 }

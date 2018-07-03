@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.common.utils.MapUtils;
 import com.jzoom.zoom.web.action.ActionContext;
+import com.jzoom.zoom.web.exception.StatusException;
 import com.jzoom.zoom.web.rendering.Rendering;
 import com.jzoom.zoom.web.utils.ResponseUtils;
 
@@ -19,9 +20,14 @@ public class JsonErrorRendering implements Rendering {
 	public boolean render(ActionContext context) throws Exception {
 		HttpServletResponse response = context.getResponse();
 		Object result = context.getRenderObject();
-		if(result instanceof Exception) {
-			Throwable exception = context.getException();
-			exception = Classes.getCause(exception);
+		if(result instanceof Throwable) {
+			Throwable exception = Classes.getCause( (Throwable)result );
+			if(exception instanceof StatusException) {
+				StatusException statusException = (StatusException)exception;
+				response.setStatus(statusException.getStatus());
+				ResponseUtils.json(response, MapUtils.asMap("code", statusException.getClass().getName(), "error",statusException.getError() )  );
+				return true;
+			}
 			response.setStatus(500);
 			ResponseUtils.json(response, MapUtils.asMap("code", exception.getClass().getName(), "error",exception.getMessage()  )  );
 		}else {

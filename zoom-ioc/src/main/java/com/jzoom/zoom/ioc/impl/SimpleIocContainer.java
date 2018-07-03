@@ -37,7 +37,12 @@ public class SimpleIocContainer implements IocContainer {
 				IocClass proxy =classOfT == null? factory.get(name): factory.get(classOfT);
 				Object bean = proxy.newInstance(this);
 				obj = addObject(key,bean);
-				proxy.inject(bean, this);
+				try {
+					proxy.inject(bean, this);
+				}catch (Exception e) {
+					throw new RuntimeException( "Cannot inject target bean " + bean,e );
+				}
+			
 				obj.setDestroy(proxy.getDestroy());
 			}
 		}

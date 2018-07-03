@@ -1,5 +1,8 @@
 package com.jzoom.zoom.dao;
 
+import java.util.List;
+
+import com.jzoom.zoom.dao.driver.DbStructFactory;
 import com.jzoom.zoom.dao.meta.TableMeta;
 
 public interface Dao {
@@ -18,11 +21,6 @@ public interface Dao {
 	 * @return
 	 */
 	Entity getEntity( Class<?> entityClass );
-	
-	/**
-	 * 获取表元数据
-	 * @return
-	 */
-	TableMeta getTableMeta( String table );
+	DbStructFactory getDbStructFactory() ;
 	
 }

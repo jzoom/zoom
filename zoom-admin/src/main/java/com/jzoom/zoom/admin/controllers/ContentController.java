@@ -22,6 +22,9 @@ public class ContentController {
 	public ContentController() {
 		module2table.put("module", "sys_module");
 		module2table.put("template", "sys_template");
+		module2table.put("decoration", "sys_decoration");
+		module2table.put("deco_table", "sys_deco_table");
+		module2table.put("component", "sys_component");
 	}
 
 	@Inject
@@ -55,8 +58,8 @@ public class ContentController {
 
 	@Mapping(value = "{module}/index", method = { Mapping.POST })
 	@JsonResponse
-	public List<Record> list(@Param(name = "{module}") String module) throws NotFoundException {
-		return getDao(module).getList();
+	public List<Record> list(@Param(name = "{module}") String module,@Param(name="@")Map<String, Object> search) throws NotFoundException {
+		return getDao(module).getList(search );
 	}
 
 	private BaseDao getDao(String module) throws NotFoundException {
@@ -92,6 +95,15 @@ public class ContentController {
 	public Record get(@Param(name = "{module}") String module, @Param(name = "{id}") String id)
 			throws NotFoundException {
 		return getDao(module).fetch(id);
+
+	}
+	
+	@JsonResponse
+	@Mapping(value = "{module}/put/{id}", method = { Mapping.POST })
+	public int put(@Param(name = "{module}") String module, @Param(name = "{id}") String id,
+			@Param(name="@") Map<String, Object> data)
+			throws NotFoundException {
+		return getDao(module).put(id, data);
 
 	}
 	private StringView createPage(String module, String method) throws NotFoundException {

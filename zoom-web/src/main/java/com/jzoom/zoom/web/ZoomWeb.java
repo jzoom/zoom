@@ -45,13 +45,14 @@ import com.jzoom.zoom.web.action.impl.SimpleActionBuilder;
 import com.jzoom.zoom.web.classloader.WebClassLoader;
 import com.jzoom.zoom.web.constants.ConfigurationConstants;
 import com.jzoom.zoom.web.exception.StatusException;
+import com.jzoom.zoom.web.router.Router;
 import com.jzoom.zoom.web.router.RouterParamRule;
 import com.jzoom.zoom.web.router.impl.BracesRouterParamRule;
 import com.jzoom.zoom.web.router.impl.SimpleRouter;
 import com.jzoom.zoom.web.utils.WebUtils;
 
 public class ZoomWeb {
-	private SimpleRouter router;
+	private Router router;
 
 	private IocContainer ioc;
 	private AopFactory factory;
@@ -90,7 +91,8 @@ public class ZoomWeb {
 		step("res");
 		// 初始化router
 		ioc.register(RouterParamRule.class, BracesRouterParamRule.class);
-		router = ioc.get(SimpleRouter.class);
+		ioc.register(Router.class,SimpleRouter.class);
+		router = ioc.get(Router.class);
 		// 初始化classInfo
 		ioc.register(ClassInfo.class, SimpleClassInfo.class);
 

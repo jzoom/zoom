@@ -1,0 +1,10 @@
+<div class="flex column container">
+    
+    <api-table
+        api="decoration/list" 
+        :loading="loading" 
+        @change="handleSelect"
+        :columns="[['name','名称'],['comment','说明'],['decoration','是否装饰']]" 
+        >
+    </api-table>
+</div>

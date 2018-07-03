@@ -5,8 +5,11 @@
         <el-tree 
             @node-click="handleSelect" 
             :highlight-current="true" 
+            :expand-on-click-node="false"
             default-expand-all 
             style="width:100%" 
-            :data="list"></el-tree>
+            :data="list">
+            
+        </el-tree>
     </div>
 </div>

@@ -2,14 +2,27 @@
     <curd-pane module="/page" 
         :fullscreen="true" 
         comment="页面" 
-        :current="current"></curd-pane>
-    
-    <simple-table 
-        :list="list" 
-        :loading="loading" 
-        @change="handleSelect"
-        :columns="[['id','编号'],['url','路径']]" 
-        />
-    <simple-pagination :search="search" :total="total" @refresh="refresh" />
+        :current="current">
+        <add-button 
+            :fullscreen="true"
+            templateUrl="page/template" 
+            api="page/template" 
+            title="增加页面" />
+    </curd-pane>
+    <div class="flex container column">
+        <div class="flex container"  style="overflow:auto;">
+                <el-scrollbar style="width:100%">
+                    <simple-table 
+                        :list="list" 
+                        :loading="loading" 
+                        @change="handleSelect"
+                        :columns="[['id','编号'],['url','路径']]" 
+                        >
+                    </simple-table>
+                </el-scrollbar>
+        </div>
+        
+        <simple-pagination :search="search" :total="total" @refresh="refresh" />
+    </div>
     
 </div>

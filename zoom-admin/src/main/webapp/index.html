@@ -14,7 +14,8 @@
 
 
     <div id="app">
-        <main-frame ref="main"></main-frame>
+        <main-login v-if="!login" ref="login"></main-login>
+        <main-frame v-if="login" ref="main"></main-frame>
     </div>
 
    
@@ -32,7 +33,13 @@
             el:'#app',
             data: function () {
                 return {
+                    login:false,
                     routes: {}, //所有模板(路由)
+                }
+            },
+            mounted(){
+                if(isLogin()){
+                    this.login = true;
                 }
             },
             methods: {
@@ -48,11 +55,20 @@
                 getCurrentData(){       //当前页面被选中的数据
                     return this.$refs.main.getCurrentData();
                 },
+                setLoginInfo(data){
+                    this.login = true;
+                    setToken(data);
+                },
                 $handleError(e){
                     if(e.code=='server'){
                         this.$message.error(`服务器错误:${JSON.stringify(e.error)}`);
+                    }else if(e.code=='message') {
+                        this.$message.error(e.error);
+                    }else if(e.code=='auth'){
+                       this.login = false;
+                       localStorage.setItem('token',undefined);
                     }else{
-                        
+                        this.$message.error(`未知错误:${JSON.stringify(e.error)}`);
                     }
                 }
             }

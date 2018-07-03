@@ -65,7 +65,7 @@ Vue.component('monaco-editor',{
     props: {
       width: { type: [String, Number], default: '100%' },
       height: { type: [String, Number], default: '100%' },
-      code: { type: String, default: '// code \n' },
+      code: { type: String, default: '' },
       srcPath: { type: String },
       language: { type: String, default: 'java' },
       theme: { type: String, default: 'vs' }, // vs, hc-black

@@ -11,7 +11,7 @@ public class JsonRendering implements Rendering {
 
 	@Override
 	public boolean render(ActionContext context) throws Exception {
-		Object result = context.getResult();
+		Object result = context.getRenderObject();
 		HttpServletResponse response = context.getResponse();
 		ResponseUtils.json(response, result);
 		return true;

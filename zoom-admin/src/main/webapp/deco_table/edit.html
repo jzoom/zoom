@@ -1,0 +1,36 @@
+<el-form :model="form" ref="submit" :rules="rules">
+    <form-input label="注释" v-model="form.comment" />
+     <el-table
+     size="small"
+    :data="form.columns"
+    style="width: 100%">
+    <el-table-column
+      label="名称"
+      width="180">
+      <template slot-scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>名称: {{ scope.row.name }}</p>
+          <p>长度: {{ scope.row.address }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.name }}</el-tag>
+          </div>
+        </el-popover>
+      </template>
+    </el-table-column>
+    <el-table-column label="说明">
+            <template slot-scope="scope">
+                <el-input size="small" v-model="scope.row.comment"></el-input>
+            </template>
+    </el-table-column>
+    <el-table-column label="组件">
+      <template slot-scope="scope">
+        <api-select :search="{_select:'id,name,data'}" api="component/index" @change="scope.row.data=arguments[0].data" v-model="scope.row.component" size="small" labelField="name"></api-select>
+      </template>
+    </el-table-column>
+    <el-table-column label="编辑">
+            <template slot-scope="scope">
+                {{scope.row.data}}
+            </template>
+          </el-table-column>
+  </el-table>
+</el-form>

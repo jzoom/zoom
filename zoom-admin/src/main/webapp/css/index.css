@@ -2,16 +2,19 @@
 #app{
 	height: 100%;
 	width: 100%;
-	display: flex;
-	flex: 1;
 }
+
+.code{
+  border:1px solid #ccc
+}
+
 
 pre{
   font-size: 12px;
 }
 
 .pannel{
-  background: #fff; padding:10px;
+  background: #fff; padding:10px; width:100%;
 }
 
 .left {
@@ -19,7 +22,7 @@ pre{
   width: 200px;
 }
 .curd-pan{
-  margin:15px
+  margin:0px 15px 15px 15px
 }
 
 .logo{
@@ -34,7 +37,7 @@ pre{
 
 	height:56px;
 	background: #fff;
-	 border-top: 4px solid #409EFF;
+	border-top: 4px solid #409EFF;
 }
 
 body{
