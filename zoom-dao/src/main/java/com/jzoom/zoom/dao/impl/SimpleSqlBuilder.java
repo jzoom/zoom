@@ -97,21 +97,37 @@ public class SimpleSqlBuilder implements SqlBuilder{
 	}
 
 	@Override
-	public SqlBuilder where(String name, Symbo symbo, String value) {
+	public SqlBuilder where(String name, Symbo symbo, Object value) {
 		assert(name!=null && symbo!=null);
+		
+		return whereImpl(name, symbo, value, " AND ");
+		
+	}
+	
+	private SqlBuilder whereImpl(String name, Symbo symbo, Object value,String relation) {
 		checkValue(value);
 		
 		if (where.length() == 0) {
 			where.append(" WHERE ");
 		} else {
-			where.append(" AND ");
+			where.append(relation);
 		}
 		where.append(name).append(symbo.value()).append("?");
 		addValue(name,value);
-		
 		return this;
 	}
+	
 
+	@Override
+	public SqlBuilder orWhere(String name, Object value) {
+		
+		return orWhere(name, Symbo.EQ, value);
+	}
+
+	@Override
+	public SqlBuilder orWhere(String name, Symbo symbo, Object value) {
+		return whereImpl(name, symbo, value, " OR ");
+	}
 	@Override
 	public SqlBuilder whereNull(String name) {
 		andWhere();
@@ -144,7 +160,17 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		
 		return this;
 	}
-
+	@Override
+	public SqlBuilder innerJoin(String otherTable, String on) {
+		
+		return join(otherTable, on, "INNER");
+	}
+	
+	public SqlBuilder join(String table,String on,String type) {
+		join.append(SPACE).append(type).append(" JOIN ").append(table).append(" ON ").append(on);
+		return this;
+	}
+	
 	private void addValue(String name, Object value) {
 		
 		this.values.add(value);
@@ -163,17 +189,7 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		return null;
 	}
 
-	@Override
-	public SqlBuilder orWhere(String name, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public SqlBuilder orWhere(String name, Symbo symbo, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public SqlBuilder whereCondition(String value, Object... values) {
@@ -201,11 +217,7 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		return null;
 	}
 
-	@Override
-	public SqlBuilder innerJoin(String otherTable, String on) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public SqlBuilder union(SqlBuilder builder) {

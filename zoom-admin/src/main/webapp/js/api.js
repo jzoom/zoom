@@ -67,6 +67,9 @@ function parseError(e){
 			if(status == 402){
 				return Promise.reject({code:'auth',error:"登录过期"});
 			}
+			if(status == 403){
+				return Promise.reject({code:'auth',error:"登录过期"});
+			}
 			if(status == 404){
 				return Promise.reject({code:'server',error:"本接口未找到"});
 			}

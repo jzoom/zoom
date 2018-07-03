@@ -62,6 +62,8 @@ public interface Ar  {
 	
 	Record fetch();
 	
+	<T> T getValue(String select,Class<T> classOfT);
+	
 	/**
 	 * 获取一个实体类
 	 * @param classOfT
@@ -95,11 +97,10 @@ public interface Ar  {
 	//######################################################
 	
 	Ar where(String key,Object value);
-
-	
 	Ar orderBy(String field, Sort sort);
-
 	Ar select(String...select);
+	Ar join(String table,String on);
+	Ar orWhere(String key, Object value);
 	
 	
 	

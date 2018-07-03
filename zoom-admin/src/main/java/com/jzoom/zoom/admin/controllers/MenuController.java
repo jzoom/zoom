@@ -27,7 +27,7 @@ public class MenuController {
 	
 	@JsonResponse
 	public List<Record> list(){
-		return moduleDao.getList();
+		return moduleDao.getMenu();
 	}
 	
 	@JsonResponse

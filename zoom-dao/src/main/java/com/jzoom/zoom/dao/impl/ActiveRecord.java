@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.jzoom.zoom.caster.Caster;
 import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.ConnectionExecutor;
 import com.jzoom.zoom.dao.ConnectionHolder;
@@ -227,6 +228,27 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 	@Override
 	public List<Record> executeQuery(String sql, Object... args) {
 		return executeQuery(sql, Arrays.asList(args));
+	}
+
+	@Override
+	public Ar join(String table, String on) {
+		builder.innerJoin(table, on);
+		return this;
+	}
+
+	@Override
+	public Ar orWhere(String key, Object value) {
+		builder.orWhere(key, value);
+		return this;
+	}
+
+	@Override
+	public <T> T getValue(String select, Class<T> classOfT) {
+		Record record = select(select).fetch();
+		if(record==null) {
+			return Caster.to(null, classOfT);
+		}
+		return record.get(select,classOfT);
 	}
 
 	

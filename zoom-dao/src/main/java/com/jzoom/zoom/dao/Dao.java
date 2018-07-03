@@ -21,6 +21,11 @@ public interface Dao {
 	 * @return
 	 */
 	Entity getEntity( Class<?> entityClass );
+	
+	/**
+	 * 获取数据库结构
+	 * @return
+	 */
 	DbStructFactory getDbStructFactory() ;
 	
 }

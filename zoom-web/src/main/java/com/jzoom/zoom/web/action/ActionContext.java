@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jzoom.zoom.common.Destroyable;
 
+import com.jzoom.zoom.caster.Caster;
 import com.jzoom.zoom.common.utils.Classes;
 
 /**
@@ -92,6 +93,10 @@ public class ActionContext implements Destroyable {
 	public ActionContext put( String key,Object value ) {
 		checkData().put(key, value);
 		return this;
+	}
+	
+	public <T> T get( String key,Class<T> classOfT) {
+		return Caster.to(checkData().get(key), classOfT) ;
 	}
 	/**
 	 * 

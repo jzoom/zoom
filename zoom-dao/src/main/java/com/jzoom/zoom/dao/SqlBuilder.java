@@ -102,7 +102,7 @@ public interface SqlBuilder {
 	 * @param value
 	 * @return
 	 */
-	SqlBuilder where(String name,Symbo symbo,String value);
+	SqlBuilder where(String name,Symbo symbo,Object value);
 	
 	
 	/**
