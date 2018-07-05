@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder;
-import com.jzoom.zoom.dao.SqlDriver;
+import com.jzoom.zoom.dao.driver.SqlDriver;
 
 public class SimpleSqlBuilder implements SqlBuilder{
 	protected static final char SPACE = ' ';
@@ -302,8 +302,7 @@ public class SimpleSqlBuilder implements SqlBuilder{
 	
 	private static final Log log = LogFactory.getLog(SimpleSqlBuilder.class);
 	
-	public static final Pattern AS_PATTERN = Pattern.compile("([a-zA-Z_\\(\\)\\.\\[\\]]+[\\s]+as[\\s]+)([a-zA-Z_]+)",Pattern.CASE_INSENSITIVE);
-	
+
 	/**
 	 * select 中的形式有   函数(字段,字段) as 字段  , 字段 as 字段, 
 	 * @param sql
@@ -323,15 +322,15 @@ public class SimpleSqlBuilder implements SqlBuilder{
 			}else {
 				sql.append(",");
 			}
-			if( (matcher =  AS_PATTERN.matcher(part) ) .matches()) {
+			if( (matcher =  BuilderKit.AS_PATTERN.matcher(part) ) .matches()) {
 				sql.append(matcher.group(1));
-				driver.protectName(sql, matcher.group(2));
+				driver.protectColumn(sql, matcher.group(2));
 			}else {
 				if(part.contains("(")) {
 					sql.append(part);
 				}else {
 					
-					driver.protectName(sql, part);
+					driver.protectColumn(sql, part);
 				}
 				
 			}
@@ -343,8 +342,11 @@ public class SimpleSqlBuilder implements SqlBuilder{
 			sql.append("SELECT * ");
 		}
 			sql
-			.append(" FROM ")
-			.append(table)
+			.append(" FROM ");
+			
+			driver.protectTable(sql, table);
+			
+			sql
 			.append(join)
 			.append(where)
 			.append(groupBy)

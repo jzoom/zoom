@@ -3,7 +3,6 @@ package com.jzoom.zoom.dao.driver;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import com.jzoom.zoom.dao.SqlDriver;
 import com.jzoom.zoom.dao.adapter.StatementAdapter;
 
 public abstract class AbsDriver implements SqlDriver {
@@ -27,5 +26,20 @@ public abstract class AbsDriver implements SqlDriver {
 	public StatementAdapter get(Class<?> dataClass, Class<?> columnClass) {
 		return defaultStatementAdapter;
 	}
+	
+	@Override
+	public StringBuilder protectColumn(StringBuilder sb, String name) {
+	
+		return sb.append(name);
+	}
+
+	
+	@Override
+	public StringBuilder protectTable(StringBuilder sb, String name) {
+	
+		return sb.append(name);
+	}
+
+	
 
 }

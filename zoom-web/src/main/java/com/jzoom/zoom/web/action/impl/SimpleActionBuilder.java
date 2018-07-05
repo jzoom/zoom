@@ -75,8 +75,7 @@ public class SimpleActionBuilder extends ClassResolver{
 		key = controller.key();
 	}
 	
-	protected String getKey(Method method,Mapping mapping) {
-		String key = this.key;
+	protected String getKey( String key, Method method,Mapping mapping) {
 		if(mapping!=null) {
 			if(!mapping.value().startsWith("/") && !key.endsWith("/")  && !mapping.value().isEmpty()) {
 				key += "/" + mapping.value();
@@ -98,6 +97,8 @@ public class SimpleActionBuilder extends ClassResolver{
 		return key;
 	}
 	
+
+	
 	@Override
 	public void visitMethod(Method method) {
 		ActionFactory actionFactoryOnMethod = method.getAnnotation(ActionFactory.class);
@@ -111,8 +112,7 @@ public class SimpleActionBuilder extends ClassResolver{
 		com.jzoom.zoom.web.action.ActionFactory factory = ioc.get(actionFactoryClass);
 		Action action = factory.createAction(target, clazz, method,this.factory);
 		Mapping mapping = method.getAnnotation(Mapping.class);
-		String key = getKey(method,mapping);
-		
+		String key = getKey(this.key,method,mapping);
 		action.setUrl(key);
 		String[] methods;
 		if(mapping!=null) {

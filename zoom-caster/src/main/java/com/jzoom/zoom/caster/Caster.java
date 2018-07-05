@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
+import java.sql.NClob;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -164,6 +165,7 @@ public class Caster {
 		
 		//clob
 		Caster.register(Clob.class, String.class, new Clob2String());
+		Caster.register(NClob.class, String.class, new Clob2String());
 		//blob
 		Caster.register(Blob.class, String.class, new Blob2String());
 		

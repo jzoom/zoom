@@ -6,15 +6,14 @@ import java.util.Map;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
-import com.jzoom.zoom.ioc.annonation.Inject;
 
-public class BaseDao {
-	@Inject
+public class BaseDao implements AdminModel<Record> {
+	
 	private Dao dao;
 	
 	private String table;
 	
-	public BaseDao(String table) {
+	public BaseDao( String table) {
 		this.table = table;
 	}
 	

@@ -101,6 +101,8 @@ public interface Ar  {
 	Ar select(String...select);
 	Ar join(String table,String on);
 	Ar orWhere(String key, Object value);
+
+	Ar whereIn(String key, Object... values);
 	
 	
 	

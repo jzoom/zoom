@@ -37,7 +37,8 @@ public class ZoomTestContainer {
 
 		if (file == null) {
 			// 目前这个版本支持两种主配置，properties/yml
-			throw new RuntimeException("启动失败，请确认application.properties或application.json存在");
+			return;
+			//throw new RuntimeException("启动失败，请确认application.properties或application.json存在");
 		}
 		ConfigReader.getDefault().load(file);
 

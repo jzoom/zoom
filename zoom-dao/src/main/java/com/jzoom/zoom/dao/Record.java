@@ -4,23 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jzoom.zoom.caster.Caster;
-import com.sun.tools.doclets.internal.toolkit.resources.doclets;
 
 public class Record extends HashMap<String, Object> {
 	
-	public static class Builder {
-
-		private Record record = new Record();
-
-		public Builder put(String key, Object value) {
-			record.put(key, value);
-			return this;
-		}
-
-		public Record build() {
-			return record;
-		}
-	}
 	
 
 	public Record(Map<? extends String, ? extends Object> m) {

@@ -19,7 +19,9 @@ import com.jzoom.zoom.dao.EntityManager;
 import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
-import com.jzoom.zoom.dao.SqlDriver;
+import com.jzoom.zoom.dao.alias.AliasPolicy;
+import com.jzoom.zoom.dao.alias.AliasPolicyMaker;
+import com.jzoom.zoom.dao.driver.SqlDriver;
 import com.jzoom.zoom.dao.Trans;
 import com.jzoom.zoom.dao.meta.TableMeta;
 import com.jzoom.zoom.dao.utils.DaoUtils;
@@ -28,11 +30,18 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 
 	private SimpleSqlBuilder builder;
 	private EntityManager entityManager;
-
-	public ActiveRecord(DataSource dataSource, SqlDriver driver , EntityManager entityManager ) {
+	private AliasPolicy aliasPolicy;
+	
+	
+	public ActiveRecord(
+			DataSource dataSource, 
+			SqlDriver driver ,
+			EntityManager entityManager,
+			AliasPolicy aliasPolicy) {
 		super(dataSource);
 		this.builder = new SimpleSqlBuilder(driver);
 		this.entityManager = entityManager;
+		this.aliasPolicy = aliasPolicy;
 	}
 
 	public List<Record> executeQuery(String sql, List<Object> values) {
@@ -43,7 +52,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 			connection = getConnection();
 			ps = BuilderKit.prepareStatement(connection, sql, values);
 			rs = ps.executeQuery();
-			return BuilderKit.build(rs);
+			return BuilderKit.build(rs,aliasPolicy);
 		} catch (SQLException e) {
 			throw new DaoException(e);
 		} finally {
@@ -63,7 +72,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 			ps = BuilderKit.prepareStatement(connection, sql, values);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				return BuilderKit.buildOne(rs);
+				return BuilderKit.buildOne(rs,aliasPolicy);
 			}
 			return null;
 		} catch (SQLException e) {
@@ -248,7 +257,14 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		if(record==null) {
 			return Caster.to(null, classOfT);
 		}
-		return record.get(select,classOfT);
+		String as = BuilderKit.parseAs(select);
+		return record.get(as,classOfT);
+	}
+
+	@Override
+	public Ar whereIn(String key, Object... values) {
+		builder.whereIn(key, values);
+		return this;
 	}
 
 	

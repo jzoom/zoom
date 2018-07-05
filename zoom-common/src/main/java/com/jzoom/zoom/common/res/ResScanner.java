@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -25,6 +27,7 @@ import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.common.utils.Visitor;
+import com.sun.tools.javac.util.Name;
 
 /**
  * 资源扫描器 用于在项目启动的时候扫描所有资源 1、扫描所有class并记录 2、扫描jar内部class并记录 3、扫描其他类型文件，并记录
@@ -53,6 +56,9 @@ public class ResScanner implements Destroyable {
 	
 	List<ClassRes> classes = new ArrayList<ResScanner.ClassRes>();
 	List<Res> jars = new ArrayList<ResScanner.Res>();
+	
+	public ResScanner() {
+	}
  
 	/**
 	 * 默认不扫描jar文件
@@ -208,6 +214,17 @@ public class ResScanner implements Destroyable {
 		scan(classLoader, fastFilter);
 	}
 
+	public void scan(InputStream is,ClassLoader classLoader) throws IOException {
+		ZipInputStream inputStream = new ZipInputStream(is);
+		ZipEntry entry;
+		while((entry = inputStream.getNextEntry() ) != null) {
+			String name = entry.getName();
+			if(name.endsWith("class")) {
+				addClass(name.replace(".class", "").replace("/", "."),classLoader, null);
+			}
+		}
+		
+	}
 	/**
 	 * 扫描项目所有的资源文件 .class .json .properties .xml .jar
 	 * 
@@ -243,7 +260,7 @@ public class ResScanner implements Destroyable {
 		for (String path : pathes) {
 			if(log.isInfoEnabled())
 				log.info("正在扫描目录"+path);
-			scanFoler(path, new File(path));
+			scanFoler(path, classLoader,new File(path));
 		}
 
 	}
@@ -348,7 +365,7 @@ public class ResScanner implements Destroyable {
 	 * @param folder
 	 * @throws IOException
 	 */
-	public void scanFoler(String root, File folder) throws IOException {
+	public void scanFoler(String root, ClassLoader classLoader, File folder) throws IOException {
 		File[] files = folder.listFiles();
 		if (files == null) {
 			return;
@@ -356,7 +373,7 @@ public class ResScanner implements Destroyable {
 
 		for (File file : files) {
 			if (file.isDirectory()) {
-				scanFoler(root, file);
+				scanFoler(root,classLoader, file);
 			} else {
 				// 文件
 				String name = file.getName();
@@ -365,10 +382,10 @@ public class ResScanner implements Destroyable {
 				}
 				if (name.endsWith("class")) {
 					if (scanFilter.accept(file))
-						parseClass(root, file);
+						parseClass(root, classLoader, file);
 				} else if (name.endsWith("jar")) {
 					if (scanFilter.accept(file))
-						parseJar(file);
+						parseJar(file,classLoader);
 					
 				} else {
 					if (scanFilter.accept(file))
@@ -384,7 +401,7 @@ public class ResScanner implements Destroyable {
 	 * @param file
 	 * @throws IOException
 	 */
-	public void parseJar(File file) throws IOException {
+	public void parseJar(File file,ClassLoader classLoader) throws IOException {
 		if(log.isInfoEnabled()) {
 			log.info("正在解析jar文件"+file.getAbsolutePath());
 		}
@@ -400,9 +417,9 @@ public class ResScanner implements Destroyable {
 					// 去掉后面的".class" 获取真正的类名
 					String className = name.substring(0, name.length() - 6).replace("/", ".");
 					// 假设同一个className，则应该以文件中的为准
-					addJarClass(className, file);
+					addJarClass(className,classLoader, file);
 				} else {
-					addJarFile(name, file);
+					addJarFile(name,classLoader, file);
 				}
 			}
 		} finally {
@@ -421,7 +438,7 @@ public class ResScanner implements Destroyable {
 	 * @param name
 	 * @param file
 	 */
-	private void addJarFile(String name, File file) {
+	private void addJarFile(String name, ClassLoader classLoader, File file) {
 
 	}
 
@@ -432,9 +449,9 @@ public class ResScanner implements Destroyable {
 	 * @param file
 	 * 
 	 */
-	private void addClass(String className, File file) {
+	private void addClass(String className, ClassLoader classLoader,File file) {
 
-		classes.add(new ClassRes(className, file,getClass().getClassLoader()));
+		classes.add(new ClassRes(className, file,classLoader));
 
 	}
 
@@ -445,11 +462,11 @@ public class ResScanner implements Destroyable {
 	 * @param file
 	 * 
 	 */
-	private void addJarClass(String className, File jar) {
+	private void addJarClass(String className, ClassLoader classLoader, File jar) {
 		if(className.contains("package-info")) {
 			return;
 		}
-		classes.add( new JarClassRes(className,jar,getClass().getClassLoader()) );
+		classes.add( new JarClassRes(className,jar,classLoader) );
 	}
 
 	/**
@@ -469,12 +486,12 @@ public class ResScanner implements Destroyable {
 	 * @param root
 	 * @param file
 	 */
-	private void parseClass(String root, File file) {
+	private void parseClass(String root, ClassLoader classLoader, File file) {
 		String className = getClassName(root, file.getAbsolutePath());
 		if(className.contains("package-info")) {
 			return;
 		}
-		addClass(className, file);
+		addClass(className, classLoader,file);
 	}
 
 	/**

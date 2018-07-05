@@ -7,8 +7,6 @@ import com.jzoom.zoom.dao.SqlBuilder.Sort;
 import com.jzoom.zoom.dao.utils.TreeUtils;
 import com.jzoom.zoom.web.action.ActionContext;
 
-import apple.awt.CImage;
-
 public class ModDao extends BaseDao {
 
 	public ModDao() {
@@ -16,8 +14,12 @@ public class ModDao extends BaseDao {
 	}
 	
 	public List<Record> getMenu(  ){
+		ActionContext context = ActionContext.get();
+		String[] mods = context.get("mods", String[].class);
+		
 		return TreeUtils.toTree(getDao()
 				.table("sys_mod")
+				.whereIn("id",mods)
 				.where("menu", 1)
 				.select("id,title as label,p_id,url")
 				.orderBy("sort", Sort.ASC )

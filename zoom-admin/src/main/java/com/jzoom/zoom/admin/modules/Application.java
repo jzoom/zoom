@@ -1,6 +1,13 @@
 package com.jzoom.zoom.admin.modules;
 
 
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -22,6 +29,7 @@ import com.jzoom.zoom.server.ZoomWebApplication;
 import com.jzoom.zoom.web.action.ActionContext;
 import com.jzoom.zoom.web.action.ActionInterceptorAdapter;
 import com.jzoom.zoom.web.action.ActionInterceptorFactory;
+import com.sun.tools.javac.util.Name;
 
 @Module
 public class Application{
@@ -31,6 +39,8 @@ public class Application{
 	@Inject("cfg:mysql")
 	private MysqlConnDescription mysql;
 	
+	@Inject("cfg:aliyun")
+	private MysqlConnDescription aliyun;
 	
 	public Application() {
 		
@@ -42,15 +52,88 @@ public class Application{
 		ZoomWebApplication.start(Application.class);
 	}
 
-	@IocBean(destroy="close")
+	@IocBean(destroy="close",name="defaultDataSource")
 	public DataSource getDataSource() {
 		DruidDataSourceProvider provider = new DruidDataSourceProvider(mysql);
 		DruidDataSource dataSource = provider.getDataSource();
 		return dataSource;
 	}
 	
+	
+	@IocBean(destroy="close",name="aliyunDataSource")
+	public DataSource getAliyunDataSource() {
+		DruidDataSourceProvider provider = new DruidDataSourceProvider(aliyun);
+		DruidDataSource dataSource = provider.getDataSource();
+		return dataSource;
+	}
+	
 	@IocBean
-	public Dao getDao(DataSource dataSource) {
+	public Dao getDao() throws ClassNotFoundException {
+		Class.forName("org.h2.Driver");
+		return new ZoomDao(new DataSource() {
+			
+			@Override
+			public <T> T unwrap(Class<T> arg0) throws SQLException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public void setLoginTimeout(int arg0) throws SQLException {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void setLogWriter(PrintWriter arg0) throws SQLException {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public int getLoginTimeout() throws SQLException {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public PrintWriter getLogWriter() throws SQLException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Connection getConnection(String username, String password) throws SQLException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Connection getConnection() throws SQLException {
+				Connection conn = DriverManager.getConnection("jdbc:h2:file:/Users/jzoom/working/db/admin", "sa", "sa");
+				
+				return conn;
+			}
+		}, false);
+	}
+	
+//	@IocBean
+//	public Dao getDao(
+//			@Inject("defaultDataSource")
+//			DataSource dataSource) {
+//		return new ZoomDao(dataSource, true);
+//	}
+	
+	@IocBean(name="aliyun")
+	public Dao getAliyunDao(
+			@Inject("aliyunDataSource")
+			DataSource dataSource) {
 		return new ZoomDao(dataSource, true);
 	}
 	
@@ -81,14 +164,22 @@ public class Application{
 			
 			@Override
 			public boolean preParse(ActionContext context) throws Exception {
-				log.info(context.getRequest().getRequestURI());
+				
 				return true;
 			}
 			
 			@Override
 			public void parse(ActionContext context) throws Exception {
 				if(context.getPreParam() instanceof Map) {
-					log.info( context.getPreParam());
+					log.info("正在访问"+context.getRequest().getRequestURI() + " PARAM:" + context.getPreParam());
+					
+				}
+			}
+			
+			@Override
+			public void beforeRender(ActionContext context) throws Exception {
+				if(context.getPreParam() instanceof Map) {
+					log.info("返回:"+context.getRequest().getRequestURI() + " RESULT:" + context.getRenderObject());
 				}
 			}
 			

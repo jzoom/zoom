@@ -19,8 +19,13 @@ import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Databases;
 import com.jzoom.zoom.dao.Entity;
 import com.jzoom.zoom.dao.EntityManager;
-import com.jzoom.zoom.dao.SqlDriver;
+import com.jzoom.zoom.dao.alias.AliasPolicy;
+import com.jzoom.zoom.dao.alias.impl.EmptyAlias;
+import com.jzoom.zoom.dao.alias.impl.ToLowerCaseAiias;
 import com.jzoom.zoom.dao.driver.DbStructFactory;
+import com.jzoom.zoom.dao.driver.SqlDriver;
+import com.jzoom.zoom.dao.driver.h2.H2DbStrict;
+import com.jzoom.zoom.dao.driver.h2.H2Driver;
 import com.jzoom.zoom.dao.driver.mysql.MysqlDbStrict;
 import com.jzoom.zoom.dao.driver.mysql.MysqlDriver;
 import com.jzoom.zoom.dao.meta.TableMeta;
@@ -40,22 +45,32 @@ public class ZoomDao implements Dao {
 	private EntityManager entityManager;
 	private DbStructFactory dbStructFactory;
 	private boolean lazyLoad;
+	private AliasPolicy aliasPolicy;
 	private String tableCat;
 	private Collection<String> names;
+	
+	
+	public ZoomDao( DataSource dataSource ) {
+		this(dataSource, false);
+	}
+	
+	public ZoomDao(DataSource dataSource,boolean lazyLoad) {
+		this( dataSource,lazyLoad, new ToLowerCaseAiias() );
+	}
 	
 	/**
 	 * 创建一个Dao对象
 	 * @param dataSource
 	 * @param lazyLoad  是否在需要使用的时候才创建各种相关对象：如绑定实体类等,改成true，启动时间将缩减500ms左右！
 	 */
-	public ZoomDao(DataSource dataSource,boolean lazyLoad) {
+	public ZoomDao(DataSource dataSource,boolean lazyLoad,AliasPolicy aliasPolicy) {
 		this.dataSource = dataSource;
 		this.entityManager = new SimpleEntityManager();
 		this.lazyLoad =lazyLoad;
+		this.aliasPolicy = aliasPolicy;
 		if(lazyLoad) {
 			return;
 		}
-		
 		load();
 	}
 	
@@ -103,17 +118,32 @@ public class ZoomDao implements Dao {
 			}
 			this.names = names;
 			this.tableCat = cat;
-			dbStructFactory = new MysqlDbStrict(tableCat, lazyLoad);
+			dbStructFactory = createDbStructFactory(metaData.getDatabaseProductName() );
 		}finally {
 			DaoUtils.close(rs);
 		}
 		
 	}
 	
+	private DbStructFactory createDbStructFactory(String productName) {
+		if(Databases.MYSQL.equals(productName)) {
+			return new MysqlDbStrict(tableCat);
+		}
+		
+		if(Databases.H2.equals(productName)) {
+			return new H2DbStrict(tableCat);
+		}
+		throw new RuntimeException(String.format("不支持的数据库产品:%s",productName));
+	}
+	
 	
 	private SqlDriver createDriver(String productName) {
 		if(Databases.MYSQL.equals(productName)) {
 			return new MysqlDriver();
+		}
+		
+		if(Databases.H2.equals(productName)) {
+			return new H2Driver();
 		}
 		
 		throw new RuntimeException(String.format("不支持的数据库产品:%s",productName));
@@ -144,7 +174,7 @@ public class ZoomDao implements Dao {
 	
 	private Ar createAr() {
 		lazyLoad();
-		return new ActiveRecord(dataSource, sqlDriver,entityManager);
+		return new ActiveRecord(dataSource, sqlDriver,entityManager,aliasPolicy);
 	}
 
 

@@ -569,19 +569,7 @@
         <div class="flex container column">
             <div class="navigation">
                 <img src="img/logo.jpg" class="logo" />
-                <el-dropdown :hide-on-click="false" class="float:right">
-                    <span class="el-dropdown-link">
-                        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>黄金糕</el-dropdown-item>
-                        <el-dropdown-item>狮子头</el-dropdown-item>
-                        <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                        <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                        <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-                    </el-dropdown-menu>
-                    </el-dropdown>
-
+                <span><a href="">退出</a></span>
             </div>
             <div class="flex container row" style="margin-top:10px">
                 <div class="left">

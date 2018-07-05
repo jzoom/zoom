@@ -1,4 +1,4 @@
-package com.jzoom.zoom.dao.driver.mysql;
+package com.jzoom.zoom.dao.driver.h2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,61 +18,22 @@ import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.ConnectionExecutor;
 import com.jzoom.zoom.dao.Record;
+import com.jzoom.zoom.dao.driver.AbsDbStruct;
 import com.jzoom.zoom.dao.driver.DbStructFactory;
 import com.jzoom.zoom.dao.meta.ColumnMeta;
 import com.jzoom.zoom.dao.meta.ColumnMeta.KeyType;
 import com.jzoom.zoom.dao.meta.TableMeta;
 import com.jzoom.zoom.dao.utils.DaoUtils;
 
-public class MysqlDbStrict implements DbStructFactory {
+public class H2DbStrict extends AbsDbStruct {
 
 	private String dbName;
 
-	public MysqlDbStrict(String dbName) {
+	public H2DbStrict(String dbName) {
 		this.dbName = dbName;
 	}
 
-	@Override
-	public TableMeta getTableMeta(Ar ar, final String table) {
-		TableMeta tableMeta = ar.execute(new ConnectionExecutor() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public TableMeta execute(Connection connection) throws SQLException {
-				PreparedStatement statement = null;
-				ResultSet rs = null;
-				try {
-					statement = connection.prepareStatement("select * from " + table + " where 1=2");
-					rs = statement.executeQuery();
-					ResultSetMetaData data = rs.getMetaData();
-					List<ColumnMeta> columnMetas = new ArrayList<ColumnMeta>(data.getColumnCount());
-					for (int i = 1, c = data.getColumnCount(); i < c; ++i) {
-						ColumnMeta column = new ColumnMeta();
-						String className = data.getColumnClassName(i);
-						column.setClazz(Classes.forName(className));
-						column.setName(data.getColumnName(i));
-						column.setType(data.getColumnType(i));
-						column.setRawType(data.getColumnTypeName(i));
-						columnMetas.add(column);
-					}
-
-					TableMeta meta = new TableMeta();
-					meta.setName(table);
-					meta.setColumns(columnMetas.toArray(new ColumnMeta[columnMetas.size()]));
-					return meta;
-				} finally {
-					DaoUtils.close(statement);
-					DaoUtils.close(rs);
-				}
-
-			}
-		});
-
-
-		return tableMeta;
-	}
-
-	private static final Log log = LogFactory.getLog(MysqlDbStrict.class);
+	private static final Log log = LogFactory.getLog(H2DbStrict.class);
 
 
 	@Override
@@ -84,8 +45,7 @@ public class MysqlDbStrict implements DbStructFactory {
 	@Override
 	public Collection<Record> getNameAndComments(Ar ar) {
 		List<Record> list = ar.executeQuery(
-				"select table_comment as comment,table_name as name from information_schema.tables where table_schema=?",
-				dbName);
+				"select table_name as name from information_schema.tables");
 
 		return list;
 	}

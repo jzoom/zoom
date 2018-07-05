@@ -1,22 +1,30 @@
 package com.jzoom.zoom.dao.impl;
 
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jzoom.zoom.caster.Caster;
+import com.jzoom.zoom.caster.ValueCaster;
 import com.jzoom.zoom.dao.DaoException;
 import com.jzoom.zoom.dao.Entity;
 import com.jzoom.zoom.dao.Record;
-import com.jzoom.zoom.dao.SqlDriver;
 import com.jzoom.zoom.dao.adapter.EntityAdapter;
+import com.jzoom.zoom.dao.alias.AliasPolicy;
+import com.jzoom.zoom.dao.driver.SqlDriver;
 
 
 class BuilderKit {
@@ -78,7 +86,7 @@ class BuilderKit {
 				sql.append(COMMA);
 			}
 			values.add(value);
-			driver.protectName(sql,name);
+			driver.protectColumn(sql,name);
 		}
 		//?
 		join(sql.append(") VALUES ("),record.size()).append(')');
@@ -117,17 +125,48 @@ class BuilderKit {
 		return ps;
 	}
 	
-	public static final Record buildOne(ResultSet rs) throws SQLException{
+	private static ValueCaster blobCaster;
+	private static ValueCaster clobCaster;
+	static {
+		
+		blobCaster = Caster.wrap(Blob.class, String.class);
+		clobCaster = Caster.wrap(Clob.class, String.class);
+		
+	}
+	
+	public static final Record buildOne(ResultSet rs,AliasPolicy policy) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount();
 		Record map = new Record();
 		for (int i=1; i<=columnCount; i++) {
-			map.put(rsmd.getColumnName(i), rs.getObject(i));
+			int type = rsmd.getColumnType(i);
+			String name = rsmd.getColumnName(i);
+			map.put( policy.getAlias(name) ,  getValue(type, rs, i) );
 		}
 		
 		return map;
 	}
 	
+	private static Object getValue(int type,ResultSet rs,int i) throws SQLException {
+		if (type < Types.BLOB)
+			return rs.getObject(i);
+		else if (type == Types.CLOB)
+			return clobCaster.to(rs.getClob(i));
+		else if (type == Types.NCLOB)
+			return clobCaster.to(rs.getNClob(i));
+		else if (type == Types.BLOB)
+			return blobCaster.to(rs.getBlob(i));
+		else
+			return rs.getObject(i);
+	}
+	
+	public static final Record build(int columnCount,ResultSet rs,int[] types,String[] labelNames) throws SQLException{
+		Record map = new Record();
+		for (int i=1; i<=columnCount; i++) {
+			map.put(labelNames[i], getValue(types[i],rs,i));
+		}
+		return map;
+	}
 	
 	public static final Record build(int columnCount,ResultSet rs,String[] labelNames) throws SQLException{
 		Record map = new Record();
@@ -136,19 +175,24 @@ class BuilderKit {
 		}
 		return map;
 	}
-	
-	public static final List<Record> build(ResultSet rs) throws SQLException{
+	public static final List<Record> build(ResultSet rs,AliasPolicy policy) throws SQLException{
 		List<Record> result = new ArrayList<Record>();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount();
 		String[] labelNames = new String[columnCount + 1];
-		for (int i=1; i<labelNames.length; i++) {
-			labelNames[i] = rsmd.getColumnLabel(i);
-		}
+		int[] types = new int[columnCount + 1];
+		buildLabelNamesAndTypes(rsmd, labelNames, types,policy);
 		while (rs.next()) {
-			result.add(build(columnCount, rs,labelNames));
+			result.add(build(columnCount, rs, types, labelNames));
 		}
 		return result;
+	}
+	
+	private static final void buildLabelNamesAndTypes(ResultSetMetaData rsmd, String[] labelNames, int[] types, AliasPolicy policy) throws SQLException {
+		for (int i=1; i<labelNames.length; i++) {
+			labelNames[i] = policy.getAlias(rsmd.getColumnLabel(i));
+			types[i] = rsmd.getColumnType(i);
+		}
 	}
 
 
@@ -166,7 +210,7 @@ class BuilderKit {
 				sql.append(COMMA);
 			}
 			values.add( index++,value);
-			driver.protectName(sql,entry.getKey()).append("=?");
+			driver.protectColumn(sql,entry.getKey()).append("=?");
 		}
 
 		sql.append(where);
@@ -184,6 +228,22 @@ class BuilderKit {
 			throw new DaoException("Whole table delete is not valid!");
 		}
 		sql.append("DELETE FROM ").append(table).append(where);
+	}
+	
+	public static final Pattern AS_PATTERN = Pattern.compile("([a-zA-Z_\\(\\)\\.\\[\\]]+[\\s]+as[\\s]+)([a-zA-Z_]+)",Pattern.CASE_INSENSITIVE);
+	
+
+	/**
+	 * 将select中的as解析出来
+	 * @param select
+	 * @return
+	 */
+	public static String parseAs(String select) {
+		Matcher matcher = null;
+		if( (matcher =  BuilderKit.AS_PATTERN.matcher(select) ) .matches()) {
+			return matcher.group(2);
+		}
+		return select;
 	}
 	
 }

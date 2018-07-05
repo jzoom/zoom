@@ -6,6 +6,7 @@ public class CamelAliasPolicy implements AliasPolicy {
 
 	@Override
 	public String getAlias(String column) {
+		column = column.toLowerCase();
 		String[] names = column.split("_");
 		StringBuilder result = new StringBuilder();
 		int index = 0;

@@ -11,7 +11,7 @@ import com.jzoom.zoom.dao.meta.TableMeta;
 public class MysqlDriver  extends AbsDriver{
 
 	@Override
-	public StringBuilder protectName(StringBuilder sb, String name) {
+	public StringBuilder protectColumn(StringBuilder sb, String name) {
 		return sb.append('`').append(name).append('`');
 	}
 
@@ -20,17 +20,6 @@ public class MysqlDriver  extends AbsDriver{
 		return super.get(dataClass, columnClass);
 	}
 
-	@Override
-	public void fill(TableMeta meta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<TableMeta> getTableMetas() {
-		
-		return null;
-	}
 
 	
 

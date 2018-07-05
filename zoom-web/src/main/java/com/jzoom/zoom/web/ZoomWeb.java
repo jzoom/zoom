@@ -56,93 +56,85 @@ public class ZoomWeb {
 
 	private IocContainer ioc;
 	private AopFactory factory;
-	
+
 	private WebClassLoader classLoader;
 
 	private static Log log = LogFactory.getLog(ZoomWeb.class);
-	long time = System.currentTimeMillis();
-	private Long[] times = new Long[10];
-	private int timeIndex;
-	private String[] names = new String[10];
-
-	private void step(String name) {
-		long now = System.currentTimeMillis();
-		times[timeIndex] = now - time;
-		names[timeIndex] = name;
-		time = now;
-		++timeIndex;
-	}
-
-	@SuppressWarnings("unchecked")
+	long first = System.currentTimeMillis();
+	
 	public void init() {
-		long first = System.currentTimeMillis();
+		
+		printLogo();
+		
+		/// 加载整个项目的主配置
+		loadApplicationConfig();
+		// 初始化ioc容器
+		createIocContainer();
+		// 扫描整个资源, .class .jar 其他配置文件等
+		scanResources();
+		// 初始化router
+		createRouter();
+
+		resolveClasses();
+
+		printTime();
+
+	}
+	
+	private void printLogo() {
 		log.info("==============================Startup Zoom==============================");
 
 		System.out.println("____  ___    ___\n" + "  /  / _ \\  / _ \\ |\\    /|\n"
 				+ " /  | (_) || (_) || \\  / |    \n" + "/___ \\___/  \\___/ |  \\/  |\n");
-		/// 加载整个项目的主配置
-		loadApplicationConfig();
-		step("config");
-		// 初始化ioc容器
-		createIocContainer();
-		step("ioc");
-		// 扫描整个资源, .class .jar 其他配置文件等
-		scanResources();
-		step("res");
-		// 初始化router
-		ioc.register(RouterParamRule.class, BracesRouterParamRule.class);
-		ioc.register(Router.class,SimpleRouter.class);
-		router = ioc.get(Router.class);
-		// 初始化classInfo
-		ioc.register(ClassInfo.class, SimpleClassInfo.class);
+	}
 
-		ClassResolvers visitors = new ClassResolvers(
-				ioc.get(SimpleConfigBuilder.class),
-				ioc.get(SimpleActionBuilder.class)
-				);
-		visitors.visit();
-		
-		step("controllers");
-
+	private void printTime() {
 		RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
 		long startTime = bean.getStartTime();
 		long now = System.currentTimeMillis();
-		if (log.isDebugEnabled()) {
-			for (int i = 0; i < timeIndex; ++i) {
-				log.debug(names[i] + ":" + times[i]);
-			}
-		}
 		log.info(String.format(
 				"==============================Startup Zoom  in [%d] ms , JVM runing time [%d] ms==============================",
 				now - first, now - startTime));
-
 	}
-	
+
+	private void resolveClasses() {
+		// 初始化classInfo
+		ioc.register(ClassInfo.class, SimpleClassInfo.class);
+		ClassResolvers visitors = new ClassResolvers(ioc.get(SimpleConfigBuilder.class),
+				ioc.get(SimpleActionBuilder.class));
+		ioc.register(ClassResolvers.class.getName(), visitors);
+		visitors.visit(ResScanner.me());
+	}
+
+	private void createRouter() {
+		ioc.register(RouterParamRule.class, BracesRouterParamRule.class);
+		ioc.register(Router.class, SimpleRouter.class);
+		router = ioc.get(Router.class);
+	}
+
 	private void createAopFactory() {
 		classLoader = new WebClassLoader(ZoomWeb.class.getClassLoader());
 		factory = new SimpleAopFactory(classLoader);
 	}
-	
+
 	private void createIocContainer() {
 		createAopFactory();
-		
+
 		IocSettingLoader loader = new SimpleIocSettingLoader();
 		IocSetting[] settings = loader.load();
 		ioc = new SimpleIocContainer(new SimpleIocClassFactory(new ClassEnhanceAdapter(factory)));
-	//	ioc = new GlobalIocContainer(new ClassEnhanceAdapter(factory),settings);
+		// ioc = new GlobalIocContainer(new ClassEnhanceAdapter(factory),settings);
 		ioc.register(AopFactory.class.getName(), factory);
 		WebUtils.setIoc(ioc);
-		
+
 	}
-	
-	
 
 	public class ClassEnhanceAdapter implements ClassEnhance {
 		private AopFactory factory;
-		public ClassEnhanceAdapter( AopFactory factory) {
+
+		public ClassEnhanceAdapter(AopFactory factory) {
 			this.factory = factory;
 		}
-		
 
 		@Override
 		public Class<?> enhance(Class<?> src) {
@@ -179,7 +171,7 @@ public class ZoomWeb {
 		}
 
 		try {
-			ResScanner.me().scan(ZoomFilter.class.getClassLoader(), jarFilter);
+			ResScanner.me().scan(ZoomWeb.class.getClassLoader(), jarFilter);
 		} catch (IOException e) {
 			throw new RuntimeException("扫描解析文件出错，请确认权限是否满足要求");
 		}
@@ -201,26 +193,26 @@ public class ZoomWeb {
 
 		if (file == null) {
 			// 目前这个版本支持两种主配置，properties/yml
-			throw new RuntimeException("启动失败，请确认application.properties或application.json存在");
+			//throw new RuntimeException("启动失败，请确认application.properties或application.json存在");
+			return;
 		}
 		ConfigReader.getDefault().load(file);
 
 	}
 
 	public void destroy() {
-		
-		if(ioc!=null) {
+
+		if (ioc != null) {
 			ioc.destroy();
 			ioc = null;
 		}
-		
-		
+
 		router = null;
 		factory = null;
 		classLoader = null;
-		
+
 		WebUtils.setIoc(null);
-		
+
 		CachedClasses.clear();
 		PatternFilterFactory.clear();
 		ResScanner.me().destroy();
@@ -236,9 +228,17 @@ public class ZoomWeb {
 		}
 
 		HttpServletResponse response = (HttpServletResponse) resp;
-		if(action.handle(request, response)) {
+		if (action.handle(request, response)) {
 			return true;
 		}
 		throw new StatusException.NotAllowedHttpMethodException();
+	}
+
+	public IocContainer getIoc() {
+		return ioc;
+	}
+
+	public void setIoc(IocContainer ioc) {
+		this.ioc = ioc;
 	}
 }

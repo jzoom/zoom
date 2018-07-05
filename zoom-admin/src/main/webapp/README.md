@@ -1,3 +1,5 @@
+java -classpath /Users/jzoom/.m2/repository/com/h2database/h2/1.3.176/h2-1.3.176.jar org.h2.tools.Console -web
+
 cd /Users/jzoom/eclipse-workspace/zoom-admin/src/main/webapp/
 browser-sync start --proxy "localhost:8090" --files "**/*.css, **/*.html, **/*.js"
 
@@ -101,4 +103,15 @@ meta 接口
 1、需要能增加菜单项（有可能是一个项目，带子菜单）
 2、需要单独工作
 3、可以上传插件
+
+
+解除绑定
+主框架暴露接口：
+
+MainFrame
+void update(String event, Object sender, Object data);
+
+插件暴露接口:
+void startup( MainFrame );
+void shutdown( MainFrame );
 

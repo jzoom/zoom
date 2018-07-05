@@ -19,9 +19,9 @@ public class ClassResolvers {
 	}
 	
 	
-	public void visit() {
+	public void visit( ResScanner scanner ) {
 		final List<ClassRes> classes = new ArrayList<ClassRes>();
-		ResScanner.me().visitClass(new Visitor<ClassRes>() {
+		scanner.visitClass(new Visitor<ClassRes>() {
 
 			@Override
 			public void visit(ClassRes data) {

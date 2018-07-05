@@ -9,11 +9,19 @@ import com.jzoom.zoom.dao.meta.TableMeta;
 
 public interface DbStructFactory {
 
-	String getComment(String tableName);
 	
-	Collection<String> getTableNames();
+	Collection<String> getTableNames( Ar ar );
 	
+	/**
+	 * 获取tableMeta，最简单
+	 * @param ar
+	 * @param tableName
+	 * @return
+	 */
 	TableMeta getTableMeta(Ar ar,String tableName);
+	
+	
+	void fill(Ar ar,TableMeta meta);
 	
 	/**
 	 * 获取表的名称和注释

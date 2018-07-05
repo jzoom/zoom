@@ -5,26 +5,33 @@ import java.util.Map;
 
 import com.jzoom.zoom.admin.models.BaseDao;
 import com.jzoom.zoom.common.utils.Classes;
+import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
+import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.web.annotation.JsonResponse;
 import com.jzoom.zoom.web.annotation.Mapping;
 import com.jzoom.zoom.web.annotation.Param;
 import com.jzoom.zoom.web.utils.WebUtils;
 
 public class BaseDaoController<T extends BaseDao> {
+	
+	@Inject
+	private Dao baseDao;
 
 	private T model;
 	
+	
 	@SuppressWarnings("unchecked")
-	public BaseDaoController() {
+	@Inject
+	public void init() {
 		Class<?> type = (Class<?>) Classes.getTypeParams(getClass())[0];
 		try {
 			model = (T) WebUtils.getIoc().get(type);
+			model.setDao(baseDao);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
 	
 	
 	@Mapping(value="index",method= {Mapping.GET})

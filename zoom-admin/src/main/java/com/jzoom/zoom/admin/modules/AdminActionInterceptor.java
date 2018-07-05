@@ -37,12 +37,9 @@ public class AdminActionInterceptor extends ActionInterceptorAdapter {
 			throw new StatusException.AuthException();
 		}
 		//检查权限是否满足条件
-		Record record = dao.table("sys_user").select("mods").where("sys_user.id", clientToken.getId())
-			.join( "sys_role","sys_role.id=sys_user.rl_id" ).fetch();
-		if(record==null) {
-			throw new StatusException.AuthException();
-		}
-		String mods = record.getString("mods");
+		String mods = dao.table("sys_user").where("sys_user.id", clientToken.getId())
+			.join( "sys_role","sys_role.id=sys_user.rl_id" )
+			.getValue("mods", String.class);
 		if(mods==null) {
 			throw new StatusException.AuthException();
 		}
@@ -67,6 +64,7 @@ public class AdminActionInterceptor extends ActionInterceptorAdapter {
 		
 		context.put("token", clientToken);
 		context.put("userId", clientToken.getId());
+		context.put("mods", parts);
 		
 		return true;
 	}

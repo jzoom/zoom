@@ -1,5 +1,7 @@
 package com.jzoom.zoom.dao;
 
+import com.jzoom.zoom.dao.driver.SqlDriver;
+
 /**
  * 数据库连接描述
  * @author jzoom

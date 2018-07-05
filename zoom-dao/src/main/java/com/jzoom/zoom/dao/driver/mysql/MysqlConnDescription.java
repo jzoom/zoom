@@ -1,7 +1,7 @@
 package com.jzoom.zoom.dao.driver.mysql;
 
 import com.jzoom.zoom.dao.ConnectionDescriptor;
-import com.jzoom.zoom.dao.SqlDriver;
+import com.jzoom.zoom.dao.driver.SqlDriver;
 
 public class MysqlConnDescription extends ConnectionDescriptor {
 	
