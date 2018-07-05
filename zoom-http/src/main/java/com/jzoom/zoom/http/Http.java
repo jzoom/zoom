@@ -110,6 +110,24 @@ public class Http {
 			return this;
 		}
 
+		public int getReadTimeout() {
+			return readTimeout;
+		}
+
+		public Client setReadTimeout(int readTimeout) {
+			this.readTimeout = readTimeout;
+			return this;
+		}
+
+		public int getConnectTimeout() {
+			return connectTimeout;
+		}
+
+		public Client setConnectTimeout(int connectTimeout) {
+			this.connectTimeout = connectTimeout;
+			return this;
+		}
+
 		public Client setCallback(HttpCallback callback) {
 			this.callback = callback;
 			return this;
