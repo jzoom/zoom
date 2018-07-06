@@ -435,8 +435,18 @@
     });
 
     Vue.component('api-select', {
-        props: ['search', 'label', 'placeholder', 'api', 'value', 'labelField', 'size'],
-        template: `<el-select :value="value" :size="size" @change="change" :placeholder="placeholder">
+        props: ['search', 
+            'label', 
+            'placeholder', 
+            'api', 
+            'value', 
+            'labelField', 
+            'size'],
+        template: `<el-select 
+            :value="value" 
+            :size="size" 
+            @change="change" 
+            :placeholder="placeholder">
                 <el-option
                     v-for="item in data"
                     :key="item.id"
@@ -456,6 +466,7 @@
         },
         methods: {
             change(event) {
+                console.log('======change===='+event)
                 this.$emit('input', event);
                 //data
                 for (var i in this.data) {

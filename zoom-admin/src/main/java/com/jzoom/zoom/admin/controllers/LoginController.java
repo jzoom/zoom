@@ -12,7 +12,7 @@ import com.jzoom.zoom.web.annotation.Mapping;
 @Controller(key="login")
 public class LoginController {
 
-	@Inject
+	@Inject("admin")
 	private Dao dao;
 	
 	@Inject

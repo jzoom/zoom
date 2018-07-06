@@ -14,18 +14,6 @@ public class ActionInterceptorAdapter implements ActionInterceptor {
 		
 	}
 
-	@Override
-	public void beforeRender(ActionContext context) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void afterRender(ActionContext context) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public void complete() throws Exception {
@@ -37,6 +25,12 @@ public class ActionInterceptorAdapter implements ActionInterceptor {
 	public boolean whenError(ActionContext context) throws Exception {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public void whenResult(ActionContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

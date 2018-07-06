@@ -23,7 +23,7 @@ public class AutoController {
 	@Inject
 	private IocContainer ioc;
 	
-	@Inject
+	@Inject("admin")
 	private Dao defaultDao;
 	
 	/**

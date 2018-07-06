@@ -15,7 +15,7 @@ import com.jzoom.zoom.web.utils.WebUtils;
 
 public class BaseDaoController<T extends BaseDao> {
 	
-	@Inject
+	@Inject("admin")
 	private Dao baseDao;
 
 	private T model;

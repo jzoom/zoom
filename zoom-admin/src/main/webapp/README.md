@@ -115,3 +115,35 @@ void update(String event, Object sender, Object data);
 void startup( MainFrame );
 void shutdown( MainFrame );
 
+
+使用场景：
+1、search
+2、table
+3、detail
+4、edit
+
+类型：
+1、string
+2、int
+4、money
+5、date
+6、dateRange
+7、time
+8、timeRange
+9、text
+10、image
+11、image flow
+12、edit image
+13、code
+14、html
+15、file
+16、各类enum，需要定义   StringEnum （全部定义，无定义）
+组件：
+1、form
+2、table
+3、search
+4、display
+
+
+
+

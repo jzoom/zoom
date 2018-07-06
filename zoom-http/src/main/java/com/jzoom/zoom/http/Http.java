@@ -61,6 +61,10 @@ public class Http {
 		public Map<String, Object> jsonMap() throws IOException {
 			return json(Map.class);
 		}
+		
+		public String string() throws IOException {
+			return Io.readString(connection.getInputStream(), "utf-8");
+		}
 
 		public int getStatusCode() throws IOException {
 			return connection.getResponseCode();

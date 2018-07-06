@@ -21,6 +21,9 @@ public class DecoTableController {
 	@Inject
 	private Dao dao;
 	
+	@Inject("admin")
+	private Dao admin;
+	
 
 	@Mapping(value="index",method= {Mapping.GET})
 	public Object index(){
@@ -43,7 +46,7 @@ public class DecoTableController {
 		DbStructFactory factory = dao.getDbStructFactory();
 		Collection<Record> records= factory.getNameAndComments(dao.ar());
 		//查询表
-		List<Record> decos = dao.table("sys_deco_table").select("target_table as table,comment").get();
+		List<Record> decos = admin.table("sys_deco_table").select("target_table as table,comment").get();
 		
 		Map<Object, Record> map = DaoUtils.list2map(decos, "table");
 		
@@ -59,12 +62,15 @@ public class DecoTableController {
 	}
 	
 	//查询所有的表和所有的deco整合起来
-
 	@JsonResponse
 	@Mapping(value="get/{table}",method=Mapping.POST)
 	public TableMeta get( @Param(name="{table}") String table  ) {
 		
-		return dao.getDbStructFactory().getTableMeta(dao.ar(), table);
+		TableMeta data =  dao.getDbStructFactory().getTableMeta(dao.ar(), table);
+		
+		
+		
+		return data;
 	}
 	
 	

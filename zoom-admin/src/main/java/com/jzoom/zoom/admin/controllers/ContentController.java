@@ -27,7 +27,7 @@ public class ContentController {
 		module2table.put("component", "sys_component");
 	}
 
-	@Inject
+	@Inject("admin")
 	private Dao dao;
 
 	/**
@@ -61,7 +61,7 @@ public class ContentController {
 	public List<Record> list(@Param(name = "{module}") String module,@Param(name="@")Map<String, Object> search) throws NotFoundException {
 		return getDao(module).getList(search );
 	}
-
+ 
 	private BaseDao getDao(String module) throws NotFoundException {
 		String table = module2table.get(module);
 		if (table == null) {

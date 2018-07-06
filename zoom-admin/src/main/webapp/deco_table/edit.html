@@ -24,13 +24,14 @@
     </el-table-column>
     <el-table-column label="组件">
       <template slot-scope="scope">
-        <api-select :search="{_select:'id,name,data'}" api="component/index" @change="scope.row.data=arguments[0].data" v-model="scope.row.component" size="small" labelField="name"></api-select>
+        <api-select   
+          :search="{_select:'id,comment'}" 
+          api="sys_type/index" 
+          v-model="scope.row.type" 
+          size="small" 
+          labelField="id">
+        </api-select>
       </template>
     </el-table-column>
-    <el-table-column label="编辑">
-            <template slot-scope="scope">
-                {{scope.row.data}}
-            </template>
-          </el-table-column>
   </el-table>
 </el-form>

@@ -7,9 +7,6 @@ import com.jzoom.zoom.web.annotation.Controller;
 @Controller(key="db")
 public class DbController {
 	
-	@Inject
-	private Dao dao;
-
 	
 	
 	

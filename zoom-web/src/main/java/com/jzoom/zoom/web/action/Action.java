@@ -142,11 +142,6 @@ public class Action implements ActionHandler,Destroyable {
 	
 	public void release(ActionContext context) throws Exception {
 		
-		if( actionInterceptors !=null ) {
-			for (ActionInterceptor actionInterceptor : actionInterceptors) {
-				actionInterceptor.afterRender(context);
-			}
-		}
 		
 		ioc.release( IocContainer.REQUEST );
 	}
@@ -187,7 +182,7 @@ public class Action implements ActionHandler,Destroyable {
 	 * @param context
 	 */
 	public void handlerError(ActionContext context) {
-		
+		context.setState(ActionContext.STATE_BEFORE_RENDER);
 		if(this.actionInterceptors!=null) {
 			for (ActionInterceptor actionInterceptor : actionInterceptors) {
 				try {
@@ -199,19 +194,6 @@ public class Action implements ActionHandler,Destroyable {
 				}
 			}
 		}
-		
-		if(this.actionInterceptors!=null) {
-			for (ActionInterceptor actionInterceptor : actionInterceptors) {
-				try {
-					actionInterceptor.beforeRender(context);
-				} catch (Exception e) {
-					log.error("调用拦截器的beforeRender发生异常",e);
-					//throw new RuntimeException("调用拦截器的beforeRender发生异常",e);
-				}
-			}
-		}
-		
-		context.setState(ActionContext.STATE_BEFORE_RENDER);
 		try {
 			errorRendering.render(context);
 		} catch (Exception e) {
@@ -261,13 +243,7 @@ public class Action implements ActionHandler,Destroyable {
 	 * @throws Exception 
 	 */
 	private void render(ActionContext context) throws Exception  {
-		if( actionInterceptors !=null ) {
-			for (ActionInterceptor actionInterceptor : actionInterceptors) {
-				if(context.getState() == ActionContext.STATE_BEFORE_RENDER) {
-					actionInterceptor.beforeRender(context);
-				}
-			}
-		}
+		
 		if(context.getState() == ActionContext.STATE_BEFORE_RENDER) {
 			rendering.render(context);
 		}
@@ -301,6 +277,13 @@ public class Action implements ActionHandler,Destroyable {
 	private void invoke(ActionContext context) throws Exception {
 		Object result = caller.invoke(context.getTarget(), context.getArgs());
 		context.setResult(result);
+		if( actionInterceptors !=null ) {
+			for (ActionInterceptor actionInterceptor : actionInterceptors) {
+				if(context.getState() == ActionContext.STATE_BEFORE_RENDER) {
+					actionInterceptor.whenResult(context);
+				}
+			}
+		}
 	}
 
 	/**

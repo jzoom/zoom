@@ -26,22 +26,12 @@ public interface ActionInterceptor {
 	 */
 	void parse(ActionContext context) throws Exception;
 	
-	
 	/**
-	 * 渲染之前, 可能渲染正常结果，也可能渲染异常结果
-	 *  {@link com.jzoom.zoom.web.action.ActionContext#STATE_BEFORE_RENDER}
+	 * 调用函数完毕
 	 * @param context
 	 * @throws Exception
 	 */
-	void beforeRender(ActionContext context) throws Exception;
-	
-	/**
-	 * 渲染后, 可能渲染正常结果，也可能渲染异常结果
-	 *  {@link com.jzoom.zoom.web.action.ActionContext#STATE_AFTER_RENDER}
-	 * @param context
-	 * @throws Exception
-	 */
-	void afterRender(ActionContext context) throws Exception;
+	void whenResult(ActionContext context) throws Exception;
 	
 	/**
 	 * 发生异常

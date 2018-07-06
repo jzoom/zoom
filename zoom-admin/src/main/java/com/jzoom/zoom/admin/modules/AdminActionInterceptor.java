@@ -18,7 +18,7 @@ public class AdminActionInterceptor extends ActionInterceptorAdapter {
 	@Inject
 	private TokenService tokenService;
 	
-	@Inject
+	@Inject("admin")
 	private Dao dao;
 
 	@Override

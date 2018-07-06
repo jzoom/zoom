@@ -19,6 +19,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.jzoom.zoom.aop.AopFactory;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.driver.mysql.MysqlConnDescription;
+import com.jzoom.zoom.dao.driver.oracle.OracleConnDescription;
 import com.jzoom.zoom.dao.impl.ZoomDao;
 import com.jzoom.zoom.dao.provider.DruidDataSourceProvider;
 import com.jzoom.zoom.ioc.IocContainer;
@@ -39,6 +40,9 @@ public class Application{
 	@Inject("cfg:mysql")
 	private MysqlConnDescription mysql;
 	
+	@Inject("cfg:oracle")
+	private OracleConnDescription oracle;
+	
 	@Inject("cfg:aliyun")
 	private MysqlConnDescription aliyun;
 	
@@ -58,84 +62,35 @@ public class Application{
 		DruidDataSource dataSource = provider.getDataSource();
 		return dataSource;
 	}
-	
-	
-	@IocBean(destroy="close",name="aliyunDataSource")
-	public DataSource getAliyunDataSource() {
-		DruidDataSourceProvider provider = new DruidDataSourceProvider(aliyun);
-		DruidDataSource dataSource = provider.getDataSource();
-		return dataSource;
-	}
+//	
+//	
+//	@IocBean(destroy="close",name="aliyunDataSource")
+//	public DataSource getAliyunDataSource() {
+//		DruidDataSourceProvider provider = new DruidDataSourceProvider(aliyun);
+//		DruidDataSource dataSource = provider.getDataSource();
+//		return dataSource;
+//	}
 	
 	@IocBean
-	public Dao getDao() throws ClassNotFoundException {
-		Class.forName("org.h2.Driver");
-		return new ZoomDao(new DataSource() {
-			
-			@Override
-			public <T> T unwrap(Class<T> arg0) throws SQLException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public boolean isWrapperFor(Class<?> arg0) throws SQLException {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public void setLoginTimeout(int arg0) throws SQLException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void setLogWriter(PrintWriter arg0) throws SQLException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public int getLoginTimeout() throws SQLException {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-			
-			@Override
-			public PrintWriter getLogWriter() throws SQLException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Connection getConnection(String username, String password) throws SQLException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Connection getConnection() throws SQLException {
-				Connection conn = DriverManager.getConnection("jdbc:h2:file:/Users/jzoom/working/db/admin", "sa", "sa");
-				
-				return conn;
-			}
-		}, false);
+	public Dao getDao( @Inject("defaultDataSource")  DataSource dataSource ) {
+		return new ZoomDao(dataSource,false);
+	}
+//	
+	
+	
+	@IocBean(name="admin")
+	public Dao getDao() {
+		return new ZoomDao(new RawDataSource("jdbc:h2:file:/Users/jzoom/working/db/admin","sa","sa"),false);
 	}
 	
-//	@IocBean
-//	public Dao getDao(
-//			@Inject("defaultDataSource")
+
+//
+//	@IocBean(name="aliyun")
+//	public Dao getAliyunDao(
+//			@Inject("aliyunDataSource")
 //			DataSource dataSource) {
 //		return new ZoomDao(dataSource, true);
 //	}
-	
-	@IocBean(name="aliyun")
-	public Dao getAliyunDao(
-			@Inject("aliyunDataSource")
-			DataSource dataSource) {
-		return new ZoomDao(dataSource, true);
-	}
 	
 	@Inject
 	public void config( AopFactory aopFactory ) {
@@ -160,7 +115,7 @@ public class Application{
 	public void config( ActionInterceptorFactory factory ,IocContainer ioc) {
 		factory.add(ioc.get(AdminActionInterceptor.class), "!*LoginController*#*", 0);
 		factory.add(new ActionInterceptorAdapter() {
-			
+			 
 			
 			@Override
 			public boolean preParse(ActionContext context) throws Exception {
@@ -177,11 +132,12 @@ public class Application{
 			}
 			
 			@Override
-			public void beforeRender(ActionContext context) throws Exception {
+			public void whenResult(ActionContext context) throws Exception {
 				if(context.getPreParam() instanceof Map) {
 					log.info("返回:"+context.getRequest().getRequestURI() + " RESULT:" + context.getRenderObject());
 				}
 			}
+			
 			
 			@Override
 			public boolean whenError(ActionContext context) throws Exception {

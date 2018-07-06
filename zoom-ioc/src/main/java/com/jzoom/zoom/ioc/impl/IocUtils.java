@@ -167,7 +167,7 @@ public class IocUtils {
 	
 	public static List<IocInjector> createInjectors(Class<?> clazz) {
 		if(clazz.isInterface()) {
-			throw new RuntimeException("Cannot create injector from interface " + clazz );
+			throw new RuntimeException("Cannot create injector from " + clazz);
 		}
 		List<Field> fields = Classes.getFields(clazz);
 		List<Method> methods = Classes.getPublicMethods(clazz);
