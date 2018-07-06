@@ -25,10 +25,27 @@ public class ContentController {
 		module2table.put("decoration", "sys_decoration");
 		module2table.put("deco_table", "sys_deco_table");
 		module2table.put("component", "sys_component");
+		
+		module2table.put("sys_menu", "sys_menu");
+		module2table.put("sys_page", "sys_page");
+		module2table.put("sys_role", "sys_role");
+		module2table.put("sys_type", "sys_type");
+		module2table.put("sys_usercase", "sys_usercase");
+		module2table.put("sys_user", "sys_user");
+		module2table.put("sys_context", "sys_context");
+		module2table.put("sys_mod", "sys_mod");
+		module2table.put("sys_deco_table", "sys_deco_table");
+		module2table.put("sys_decoration", "sys_decoration");
+		module2table.put("sys_usecase", "sys_usecase");
+		module2table.put("sys_component", "sys_component");
 	}
+	
+	
+	@Inject
+	private Dao dao;
 
 	@Inject("admin")
-	private Dao dao;
+	private Dao admin;
 
 	/**
 	 * 模块到表的映射
@@ -39,6 +56,31 @@ public class ContentController {
 	 * 表对应的dao
 	 */
 	private Map<String, BaseDao> daoMap = new ConcurrentHashMap<String, BaseDao>();
+
+ 
+	private BaseDao getDao(String module) throws NotFoundException {
+		String table = module2table.get(module);
+		Dao dao;
+		if (table == null) {
+			//default
+			dao = this.dao;
+			table = module;
+		}else {
+			dao = this.admin;
+		}
+		
+		BaseDao baseDao = daoMap.get(table);
+		if (baseDao == null) {
+			synchronized (daoMap) {
+				baseDao = new BaseDao(table);
+				baseDao.setDao(dao);
+				daoMap.put(table, baseDao);
+			}
+		}
+		
+		return baseDao;
+	}
+	
 
 	@Mapping(value = "{module}/index", method = Mapping.GET)
 	public StringView index(@Param(name = "{module}") String module) throws NotFoundException {
@@ -56,27 +98,13 @@ public class ContentController {
 		return createPage(module, "/edit");
 	}
 
+
 	@Mapping(value = "{module}/index", method = { Mapping.POST })
 	@JsonResponse
 	public List<Record> list(@Param(name = "{module}") String module,@Param(name="@")Map<String, Object> search) throws NotFoundException {
 		return getDao(module).getList(search );
 	}
- 
-	private BaseDao getDao(String module) throws NotFoundException {
-		String table = module2table.get(module);
-		if (table == null) {
-			table = module;
-		}
-		BaseDao dao = daoMap.get(table);
-		if (dao == null) {
-			dao = new BaseDao(table);
-			dao.setDao(this.dao);
-			daoMap.put(table, dao);
-		}
-
-		return dao;
-	}
-
+	
 	@JsonResponse
 	@Mapping(value = "{module}/add", method = { Mapping.POST })
 	public int add(@Param(comment = "提交的表单信息", name = Param.BODY) Map<String, Object> data,
@@ -95,7 +123,6 @@ public class ContentController {
 	public Record get(@Param(name = "{module}") String module, @Param(name = "{id}") String id)
 			throws NotFoundException {
 		return getDao(module).fetch(id);
-
 	}
 	
 	@JsonResponse
@@ -104,10 +131,10 @@ public class ContentController {
 			@Param(name="@") Map<String, Object> data)
 			throws NotFoundException {
 		return getDao(module).put(id, data);
-
 	}
+	
 	private StringView createPage(String module, String method) throws NotFoundException {
-		Record record = dao.table("sys_page").where("url", module + method).fetch();
+		Record record = admin.table("sys_page").where("url", module + method).fetch();
 		if (record == null) {
 			throw new StatusException.NotFoundException();
 		}

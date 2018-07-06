@@ -21,6 +21,7 @@ import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
 import com.jzoom.zoom.dao.alias.AliasPolicy;
 import com.jzoom.zoom.dao.alias.AliasPolicyMaker;
+import com.jzoom.zoom.dao.alias.AliasPolicyManager;
 import com.jzoom.zoom.dao.driver.SqlDriver;
 import com.jzoom.zoom.dao.Trans;
 import com.jzoom.zoom.dao.meta.TableMeta;
@@ -28,20 +29,20 @@ import com.jzoom.zoom.dao.utils.DaoUtils;
 
 public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, ConnectionHolder, Trans {
 
-	private SimpleSqlBuilder builder;
+	private AliasSqlBuilder builder;
 	private EntityManager entityManager;
-	private AliasPolicy aliasPolicy;
+	private AliasPolicyManager aliasPolicyManager;
 	
 	
 	public ActiveRecord(
 			DataSource dataSource, 
 			SqlDriver driver ,
 			EntityManager entityManager,
-			AliasPolicy aliasPolicy) {
+			AliasPolicyManager aliasPolicyManager) {
 		super(dataSource);
-		this.builder = new SimpleSqlBuilder(driver);
+		this.builder = new AliasSqlBuilder(driver,aliasPolicyManager);
 		this.entityManager = entityManager;
-		this.aliasPolicy = aliasPolicy;
+		this.aliasPolicyManager = aliasPolicyManager;
 	}
 
 	public List<Record> executeQuery(String sql, List<Object> values) {
@@ -50,9 +51,9 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		ResultSet rs = null;
 		try {
 			connection = getConnection();
-			ps = BuilderKit.prepareStatement(connection, sql, values);
+			ps = BuilderKit.prepareStatement(connection, sql, values); 
 			rs = ps.executeQuery();
-			return BuilderKit.build(rs,aliasPolicy);
+			return BuilderKit.build(rs,builder.nameAdapter);
 		} catch (SQLException e) {
 			throw new DaoException(e);
 		} finally {
@@ -72,7 +73,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 			ps = BuilderKit.prepareStatement(connection, sql, values);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				return BuilderKit.buildOne(rs,aliasPolicy);
+				return BuilderKit.buildOne(rs,builder.nameAdapter);
 			}
 			return null;
 		} catch (SQLException e) {
@@ -83,6 +84,29 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 			releaseConnection();
 			builder.clear();
 		}
+	}
+	
+	public ResultSet execute( final String sql, final List<Object> values ) {
+		return execute(new ConnectionExecutor() {
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public ResultSet execute(Connection connection) throws SQLException {
+				ResultSet rs = null;
+				PreparedStatement ps = null;
+				try {
+					connection = getConnection();
+					ps = BuilderKit.prepareStatement(connection, sql, values);
+					rs = ps.executeQuery();
+					return rs;
+				} catch (SQLException e) {
+					throw new DaoException(e);
+				} finally {
+					DaoUtils.close(ps);
+					builder.clear();
+				}
+			}
+		});
 	}
 	
 	@Override

@@ -1,5 +1,8 @@
 package com.jzoom.zoom.dao.alias;
 
-public class AliasPolicyManager {
+import com.jzoom.zoom.dao.adapter.NameAdapter;
 
+public interface AliasPolicyManager {
+	
+	NameAdapter getPolicy(String table);
 }

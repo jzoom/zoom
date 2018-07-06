@@ -73,7 +73,7 @@ public class Application{
 	
 	@IocBean
 	public Dao getDao( @Inject("defaultDataSource")  DataSource dataSource ) {
-		return new ZoomDao(dataSource,false);
+		return new ZoomDao(dataSource,false,null);
 	}
 //	
 	

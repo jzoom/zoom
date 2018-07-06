@@ -13,10 +13,5 @@ public interface AliasPolicy {
 	 */
 	String getAlias(String column);
 	
-	/**
-	 * 根据别名获取到实际字段名称
-	 * @param alias
-	 * @return
-	 */
-//	String getNameByAlias(String alias);
+	
 }

@@ -1,11 +1,13 @@
 package com.jzoom.zoom.dao.alias.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 
+import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.alias.AliasPolicy;
 import com.jzoom.zoom.dao.alias.AliasPolicyMaker;
 import com.jzoom.zoom.dao.meta.ColumnMeta;
@@ -20,8 +22,6 @@ import com.jzoom.zoom.dao.meta.TableMeta;
  */
 public class DetectPrefixAliasPolicyMaker implements AliasPolicyMaker {
 
-
-	private CamelAliasPolicy aliasPolicy = new CamelAliasPolicy();
 	
 	
 	public DetectPrefixAliasPolicyMaker() {
@@ -29,7 +29,7 @@ public class DetectPrefixAliasPolicyMaker implements AliasPolicyMaker {
 	}
 	
 	@Override
-	public AliasPolicy getColumnAliasPolicy(TableMeta table) {
+	public NameAdapter getColumnAliasPolicy(TableMeta table) {
 		Map<String, MutableInt> countMap = new LinkedHashMap<String, MutableInt>();
 		
 		for (ColumnMeta columnInfo : table.getColumns()) {
@@ -43,22 +43,32 @@ public class DetectPrefixAliasPolicyMaker implements AliasPolicyMaker {
 				value.add(1);
 			}
 		}
+		AliasPolicy aliasPolicy = null;
 		//只有最大的为第一个的才行
 		MutableInt first = null;
+		String key = null;
 		for (Entry<String, MutableInt> entry : countMap.entrySet()) {
 			if(first==null) {
 				first = entry.getValue();
+				key = entry.getKey();
 			}else {
-				
-				if(first.intValue() <= entry.getValue().intValue()) {
-					return new PrefixAliasPolicy(  new StringBuilder(entry.getKey().toLowerCase()).append("_").toString()  );
-				}else {
-					return aliasPolicy;
+				if(first.intValue() > entry.getValue().intValue()) {
+					aliasPolicy =  new PrefixAliasPolicy(new StringBuilder(key).append("_").toString());
 				}
+				break;
 			}
 		}
 		
-		return aliasPolicy;
+		if(aliasPolicy!=null) {
+			Map<String,String> map = new HashMap<String, String>();
+			for (ColumnMeta columnInfo : table.getColumns()) {
+				map.put(aliasPolicy.getAlias(columnInfo.getName()), columnInfo.getName());
+			}
+			return new MapNameAdapter(aliasPolicy, map);
+		}else {
+			return CamelNameAdapter.ADAPTER;
+		}
+		
 	}
 
 	

@@ -1,5 +1,6 @@
 package com.jzoom.zoom.dao.alias;
 
+import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.meta.TableMeta;
 
 /**
@@ -54,6 +55,6 @@ import com.jzoom.zoom.dao.meta.TableMeta;
  *
  */
 public interface AliasPolicyMaker {
-	AliasPolicy getColumnAliasPolicy(TableMeta table);
+	NameAdapter getColumnAliasPolicy(TableMeta table);
 	//AliasPolicy getTableAliasPolicy(DatabaseMeta database);
 }

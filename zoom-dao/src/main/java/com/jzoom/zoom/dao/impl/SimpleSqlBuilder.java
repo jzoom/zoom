@@ -104,7 +104,7 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		
 	}
 	
-	private SqlBuilder whereImpl(String name, Symbo symbo, Object value,String relation) {
+	protected SqlBuilder whereImpl(String name, Symbo symbo, Object value,String relation) {
 		checkValue(value);
 		
 		if (where.length() == 0) {
@@ -374,7 +374,8 @@ public class SimpleSqlBuilder implements SqlBuilder{
 	}
 	
 	public void buildUpdate(Map<String, Object> record) {
-		if(record!=null)setAll(record);
+		if(record!=null)
+			setAll(record);
 		BuilderKit.buildUpdate( sql,values, driver, table,  where,this.record );
 	}
 	public void buildUpdate() {

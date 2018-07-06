@@ -23,6 +23,7 @@ import com.jzoom.zoom.dao.DaoException;
 import com.jzoom.zoom.dao.Entity;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.adapter.EntityAdapter;
+import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.alias.AliasPolicy;
 import com.jzoom.zoom.dao.driver.SqlDriver;
 
@@ -134,14 +135,14 @@ class BuilderKit {
 		
 	}
 	
-	public static final Record buildOne(ResultSet rs,AliasPolicy policy) throws SQLException{
+	public static final Record buildOne(ResultSet rs,NameAdapter policy) throws SQLException{
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount();
 		Record map = new Record();
 		for (int i=1; i<=columnCount; i++) {
 			int type = rsmd.getColumnType(i);
 			String name = rsmd.getColumnName(i);
-			map.put( policy.getAlias(name) ,  getValue(type, rs, i) );
+			map.put( policy.getFieldName(name) ,  getValue(type, rs, i) );
 		}
 		
 		return map;
@@ -175,7 +176,7 @@ class BuilderKit {
 		}
 		return map;
 	}
-	public static final List<Record> build(ResultSet rs,AliasPolicy policy) throws SQLException{
+	public static final List<Record> build(ResultSet rs,NameAdapter policy) throws SQLException{
 		List<Record> result = new ArrayList<Record>();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount();
@@ -188,10 +189,17 @@ class BuilderKit {
 		return result;
 	}
 	
-	private static final void buildLabelNamesAndTypes(ResultSetMetaData rsmd, String[] labelNames, int[] types, AliasPolicy policy) throws SQLException {
-		for (int i=1; i<labelNames.length; i++) {
-			labelNames[i] = policy.getAlias(rsmd.getColumnLabel(i));
-			types[i] = rsmd.getColumnType(i);
+	private static final void buildLabelNamesAndTypes(ResultSetMetaData rsmd, String[] labelNames, int[] types, NameAdapter policy) throws SQLException {
+		if(policy!=null) {
+			for (int i=1; i<labelNames.length; i++) {
+				labelNames[i] = policy.getFieldName(rsmd.getColumnLabel(i));
+				types[i] = rsmd.getColumnType(i);
+			}
+		}else {
+			for (int i=1; i<labelNames.length; i++) {
+				labelNames[i] = rsmd.getColumnLabel(i);
+				types[i] = rsmd.getColumnType(i);
+			}
 		}
 	}
 

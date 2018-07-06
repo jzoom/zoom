@@ -19,9 +19,13 @@ import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Databases;
 import com.jzoom.zoom.dao.Entity;
 import com.jzoom.zoom.dao.EntityManager;
+import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.alias.AliasPolicy;
+import com.jzoom.zoom.dao.alias.AliasPolicyManager;
+import com.jzoom.zoom.dao.alias.impl.DetectPrefixAliasPolicyMaker;
 import com.jzoom.zoom.dao.alias.impl.EmptyAlias;
 import com.jzoom.zoom.dao.alias.impl.ToLowerCaseAiias;
+import com.jzoom.zoom.dao.alias.impl.ToLowerCaseNameAdapter;
 import com.jzoom.zoom.dao.driver.DbStructFactory;
 import com.jzoom.zoom.dao.driver.SqlDriver;
 import com.jzoom.zoom.dao.driver.h2.H2DbStrict;
@@ -36,7 +40,7 @@ import com.jzoom.zoom.dao.utils.DaoUtils;
  * @author jzoom
  *
  */
-public class ZoomDao implements Dao {
+public class ZoomDao implements Dao, AliasPolicyManager {
 	
 	private static final Log log = LogFactory.getLog(Dao.class);
 	
@@ -45,7 +49,7 @@ public class ZoomDao implements Dao {
 	private EntityManager entityManager;
 	private DbStructFactory dbStructFactory;
 	private boolean lazyLoad;
-	private AliasPolicy aliasPolicy;
+	private AliasPolicyManager aliasPolicyManager;
 	private String tableCat;
 	private Collection<String> names;
 	
@@ -55,7 +59,7 @@ public class ZoomDao implements Dao {
 	}
 	
 	public ZoomDao(DataSource dataSource,boolean lazyLoad) {
-		this( dataSource,lazyLoad, new ToLowerCaseAiias() );
+		this( dataSource,lazyLoad, new AliasPolicyManagerWrap(new ToLowerCaseNameAdapter()) );
 	}
 	
 	/**
@@ -63,11 +67,11 @@ public class ZoomDao implements Dao {
 	 * @param dataSource
 	 * @param lazyLoad  是否在需要使用的时候才创建各种相关对象：如绑定实体类等,改成true，启动时间将缩减500ms左右！
 	 */
-	public ZoomDao(DataSource dataSource,boolean lazyLoad,AliasPolicy aliasPolicy) {
+	public ZoomDao(DataSource dataSource,boolean lazyLoad,AliasPolicyManager aliasPolicyManager) {
 		this.dataSource = dataSource;
 		this.entityManager = new SimpleEntityManager();
 		this.lazyLoad =lazyLoad;
-		this.aliasPolicy = aliasPolicy;
+		this.aliasPolicyManager = aliasPolicyManager;
 		if(lazyLoad) {
 			return;
 		}
@@ -151,7 +155,7 @@ public class ZoomDao implements Dao {
 	
 	private ThreadLocal<Ar> local = new ThreadLocal<Ar>();
 
-	@Override
+	
 	public Ar ar() {
 		Ar ar = local.get();
 		if(ar==null) {
@@ -174,7 +178,10 @@ public class ZoomDao implements Dao {
 	
 	private Ar createAr() {
 		lazyLoad();
-		return new ActiveRecord(dataSource, sqlDriver,entityManager,aliasPolicy);
+		if(aliasPolicyManager==null) {
+			aliasPolicyManager = this ;
+		}
+		return new ActiveRecord(dataSource, sqlDriver,entityManager,aliasPolicyManager);
 	}
 
 
@@ -203,6 +210,14 @@ public class ZoomDao implements Dao {
 
 	public void setTableNames(Collection<String> names) {
 		this.names = names;
+	}
+
+	
+	private DetectPrefixAliasPolicyMaker maker = new DetectPrefixAliasPolicyMaker();
+	@Override
+	public NameAdapter getPolicy(String table) {
+		TableMeta meta = getDbStructFactory().getTableMeta(ar(), table);
+		return maker.getColumnAliasPolicy(meta);
 	}
 
 
