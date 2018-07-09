@@ -78,6 +78,8 @@ public interface Ar  {
 	 */
 	int insert(Object data);
 	
+	int insert();
+	
 	/**
 	 * 指定表名称,这个选项在参数为实体对象的时候依然有效
 	 * @param table

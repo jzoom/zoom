@@ -2,6 +2,7 @@ package com.jzoom.zoom.web.parameter.parser.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -20,7 +21,7 @@ public abstract class AbsParameterParserFactory<T> implements ParameterParserFac
 	public AbsParameterParserFactory( ) {
 	}
 	
-	protected abstract ParameterAdapter<T> createAdapter(String name,Class<?> type,Annotation[] annotations );
+	protected abstract ParameterAdapter<T> createAdapter(String name,Class<?> type, Type genericType, Annotation[] annotations );
 	
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -31,12 +32,14 @@ public abstract class AbsParameterParserFactory<T> implements ParameterParserFac
 		if(c>0) {
 			Annotation[][] paramAnnotations = method.getParameterAnnotations();
 			Class<?>[] types = method.getParameterTypes();
+			Type[] genericTypes = method.getGenericParameterTypes();
 			ParameterAdapter[] adapters = new ParameterAdapter[c];
 			for(int i=0; i < c; ++i) {
 				String name = names[i];
 				Annotation[] annotations = paramAnnotations[i];
 				Class<?> type = types[i];
-				adapters[i] = getAdapter(name, type, annotations);
+				Type genericType = genericTypes[i];
+				adapters[i] = getAdapter(name, type,  genericType, annotations);
 			}
 			return new DefaultParameterParser(names,types,adapters);
 			
@@ -46,13 +49,13 @@ public abstract class AbsParameterParserFactory<T> implements ParameterParserFac
 	}
 	
 	
-	protected ParameterAdapter<?> getAdapter(String name,Class<?> type,Annotation[] annotations){
+	protected ParameterAdapter<?> getAdapter(String name,Class<?> type, Type genericType, Annotation[] annotations){
 		ParameterAdapter<?> adapter = BasicParameterAdapter.getAdapter(type);
 		if(adapter!=null) {
 			return adapter;
 		}
 		
-		return createAdapter(name, type, annotations);
+		return createAdapter(name, type, genericType,annotations);
 		
 	}
 	

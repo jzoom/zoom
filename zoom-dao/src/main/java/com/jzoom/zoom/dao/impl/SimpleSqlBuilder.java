@@ -383,8 +383,7 @@ public class SimpleSqlBuilder implements SqlBuilder{
 	}
 
 
-	public void buildInsert(Map<String, Object> record) {
-		if(record!=null)setAll(record);
+	public void buildInsert() {
 		BuilderKit.buildInsert(sql, values, driver, table, this.record);
 	}
 

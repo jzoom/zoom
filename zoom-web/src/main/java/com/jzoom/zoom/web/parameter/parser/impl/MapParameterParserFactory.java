@@ -1,6 +1,7 @@
 package com.jzoom.zoom.web.parameter.parser.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.jzoom.zoom.web.parameter.adapter.impl.BasicParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.map.NamedMapParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.map.PathMapParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.map.RequestBodyMapAdapter;
+import com.mchange.v2.beans.BeansUtils;
 
 public class MapParameterParserFactory extends AbsParameterParserFactory<Map<String, Object>> {
 
@@ -25,7 +27,7 @@ public class MapParameterParserFactory extends AbsParameterParserFactory<Map<Str
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected ParameterAdapter<Map<String, Object>> createAdapter(String name,Class<?> type,Annotation[] annotations ) {
+	protected ParameterAdapter<Map<String, Object>> createAdapter(String name,Class<?> type, Type genericType, Annotation[] annotations ) {
 		
 		if(isRequestBody(name, annotations)) {
 			if(Map.class == type) {
@@ -42,6 +44,9 @@ public class MapParameterParserFactory extends AbsParameterParserFactory<Map<Str
 			}else if(type.isArray()) {
 				
 			}else if( Collection.class.isAssignableFrom(type) ) {
+				
+				return NamedMapParameterAdapter.ADAPTER;
+				
 				
 			}else if( Map.class.isAssignableFrom(type) ) {
 				

@@ -198,7 +198,8 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		assert(data!=null);
 		
 		if(data instanceof Map) {
-			builder.buildInsert(  (Map<String, Object>) data);
+			builder.setAll( (Map<String, Object>) data  );
+			builder.buildInsert( );
 			return executeUpdate(builder.sql.toString(), builder.values);
 		}else {
 		//	builder.buildInsert(  );
@@ -207,7 +208,11 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		
 		return 0;
 	}
-	
+	@Override
+	public int insert() {
+		builder.buildInsert( );
+		return executeUpdate(builder.sql.toString(), builder.values);
+	}
 
 	@Override
 	public int update() {
@@ -290,6 +295,8 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		builder.whereIn(key, values);
 		return this;
 	}
+
+	
 
 	
 

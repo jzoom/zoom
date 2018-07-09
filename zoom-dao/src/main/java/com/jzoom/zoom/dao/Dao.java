@@ -2,10 +2,11 @@ package com.jzoom.zoom.dao;
 
 import java.util.List;
 
+import com.jzoom.zoom.dao.alias.AliasPolicyManager;
 import com.jzoom.zoom.dao.driver.DbStructFactory;
 import com.jzoom.zoom.dao.meta.TableMeta;
 
-public interface Dao {
+public interface Dao extends AliasPolicyManager {
 	
 	/**
 	 * 创建一个request范围的ActiveRecord

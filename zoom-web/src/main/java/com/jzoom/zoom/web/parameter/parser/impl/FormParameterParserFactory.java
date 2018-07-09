@@ -1,11 +1,14 @@
 package com.jzoom.zoom.web.parameter.parser.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jzoom.zoom.caster.Caster;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.web.parameter.adapter.ParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.form.NamedFormParameterAdapter;
@@ -25,7 +28,7 @@ public class FormParameterParserFactory extends AbsParameterParserFactory<HttpSe
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ParameterAdapter<HttpServletRequest> createAdapter(String name, Class<?> type, Annotation[] annotations) {
+	protected ParameterAdapter<HttpServletRequest> createAdapter(String name, Class<?> type, Type genericType, Annotation[] annotations) {
 		if (isRequestBody(name, annotations)) {
 			if( type == Map.class ) {
 				return RequestBodyForm2MapAdapter.ADAPTER;
@@ -42,7 +45,7 @@ public class FormParameterParserFactory extends AbsParameterParserFactory<HttpSe
 			} else if (type.isArray()) {
 
 			} else if (Collection.class.isAssignableFrom(type)) {
-
+				
 			} else if (Map.class.isAssignableFrom(type)) {
 
 			} else {
