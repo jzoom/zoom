@@ -38,6 +38,7 @@ public class ContentController {
 		module2table.put("sys_decoration", "sys_decoration");
 		module2table.put("sys_usecase", "sys_usecase");
 		module2table.put("sys_component", "sys_component");
+		module2table.put("sys_dic", "sys_dic");
 	}
 	
 	
@@ -72,7 +73,7 @@ public class ContentController {
 		BaseDao baseDao = daoMap.get(table);
 		if (baseDao == null) {
 			synchronized (daoMap) {
-				baseDao = new BaseDao(table);
+				baseDao = new BaseDao(table,"id");
 				baseDao.setDao(dao);
 				daoMap.put(table, baseDao);
 			}

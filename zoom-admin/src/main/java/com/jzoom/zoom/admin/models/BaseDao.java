@@ -9,19 +9,22 @@ import com.jzoom.zoom.dao.SqlBuilder.Sort;
 
 public class BaseDao implements AdminModel<Record> {
 	
-	private Dao dao;
+	protected Dao dao;
 	
-	private String table;
+	protected String table;
 	
-	public BaseDao( String table) {
+	protected String idName;
+	
+	public BaseDao( String table,String id) {
 		this.table = table;
+		this.idName = id;
 	}
 	
 	public List<Record> getList(){
 		return dao
 				.table(table)
 				.select("*")
-				.orderBy("id", Sort.DESC )
+				.orderBy(idName, Sort.DESC )
 				.get();
 	}
 
@@ -31,12 +34,12 @@ public class BaseDao implements AdminModel<Record> {
 		return dao
 				.table(table)
 				.select(select == null ? "*" : select)
-				.orderBy("id", Sort.DESC )
+				.orderBy(idName, Sort.DESC )
 				.get();
 	}
 	
 	public int put(String id,Map<String, Object> data) {
-		return dao.table(table).where("id", id).setAll(data).update();
+		return dao.table(table).where(idName, id).setAll(data).update();
 	}
 
 	public int add(Map<String, Object> data) {
@@ -44,11 +47,11 @@ public class BaseDao implements AdminModel<Record> {
 	}
 
 	public Record fetch(String id) {
-		return dao.table(table).where("id", id).fetch();
+		return dao.table(table).where(idName, id).fetch();
 	}
 
 	public int del(String id) {
-		return dao.table(table).where("id", id).delete();
+		return dao.table(table).where(idName, id).delete();
 	}
 
 	public Dao getDao() {

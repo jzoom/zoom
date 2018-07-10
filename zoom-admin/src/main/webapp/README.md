@@ -1,5 +1,7 @@
 java -classpath /Users/jzoom/.m2/repository/com/h2database/h2/1.3.176/h2-1.3.176.jar org.h2.tools.Console -web
 
+/Users/jzoom/working/zoom/zoom-admin/admin
+
 cd /Users/jzoom/eclipse-workspace/zoom-admin/src/main/webapp/
 browser-sync start --proxy "localhost:8090" --files "**/*.css, **/*.html, **/*.js"
 

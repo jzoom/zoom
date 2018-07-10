@@ -37,17 +37,31 @@ instance.interceptors.response.use(function(response){
 	return Promise.reject(error);
 });
 
+var loadingTasks = {};
 /**
  * 请求api
  */
 async function api( api,data ={}){
+	var param = JSON.stringify(data);
+	var key = api + param;
+	var created = false;
 	try{
 		NProgress.start();
-		var response = await instance.post(api,JSON.stringify(data));
+		var response;
+		if(key in loadingTasks){
+
+		}else{
+			loadingTasks[key] = instance.post(api,param);
+			created = true;
+		}
+		response = await loadingTasks[key];
 		return response.data;
 	}catch(e){
 		return parseError(e);
 	}finally{
+		if(created){
+			delete loadingTasks[key];
+		}
 		NProgress.done();
 	}
 
@@ -62,13 +76,14 @@ function parseError(e){
 				return Promise.reject({code:'server',error:data});
 			}
 			if(status == 401){
-				return Promise.reject({code:'auth',error:"没有登录"});
+				return Promise.reject({code:'auth',error:"登录过期"});
 			}
 			if(status == 402){
 				return Promise.reject({code:'auth',error:"登录过期"});
 			}
 			if(status == 403){
-				return Promise.reject({code:'auth',error:"登录过期"});
+				return Promise.reject({code:'access',error:"没有权限",data:data});
+				
 			}
 			if(status == 404){
 				return Promise.reject({code:'server',error:"本接口未找到"});
@@ -98,9 +113,14 @@ async function getTemplate( id ,props = {}){
 	try{
 		var response = await instance.get(id);
 		var data = response.data;
+		data = data.trim();
 		if(data.startsWith('var')){
 			eval(data);
 			return $result;
+		}
+		if(data.startsWith('{') && data.endsWith("}")){
+			eval("var $result="+data);
+			return Vue.component(id, $result  );
 		}
 		return Vue.component(id, Object.assign({template: data,},props));
 	}catch(e){

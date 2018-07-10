@@ -15,7 +15,7 @@ public class AliasPolicyManagerWrap implements AliasPolicyManager {
 	}
 
 	@Override
-	public NameAdapter getPolicy(String table) {
+	public NameAdapter getNameAdapter(String table) {
 		return aliasPolicy;
 	}
 

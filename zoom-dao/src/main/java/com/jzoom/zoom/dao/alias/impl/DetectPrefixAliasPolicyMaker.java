@@ -64,7 +64,7 @@ public class DetectPrefixAliasPolicyMaker implements AliasPolicyMaker {
 			for (ColumnMeta columnInfo : table.getColumns()) {
 				map.put(aliasPolicy.getAlias(columnInfo.getName()), columnInfo.getName());
 			}
-			return new MapNameAdapter(aliasPolicy, map);
+			return new MapNameAdapter(aliasPolicy, map,table);
 		}else {
 			return CamelNameAdapter.ADAPTER;
 		}

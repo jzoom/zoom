@@ -242,8 +242,14 @@
                     /*if (!this.$root.routes[templateUrl]) {
                        await this.loadTemplate(templateUrl,props);
                     }*/
-                    await this.loadTemplate(templateUrl, props);
-                    this.component = templateUrl;
+                    try{
+                        await this.loadTemplate(templateUrl, props);
+                        this.component = templateUrl;
+                    }catch(e){
+                        this.$root.$handleError(e);
+                    }
+                    
+                    
                 }, 0);
             }
         },
@@ -386,6 +392,44 @@
         props: ['label', 'value'],
     });
 
+    Vue.component('form-image', {
+        template: `<el-form-item :label="label" label-width="120px">
+        <div>
+        <el-upload
+            class="upload-demo"
+            action="/upload/image"
+            :show-file-list="false"
+            :on-success="handleSuccess"
+            :on-preview="handlePreview">
+            <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+            <img v-if="url" :src="url" width="200" height="130" style="margin-top:3px" />
+            <el-input :value="value" auto-complete="off"></el-input>
+        </div>
+    </el-form-item>`,
+        props: ['label', 'value'],
+        data(){
+            return {
+                url:''
+            }
+        },
+        mounted(){
+            if(this.value){
+                this.url = this.value;
+            }
+        },
+        methods: {
+            handleSuccess(res,file){
+              console.log(res);
+              this.url = res;
+              this.$emit('input', this.url);
+            },
+            handlePreview(file) {
+              console.log(file);
+            },
+          }
+    });
+
     function isNumber(val) {
 
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
@@ -490,28 +534,35 @@
     });
 
 
-
+    Vue.component('icon-selector',{
+        
+    });
 
     Vue.component('side-bar', {
-        template: ` <el-scrollbar wrapClass="scrollbar-wrapper">
+        template: ` 
         <el-menu default-active="0" @select="handleSelect" class="el-menu-vertical-demo">
             <template v-for="item in data">
                 <el-submenu :index="item.id">
                     <template slot="title">
-                        <i class="el-icon-location"></i>
+                        <i :class="item.icon?item.icon:'el-icon-location'"></i>
                         <span>{{item.label}}</span>
                     </template>
                     <el-menu-item-group>
                         <template v-for="subitem in item.children">
-                            <el-menu-item  :index="subitem.url">{{subitem.label}}</el-menu-item>
+                            <el-menu-item :index="subitem.url">
+                                <template slot="title">
+                                <i :class="subitem.icon"></i>
+                                    {{subitem.label}}
+                                </template>
+
+                            </el-menu-item>
                         </template>
                     </el-menu-item-group>
                 </el-submenu>
                 
             </template>
             
-        </el-menu>
-    </el-scrollbar>`,
+        </el-menu>`,
         data() {
             return {
                 data: [],
@@ -576,21 +627,15 @@
 
 
     Vue.component('main-frame', {
-        template: `<div class="flex container" style="height:100%">
-        <div class="flex container column">
+        template: `<div style="height:100%;width:100%">
             <div class="navigation">
                 <img src="img/logo.jpg" class="logo" />
                 <span><a href="">退出</a></span>
             </div>
-            <div class="flex container row" style="margin-top:10px">
-                <div class="left">
-                    <side-bar class="sidebar-container"></side-bar>
-                </div>
-                <div class="flex container" style="margin-left:10px; margin-right: 10px;">
-                    <main-router ref="main" class="flex container"></main-router>
-                </div>
+            <side-bar class="sidebar-container"></side-bar>
+            <div class="single-app">
+                <main-router ref="main"></main-router>
             </div>
-        </div>
         <submit-dialog ref="dialog"></submit-dialog>
     </div>`,
         mounted() {
@@ -637,6 +682,39 @@
         }
     });
 
+    Vue.use(VueHtml5Editor, {
+        showModuleName: true,
+        image: {
+            sizeLimit: 512 * 1024,
+            compress: true,
+            width: 500,
+            height: 500,
+            quality: 80
+        }
+    })
+
+    Vue.component('form-html',{
+        template:`<el-form-item :label="label" label-width="120px"><vue-html5-editor :content="text" :height="300" :show-module-name="false"
+        zIndex="2002"
+        @change="change" ref="editor"></vue-html5-editor></el-form-item>`,
+        props:['value','label'],
+        data(){
+            return {
+                text: "",
+            }
+        },
+        mounted(){
+            if(this.value){
+                this.text = this.value;
+            }
+        },
+        methods:{
+            change(data){
+                this.text = data
+                this.$emit('input', this.text);
+            }
+        },
+    });
 
     Vue.component('code-editor', {
         props: ['value', 'style', 'language', 'theme'],
@@ -683,6 +761,7 @@
         }
     });
 
+    
 
     Vue.component('api-table', {
         template: `<simple-table :loading="loading" :list="list" :columns="columns"></simple-table>`,
@@ -708,6 +787,7 @@
             }
         }
     })
+  
 
     Vue.component('simple-table', {
         template: `<el-table 
@@ -717,9 +797,12 @@
             :data="list" 
             highlight-current-row                
             @current-change="handleSelect">
-            <template v-for="val in columns">
-                <el-table-column :prop="val[0]" :label="val[1]" />
+           <slot>
+            <template v-for="(val,index) in columns">
+                <el-table-column sortable :fixed="index===0" :prop="val[0]" :label="val[1]">
+                </el-table-column>
             </template>
+           </slot>
         </el-table>`,
         props: ['loading', 'list', 'columns'],
         methods: {
@@ -727,7 +810,6 @@
                 this.$emit('change', row);
             }
         }
-
     });
 
     Vue.component('simple-pagination', {
@@ -774,7 +856,7 @@
         template: `<el-tree
                     :data="data"
                     node-key="id"
-                    :default-checked-keys="value?value.split(','):[]"
+                    :default-checked-keys="checkedKeys"
                     style="width:100%" 
                     show-checkbox
                     @check-change="handleSelect"
@@ -796,7 +878,8 @@
                 data: [],
                 loading: false,
                 selected: {},
-                timer: null
+                timer: null,
+                checkedKeys:[],
             }
         },
         methods: {
@@ -831,6 +914,12 @@
                 this.loading = true;
                 try {
                     this.data = await api(this.api, this.search);
+                    console.log(data);
+                    if(this.value){
+                        //计算checked Keys
+                        var args = this.value.split(',');
+
+                    }
                 } finally {
                     self.loading = false;
                 }
@@ -906,5 +995,57 @@
             }
         }
     });
+
+})();
+
+
+
+(function(){
+
+    new Vue({
+        data: function () {
+            return {
+                login:false,
+                routes: {}, //所有模板(路由)
+            }
+        },
+        mounted(){
+            if(isLogin()){
+                this.login = true;
+            }
+        },
+        methods: {
+            openDialog(props) {
+                return this.$refs.main.openDialog( props);
+            },
+            go(url, props) {
+                return this.$refs.main.go(url,props);
+            },
+            refresh(){
+                return this.$refs.main.refresh();
+            },
+            getCurrentData(){       //当前页面被选中的数据
+                return this.$refs.main.getCurrentData();
+            },
+            setLoginInfo(data){
+                this.login = true;
+                setToken(data);
+            },
+            $handleError(e){
+                if(e.code=='server'){
+                    this.$message.error(`服务器错误:${JSON.stringify(e.error)}`);
+                }else if(e.code=='message') {
+                    this.$message.error(e.error);
+                }else if(e.code=='auth'){
+                   this.login = false;
+                   localStorage.setItem('token',undefined);
+                }else if(e.code=='http'){
+                    this.$message.error("网络错误");
+                }else{
+                    this.$message.error(`未知错误:${JSON.stringify(e.error)}`);
+                }
+            }
+        }
+    }).$mount('#app');
 
 })();

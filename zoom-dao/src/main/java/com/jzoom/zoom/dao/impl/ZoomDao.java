@@ -215,7 +215,7 @@ public class ZoomDao implements Dao, AliasPolicyManager {
 	
 	private DetectPrefixAliasPolicyMaker maker = new DetectPrefixAliasPolicyMaker();
 	@Override
-	public NameAdapter getPolicy(String table) {
+	public NameAdapter getNameAdapter(String table) {
 		TableMeta meta = getDbStructFactory().getTableMeta(ar(), table);
 		return maker.getColumnAliasPolicy(meta);
 	}

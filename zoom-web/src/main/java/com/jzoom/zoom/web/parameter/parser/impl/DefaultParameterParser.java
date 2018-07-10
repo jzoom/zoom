@@ -16,6 +16,11 @@ public class DefaultParameterParser implements ParameterParser{
 	@SuppressWarnings("rawtypes")
 	public DefaultParameterParser(String[] names,Class<?>[] types,ParameterAdapter[] adapters) {
 		this.names = names;
+		for (String name : names) {
+			if(name==null) {
+				throw new RuntimeException("name不能为null");
+			}
+		}
 		this.types = types;
 		this.adapters = adapters;
 		for (ParameterAdapter parameterAdapter : adapters) {

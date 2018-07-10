@@ -1,9 +1,7 @@
 package com.jzoom.zoom.dao.driver;
 
-import java.util.List;
 
 import com.jzoom.zoom.dao.adapter.StatementAdapter;
-import com.jzoom.zoom.dao.meta.TableMeta;
 
 public interface SqlDriver {
 

@@ -145,9 +145,10 @@ public class StatusException extends Exception implements RestException {
 	 */
 	public static class AuthException extends StatusException {
 
-		public AuthException() {
+		
+		
+		public AuthException( ) {
 			super(403);
-			// TODO Auto-generated constructor stub
 		}
 
 		/**
@@ -167,6 +168,10 @@ public class StatusException extends Exception implements RestException {
 	private String error;
 	public StatusException(int status) {
 		this.status = status;
+	}
+	public StatusException(int status, String code) {
+		this.status = status;
+		this.code = code;
 	}
 	public StatusException(int status, String code, String error) {
 		this.status = status;

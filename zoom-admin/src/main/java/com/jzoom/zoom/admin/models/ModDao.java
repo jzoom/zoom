@@ -10,7 +10,7 @@ import com.jzoom.zoom.web.action.ActionContext;
 public class ModDao extends BaseDao {
 
 	public ModDao() {
-		super("sys_mod");
+		super("sys_mod","id");
 	}
 	
 	public List<Record> getMenu(  ){
@@ -21,7 +21,7 @@ public class ModDao extends BaseDao {
 				.table("sys_mod")
 				.whereIn("id",mods)
 				.where("menu", 1)
-				.select("id,title as label,p_id,url")
+				.select("id,title as label,p_id,url,icon")
 				.orderBy("sort", Sort.ASC )
 				.get(), "id", "p_id", "children", 0);
 	}
@@ -30,7 +30,7 @@ public class ModDao extends BaseDao {
 	public List<Record> getList(  ){
 		return TreeUtils.toTree(getDao()
 				.table("sys_mod")
-				.select("id,title as label,p_id,url")
+				.select("id,title as label,p_id,url,icon")
 				.orderBy("sort", Sort.ASC )
 				.get(), "id", "p_id", "children", 0);
 	}

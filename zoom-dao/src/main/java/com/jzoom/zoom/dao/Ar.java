@@ -3,6 +3,7 @@ package com.jzoom.zoom.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
 
 /**
@@ -17,7 +18,7 @@ import com.jzoom.zoom.dao.SqlBuilder.Sort;
  * @author jzoom
  *
  */
-public interface Ar  {
+public interface Ar extends Trans  {
 	
 	
 	/**
@@ -105,6 +106,14 @@ public interface Ar  {
 	Ar orWhere(String key, Object value);
 
 	Ar whereIn(String key, Object... values);
+	/**
+	 * 
+	 * @param name
+	 * @param like
+	 * @param value
+	 * @return
+	 */
+	Ar like(String name,Like like,String value);
 	
 	
 	

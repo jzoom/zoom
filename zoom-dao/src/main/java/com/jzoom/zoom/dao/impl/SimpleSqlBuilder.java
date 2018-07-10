@@ -63,14 +63,6 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		values.clear();
 	}
 	
-	@Override
-	public SqlBuilder where(String name, Object value) {
-		andWhere();
-		where.append(name).append("=?");
-		addValue(name,value);
-		
-		return this;
-	}
 	
 	private void andWhere() {
 		if (where.length()==0) {
@@ -102,6 +94,10 @@ public class SimpleSqlBuilder implements SqlBuilder{
 		
 		return whereImpl(name, symbo, value, " AND ");
 		
+	}
+	@Override
+	public SqlBuilder where(String name, Object value) {
+		return whereImpl(name, Symbo.EQ, value, " AND ");
 	}
 	
 	protected SqlBuilder whereImpl(String name, Symbo symbo, Object value,String relation) {
@@ -329,7 +325,6 @@ public class SimpleSqlBuilder implements SqlBuilder{
 				if(part.contains("(")) {
 					sql.append(part);
 				}else {
-					
 					driver.protectColumn(sql, part);
 				}
 				

@@ -1,12 +1,18 @@
-<div class="flex column container">
+<div>
     <div class="curd-pan">
-        <edit-button :fullscreen="true" v-if="current != null" :api="'deco_table/put/'+current.name" templateUrl="deco_table/edit"
-            :dataUrl="'deco_table/get/'+current.name" title="装饰" />
+        <edit-button 
+            :fullscreen="true" 
+            v-if="current != null" 
+            :api="'deco_table/put/'+current.name" 
+            templateUrl="deco_table/edit"
+            :dataUrl="'deco_table/get/'+current.name" 
+            title="装饰" />
     </div>
-    <div class="flex container" style="overflow:auto;">
-        <el-scrollbar style="width:100%">
-            <simple-table :list="list" style="width:100%" :loading="loading" @change="handleSelect" :columns="[['name','名称'],['comment','说明'],['decoration','是否装饰']]">
-            </simple-table>
-        </el-scrollbar>
-    </div>
+    <simple-table 
+        :list="list" 
+        style="width:100%;" 
+        :loading="loading" 
+        @change="handleSelect" 
+        :columns="[['name','名称'],['comment','说明'],['decoration','是否装饰']]">
+    </simple-table>
 </div>

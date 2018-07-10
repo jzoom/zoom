@@ -11,8 +11,11 @@ import com.jzoom.zoom.web.parameter.PreParameterParserFactory;
  *
  */
 public class SimplePreParameterParserFactory implements PreParameterParserFactory {
-	protected static PreParameterParser parameterParser = new GroupPreParamParser(new JsonPreParamParser(),
-			new UploadPreParamParser(), new XmlPreParamParser(), new FormPreParamParser());
+	protected static PreParameterParser parameterParser = new GroupPreParamParser(
+			new JsonPreParamParser(),
+			new UploadPreParamParser(),
+			new XmlPreParamParser(), 
+			new FormPreParamParser());
 	@Override
 	public PreParameterParser createPreParameterParser(Class<?> controllerClass, Method method) {
 		

@@ -1,7 +1,9 @@
 package com.jzoom.zoom.common.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 public class MapUtils {
 
@@ -22,6 +24,16 @@ public class MapUtils {
 		
 		return data;
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<?, ?> toMap(List<? extends Map<String,?>> list,Object id) {
+		Map<String, Map<?, ?>> result  = new HashMap();
+		for (Map<String, ?> map : list) {
+			result.put( (String) map.get(id), map);
+		}
+		
+		return result;
 	}
 	
 }

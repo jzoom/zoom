@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/nprogress.css" />
+    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+      .icon-container{
+        font-size: 30px;text-align: center;
+      }
+      .icon-container .fa{
+        height: 40px;
+      }
+    </style>
+  </head>
+
+
+<body>
+
+
+    <div id="app">
+      <el-row class="icon-container">
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+        <el-col span="4"><i class="fa fa-ambulance"></i></el-col>
+      </el-row>
+    </div>
+
+   
+    <script src="js/vue.min.js"></script>
+    <script src="js/ele.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/api.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/nprogress.js"></script>
+    <script src="/js/debounce.js"></script>
+    <script src="/js/monacoloader.js"></script>
+    
+    <script>
+        new Vue({
+           el:'#app',
+           data() {
+      return {
+        url:""
+      };
+    },
+    methods: {
+      handleSuccess(res,file){
+        console.log(res);
+        this.url = "http://";
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+    }
+        });
+    
+    </script>
+</body>
+
+</html>

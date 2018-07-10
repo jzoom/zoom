@@ -80,7 +80,7 @@ public class Application{
 	
 	@IocBean(name="admin")
 	public Dao getDao() {
-		return new ZoomDao(new RawDataSource("jdbc:h2:file:/Users/jzoom/working/db/admin","sa","sa"),false);
+		return new ZoomDao(new RawDataSource("jdbc:h2:file:./admin","sa","sa"),false);
 	}
 	
 
@@ -113,13 +113,13 @@ public class Application{
 
 	@Inject
 	public void config( ActionInterceptorFactory factory ,IocContainer ioc) {
-		factory.add(ioc.get(AdminActionInterceptor.class), "!*LoginController*#*", 0);
+		factory.add(ioc.get(AdminActionInterceptor.class), "!*LoginController*&!*UploadController*#*", 1);
 		factory.add(new ActionInterceptorAdapter() {
 			 
 			
 			@Override
 			public boolean preParse(ActionContext context) throws Exception {
-				
+				log.info("正在访问"+context.getRequest().getRequestURI() );
 				return true;
 			}
 			

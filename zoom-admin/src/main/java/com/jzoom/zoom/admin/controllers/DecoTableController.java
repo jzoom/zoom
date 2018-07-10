@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.jzoom.zoom.admin.entities.DecoTableVo;
 import com.jzoom.zoom.admin.entities.DecoTableVo.DecoColumn;
+import com.jzoom.zoom.admin.models.TableModel;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.adapter.NameAdapter;
@@ -29,6 +30,9 @@ public class DecoTableController {
 	
 	@Inject("admin")
 	private Dao admin;
+	
+	@Inject
+	private TableModel tableModel;
 	
 
 	@Mapping(value="index",method= {Mapping.GET})
@@ -72,39 +76,7 @@ public class DecoTableController {
 	@Mapping(value="get/{table}",method=Mapping.POST)
 	public DecoTableVo get( @Param(name="{table}") String table  ) {
 		
-		TableMeta data =  dao.getDbStructFactory().getTableMeta(dao.ar(), table);
-		//NameAdapter adapter = dao.getPolicy(table);
-		
-		//下发数据
-		Record record = admin.table("sys_deco_table").where("target_table", table).fetch();
-		List<Record> columns = admin.table("sys_decoration").where("target_table",table).get();
-		
-		DecoTableVo vo = new DecoTableVo();
-		vo.setComment(data.getComment());
-		vo.setName(data.getName());
-		List<DecoColumn> list = new ArrayList<DecoTableVo.DecoColumn>();
-		Map<String, DecoColumn> map = new HashMap<String, DecoColumn>();
-		for (ColumnMeta columnMeta : data.getColumns()) {
-			DecoColumn decoColumn = new DecoColumn();
-			decoColumn.setName( columnMeta.getName() );
-			decoColumn.setComment(columnMeta.getComment());
-			map.put(columnMeta.getName(), decoColumn);
-			list.add(decoColumn);
-		}
-		vo.setColumns(list);
-		if(record!=null) {
-			vo.setComment(record.getString("comment"));
-			if(columns.size() > 0 ) {
-				for (Record record2 : columns) {
-					String name = record2.getString("target_column");
-					DecoColumn decoColumn = map.get(name);
-					decoColumn.setComment(record2.getString("comment"));
-					decoColumn.setType(record2.getString("type"));
-				}
-			}
-		}
-		
-		return vo;
+		return tableModel.getTable(table);
 	}
 	
 	@JsonResponse
@@ -118,7 +90,8 @@ public class DecoTableController {
 		}
 		
 		for (Map<String, Object> map : columns) {
-			String targetColumn = (String) map.remove("name");
+			String targetColumn = (String) map.remove("column");
+			map.remove("name");
 			count = admin.table("sys_decoration")
 					.setAll(map)
 					.where("target_table", name)
@@ -133,13 +106,8 @@ public class DecoTableController {
 			}
 		}
 		
-		//保存在表中
-//		Record record = admin.table("sys_deco_table").where("target_table", name).fetch();
-	//	List<Record> columns = admin.table("sys_decoration").where("target_table",name).get();
 		
-		
-		
-		return 0;
+		return 1;
 	}
 	
 }

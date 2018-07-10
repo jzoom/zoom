@@ -52,7 +52,7 @@ public class MapParameterParserFactory extends AbsParameterParserFactory<Map<Str
 				
 			}else {
 				//按照bean处理
-				
+				return NamedMapParameterAdapter.ADAPTER;
 			}
 		}
 		

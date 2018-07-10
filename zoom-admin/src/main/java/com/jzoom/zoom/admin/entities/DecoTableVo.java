@@ -6,6 +6,7 @@ public class DecoTableVo {
 	
 	public static class DecoColumn{
 		
+		private String column;
 		private String name;
 		private String type;
 		private String comment;
@@ -27,6 +28,12 @@ public class DecoTableVo {
 		}
 		public void setComment(String comment) {
 			this.comment = comment;
+		}
+		public String getColumn() {
+			return column;
+		}
+		public void setColumn(String column) {
+			this.column = column;
 		}
 		
 	}

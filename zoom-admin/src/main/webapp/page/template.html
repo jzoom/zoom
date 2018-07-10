@@ -1,3 +1,4 @@
 <el-form :model="form">
-   <api-select api="template/index" label="模板" labelField="title"  v-model="form.tp_id"></api-select>
+    <form-input label="模板分组类型" v-model="form.type" />
+    <form-input label="表" v-model="form.table" />
 </el-form>

@@ -19,7 +19,11 @@ public class BeetlRendering extends TemplateRendering {
 	public static BeetlRendering createStringRendering() {
 		
 		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
-		return new BeetlRendering(resourceLoader);
+		try {
+			return new BeetlRendering(resourceLoader,Configuration.defaultConfiguration());
+		}catch (IOException e) {
+			throw new RuntimeException("创建BeetlRendering失败", e);
+		}
 		
 	}
 	
@@ -38,18 +42,17 @@ public class BeetlRendering extends TemplateRendering {
 	
 	private static BeetlRendering createFileRendering( File root ) {
 		ResourceLoader resourceLoader = new WebAppResourceLoader(root.getAbsolutePath());
-		return new BeetlRendering(resourceLoader);
+		try {
+			return new BeetlRendering(resourceLoader,Configuration.defaultConfiguration());
+		} catch (IOException e) {
+			throw new RuntimeException("创建BeetlRendering失败", e);
+		}
 	}
 
 	public GroupTemplate group;
 
-	public BeetlRendering(ResourceLoader loader) {
-		try {
-			Configuration cfg = Configuration.defaultConfiguration();
-			group = new GroupTemplate(loader, cfg);
-		} catch (IOException e) {
-			throw new RuntimeException("创建BeetlRendering失败", e);
-		}
+	public BeetlRendering(ResourceLoader loader,Configuration cfg) {
+		group = new GroupTemplate(loader, cfg);
 	}
 
 	@Override

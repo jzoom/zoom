@@ -9,10 +9,10 @@
       width="180">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
-          <p>名称: {{ scope.row.name }}</p>
-          <p>长度: {{ scope.row.address }}</p>
+          <p>名称: {{ scope.row.column }}</p>
+          <p>适配名称: {{ scope.row.name }}</p>
           <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
+            <el-tag size="medium">{{ scope.row.column }}</el-tag>
           </div>
         </el-popover>
       </template>

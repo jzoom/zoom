@@ -119,7 +119,7 @@ public class AutoController {
 		BaseDao baseDao = daoMap.get(  key );
 		if (baseDao == null) {
 			synchronized (daoMap) {
-				baseDao = new BaseDao(module);
+				baseDao = new BaseDao(module,"id");
 				Dao dao = ioc.get(db);
 				baseDao.setDao(  dao );
 				daoMap.put(key, baseDao);

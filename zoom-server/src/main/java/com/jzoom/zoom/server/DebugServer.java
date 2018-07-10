@@ -11,8 +11,11 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.beetl.core.lab.TestUser;
 import org.jzoom.zoom.common.Service;
 
+import com.jzoom.zoom.common.filter.Filter;
+import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
 import com.jzoom.zoom.common.queue.ServiceThread;
 import com.jzoom.zoom.common.queue.SingleEventQueue;
 
@@ -26,7 +29,7 @@ public class DebugServer implements Service, FileAlterationListener {
 	private final AbsServer server;
 	private FileAlterationMonitor monitor;
 	private ServiceThread monitorThread;
-	
+	private Filter<String> scanFilter;
 	/**
 	 * 监控文件变化的间隔毫秒
 	 */
@@ -66,6 +69,17 @@ public class DebugServer implements Service, FileAlterationListener {
 		
 	
 	}
+	
+	public void setScanFilter(String filter) {
+		this.scanFilter = PatternFilterFactory.createFilter(filter);
+	}
+	
+	private Filter<String> getScanFilter(){
+		if(this.scanFilter==null) {
+			this.scanFilter = PatternFilterFactory.createFilter("!/.*&&!*.log&&!*.db&&!*.git*");
+		}
+		return this.scanFilter;
+	}
 
 	private class FileObserver extends FileAlterationObserver {
 
@@ -80,10 +94,7 @@ public class DebugServer implements Service, FileAlterationListener {
 				@Override
 				public boolean accept(File file) {
 					String name = file.getName();
-					if(name.startsWith(".") || name.endsWith(".log")) {
-						return false;
-					}
-					return true;
+					return getScanFilter().accept(name);
 				}
 			});
 		}

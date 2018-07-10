@@ -72,17 +72,32 @@ iframe{
   transition: margin-left 0.28s;
   margin-left: 180px;
 }
+
+#app .single-app{
+  overflow:auto; padding-left:10px;top:66px; left:200px; right:0; bottom:0; position:absolute
+}
+
+.el-submenu .fa{
+  width:24px;
+  font-size:18px;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 5px;
+  
+
+}
+
 #app .sidebar-container {
   transition: width 0.28s;
   width: 200px !important;
-  height: 100%;
-  /*position: fixed;*/
+  
+  position: absolute;
   font-size: 0px;
-  top: 0;
+  top: 68px;
   bottom: 0;
   left: 0;
   z-index: 1001;
-  overflow: hidden;
+  overflow-y: auto;
 }
 #app .sidebar-container .horizontal-collapse-transition {
   transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;

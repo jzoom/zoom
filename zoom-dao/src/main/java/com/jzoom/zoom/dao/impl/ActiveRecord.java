@@ -18,6 +18,8 @@ import com.jzoom.zoom.dao.DaoException;
 import com.jzoom.zoom.dao.EntityManager;
 import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
+import com.jzoom.zoom.dao.SqlBuilder;
+import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
 import com.jzoom.zoom.dao.alias.AliasPolicy;
 import com.jzoom.zoom.dao.alias.AliasPolicyMaker;
@@ -293,6 +295,12 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 	@Override
 	public Ar whereIn(String key, Object... values) {
 		builder.whereIn(key, values);
+		return this;
+	}
+
+	@Override
+	public Ar like(String name, Like like, String value) {
+		builder.like(name, like, value);
 		return this;
 	}
 

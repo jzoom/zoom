@@ -4,5 +4,5 @@ import com.jzoom.zoom.dao.adapter.NameAdapter;
 
 public interface AliasPolicyManager {
 	
-	NameAdapter getPolicy(String table);
+	NameAdapter getNameAdapter(String table);
 }
