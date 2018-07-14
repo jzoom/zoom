@@ -18,6 +18,8 @@
 		<module>zoom-server</module>
 		<module>zoom-http</module>
 		<module>zoom-timer</module>
+		<module>zoom-test</module>
+		<module>zoom-admin</module>
 		<module>zoom-admin-web</module>
 		<module>zoom-web</module>
 		<module>zoom-token</module>
@@ -81,6 +83,16 @@
 			<dependency>
 				<groupId>com.jzoom.zoom</groupId>
 				<artifactId>zoom-token</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jzoom.zoom</groupId>
+				<artifactId>zoom-admin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jzoom.zoom</groupId>
+				<artifactId>zoom-test</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
