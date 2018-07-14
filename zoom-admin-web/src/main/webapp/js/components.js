@@ -951,11 +951,22 @@
                 this.loading = true;
                 try {
                     this.data = await api(this.api, this.search);
-                    console.log(data);
                     if(this.value){
                         //计算checked Keys
                         var args = this.value.split(',');
-                        
+                        var m = {};
+                        args.map( a=>m[a]=true );
+                        var result = [];
+                        var list = tree2list(this.data);
+                        list.map( (d)=>{
+                            if(!d.children){
+                                if(d.id in m){
+                                    result.push(d.id);
+                                }
+                            }
+                        } );
+
+                        this.checkedKeys =result;
                     }
                 } finally {
                     self.loading = false;
