@@ -13,7 +13,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<groupId>com.joom.zoom</groupId>
 	<artifactId>zoom-web</artifactId>
 	<packaging>jar</packaging>
 
@@ -30,7 +29,6 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
-
 
 
 		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
