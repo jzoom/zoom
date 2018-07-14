@@ -17,9 +17,12 @@ public class AliasSqlBuilder extends SimpleSqlBuilder {
 	}
 	
 	@Override
-	public void clear() {
-		nameAdapter = null;
-		super.clear();
+	public void clear(boolean all) {
+		if(all) {
+			nameAdapter = null;
+		}
+		
+		super.clear(all);
 	}
 	
 	
@@ -61,4 +64,5 @@ public class AliasSqlBuilder extends SimpleSqlBuilder {
 		return super.set(name, value);
 	}
 
+	
 }

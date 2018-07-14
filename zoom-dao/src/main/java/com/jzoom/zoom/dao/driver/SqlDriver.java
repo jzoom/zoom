@@ -22,5 +22,11 @@ public interface SqlDriver {
 	 */
 	StatementAdapter get( Class<?> dataClass, Class<?> columnClass );
 
+
+	StringBuilder buildPage(StringBuilder sql, int position, int pageSize);
+
+
+	int position2page(int position,int pageSize);
+
 	
 }

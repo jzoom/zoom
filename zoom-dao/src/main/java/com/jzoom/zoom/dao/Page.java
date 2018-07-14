@@ -2,19 +2,51 @@ package com.jzoom.zoom.dao;
 
 import java.util.List;
 
-public interface Page<T> {
+public class Page<T> {
 
-	/**
-	 * 列表
-	 * @return
-	 */
-	List<Record> getList();
+	private List<T> list;
+	private int pageSize;
+	private int page;
+	private int total;
 	
-	int getPage();
+	public Page() {
+		// TODO Auto-generated constructor stub
+	}
 	
-	int getPageSize();
+	public Page( List<T> list,int page,int pageSize,int total ) {
+		this();
+		this.list = list;
+		this.page = page;
+		this.pageSize = pageSize;
+		this.total = total;
+	}
 	
-	int getTotalRows();
+	public List<T> getList() {
+		return list;
+	}
+	public void setList(List<T> list) {
+		this.list = list;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	
+	
 	
 	
 	

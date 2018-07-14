@@ -60,7 +60,6 @@
             :api="module+'/del/'+current.id" 
             confirm="真的要删除吗,本操作不能撤销?" 
             :title="'删除'+comment" />
-
             <slot></slot>
             
     </div>`,
@@ -91,7 +90,6 @@
             :api="module+'/del/'+current.id" 
             confirm="真的要删除吗,本操作不能撤销?" 
             :title="'删除'+comment" />
-
             <slot></slot>
             
     </div>`,
@@ -858,13 +856,13 @@
             @size-change="handle" 
             @current-change="handle" 
             :current-page="search._page" 
-            :page-sizes="[20, 50, 100,200]"
+            :page-sizes="[30, 50, 100,200]"
             :page-size="search._pageSize" 
             layout="total, sizes, prev, pager, next, jumper" 
             :total="total">
         </el-pagination>
     </div>`,
-        props: ["search", "total"],
+        props: ["search","total"],
         methods: {
             handle() {
                 this.$emit('refresh');
@@ -957,7 +955,7 @@
                     if(this.value){
                         //计算checked Keys
                         var args = this.value.split(',');
-
+                        
                     }
                 } finally {
                     self.loading = false;
@@ -966,7 +964,18 @@
         }
     });
 
-
+    function tree2list(src, level) {
+        var arr = [];
+        for (var i = 0; i < src.length; ++i) {
+            var data = src[i];
+            arr.push(data);
+            data.level = level;
+            if (data.children) {
+                arr = arr.concat(tree2list(data.children, level + 1));
+            }
+        }
+        return arr;
+    }
 
     /**
      * 树形选择器
@@ -987,7 +996,7 @@
         computed: {
             tree: function () {
                 var data = this.data;
-                return this.getChildren(data, 0);
+                return tree2list(data, 0);
             }
         },
         mounted() {
@@ -1020,18 +1029,7 @@
                 }
                 return str;
             },
-            getChildren(src, level) {
-                var arr = [];
-                for (var i = 0; i < src.length; ++i) {
-                    var data = src[i];
-                    arr.push(data);
-                    data.level = level;
-                    if (data.children) {
-                        arr = arr.concat(this.getChildren(data.children, level + 1));
-                    }
-                }
-                return arr;
-            }
+            
         }
     });
 

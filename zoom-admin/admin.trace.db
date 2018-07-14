@@ -2334,3 +2334,36 @@ SELECT target_table as table,comment FROM sys_deco_table WHERE NAME=? ORDER BY T
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543)
 	at java.lang.Thread.run(Thread.java:695)
+07-14 18:40:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_PAGESELECT" not found; SQL statement:
+SELECT *  FROM sys_pageSELECT COUNT FROM sys_page [42102-176]
+07-14 18:42:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * AS[*] COUNT FROM SYS_PAGESELECT COUNT FROM SYS_PAGE "; SQL statement:
+SELECT * AS COUNT FROM sys_pageSELECT COUNT FROM sys_page [42000-176]
+07-14 18:42:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * AS[*] COUNT FROM SYS_PAGESELECT COUNT FROM SYS_PAGE "; SQL statement:
+SELECT * AS COUNT FROM sys_pageSELECT COUNT FROM sys_page [42000-176]
+07-14 18:42:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * AS[*] COUNT FROM SYS_PAGESELECT COUNT FROM SYS_PAGE "; SQL statement:
+SELECT * AS COUNT FROM sys_pageSELECT COUNT FROM sys_page [42000-176]
+07-14 18:48:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement " LIMIT[*] 1,30"; SQL statement:
+ LIMIT 1,30 [42000-176]
+07-14 18:48:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_MODSELECT" not found; SQL statement:
+SELECT COUNT(*) AS COUNT FROM sys_modSELECT COUNT FROM sys_mod [42102-176]
+07-14 18:49:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_MODSELECT" not found; SQL statement:
+SELECT COUNT(*) AS COUNT FROM sys_modSELECT COUNT FROM sys_mod [42102-176]
+07-14 18:49:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_MODSELECT" not found; SQL statement:
+SELECT COUNT(*) AS COUNT FROM sys_modSELECT COUNT FROM sys_mod [42102-176]
+07-14 18:50:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_MODSELECT" not found; SQL statement:
+SELECT COUNT(*) AS COUNT FROM sys_modSELECT COUNT FROM sys_mod [42102-176]
+07-14 18:54:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_MODSELECT" not found; SQL statement:
+SELECT COUNT(*) AS COUNT FROM sys_modSELECT COUNT FROM sys_mod [42102-176]
+07-14 19:23:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT *SELECT[*] * LIMIT 1,30"; SQL statement:
+SELECT *SELECT * LIMIT 1,30 [42000-176]

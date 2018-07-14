@@ -36,7 +36,8 @@ public interface Ar extends Trans  {
 	
 	List<Record> limit(int position,int pageSize);
 	
-	Page<Record> page(int position,int pageSize);
+	Page<Record> position(int position,int pageSize);
+	Page<Record> page(int page,int pageSize);
 	
 	<T> List<T> limit(Class<T> classOfT,int position,int pageSize);
 	

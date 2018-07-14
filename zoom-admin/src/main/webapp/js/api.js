@@ -158,7 +158,11 @@ function getCurdData(url){
 			async refresh(){				//获取数据
 				try{
 					this.loading = true;
-					this.list = await api(this.url,this.search);
+					let page = await api(this.url,this.search);
+					this.list = page.list;
+					this.search._pageSize = page.pageSize;
+					this.search._page = page.page;
+					this.total = page.total;
 				}catch(e){
 					this.$root.$handleError(e);
 				}finally{

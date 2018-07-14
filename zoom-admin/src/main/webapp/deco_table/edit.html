@@ -27,7 +27,7 @@
         <api-select
           @selecteded="(event)=>{scope.row.prop=event.prop}"   
           :search="{_select:'id,comment,prop'}" 
-          api="sys_type/index" 
+          api="sys_type/list" 
           v-model="scope.row.type" 
           size="small" 
           labelField="id">

@@ -20,7 +20,12 @@ public class MysqlDriver  extends AbsDriver{
 		return super.get(dataClass, columnClass);
 	}
 
+	@Override
+	public StringBuilder buildPage(StringBuilder sql, int position, int pageSize) {
+		return sql.append(" LIMIT ").append(position).append(',').append(pageSize);
+	}
 
+	
 	
 
 	

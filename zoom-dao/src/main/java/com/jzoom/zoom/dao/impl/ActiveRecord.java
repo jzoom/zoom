@@ -47,7 +47,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		this.aliasPolicyManager = aliasPolicyManager;
 	}
 
-	public List<Record> executeQuery(String sql, List<Object> values) {
+	public List<Record> executeQuery(String sql, List<Object> values,boolean all) {
 		Connection connection = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -62,7 +62,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 			DaoUtils.close(rs);
 			DaoUtils.close(ps);
 			releaseConnection();
-			builder.clear();
+			builder.clear(all);
 		}
 	}
 	
@@ -84,11 +84,11 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 			DaoUtils.close(rs);
 			DaoUtils.close(ps);
 			releaseConnection();
-			builder.clear();
+			builder.clear(true);
 		}
 	}
 	
-	public ResultSet execute( final String sql, final List<Object> values ) {
+	public ResultSet execute( final String sql, final List<Object> values,final boolean all ) {
 		return execute(new ConnectionExecutor() {
 			
 			@SuppressWarnings("unchecked")
@@ -105,7 +105,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 					throw new DaoException(e);
 				} finally {
 					DaoUtils.close(ps);
-					builder.clear();
+					builder.clear(all);
 				}
 			}
 		});
@@ -135,7 +135,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		} finally {
 			DaoUtils.close(ps);
 			releaseConnection();
-			builder.clear();
+			builder.clear(true);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 	@Override
 	public List<Record> get() {
 		builder.buildSelect();
-		return executeQuery(builder.sql.toString(), builder.getValues());
+		return executeQuery(builder.sql.toString(), builder.getValues(),true);
 	}
 
 	@Override
@@ -154,15 +154,33 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 	
 	@Override
 	public List<Record> limit(int position, int pageSize) {
-
-		return null;
+		builder.buildLimit(position,pageSize);
+		return executeQuery(builder.sql.toString(), builder.values, true);
 	}
 
 	@Override
-	public Page<Record> page(int position, int pageSize) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<Record> page(int page, int pageSize) {
+		if (page == 0)
+			page = 1;
+		return position( (page - 1) * pageSize, pageSize);
 	}
+	
+	@Override
+	public Page<Record> position(int position, int pageSize) {
+		builder.buildLimit(position,pageSize);
+		
+		try {
+			List<Record> list = executeQuery(builder.sql.toString(), builder.values, false);
+			int total = getValue("count(*) AS COUNT", int.class);
+			int page = builder.getPageFromPosition(position, pageSize);
+			return new Page<Record>( list,page,pageSize,total  );
+		}finally {
+			builder.clear(true);
+		}
+	
+		
+	}
+
 
 	@Override
 	public Ar table(String table) {
@@ -267,7 +285,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 
 	@Override
 	public List<Record> executeQuery(String sql, Object... args) {
-		return executeQuery(sql, Arrays.asList(args));
+		return executeQuery(sql, Arrays.asList(args),true);
 	}
 
 	@Override
@@ -304,6 +322,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		return this;
 	}
 
+	
 	
 
 	

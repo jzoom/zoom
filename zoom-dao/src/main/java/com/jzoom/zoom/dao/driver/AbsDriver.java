@@ -40,6 +40,10 @@ public abstract class AbsDriver implements SqlDriver {
 		return sb.append(name);
 	}
 
-	
+	@Override
+	public int position2page(int position, int pageSize) {
+		return position / pageSize + 1;
+
+	}
 
 }

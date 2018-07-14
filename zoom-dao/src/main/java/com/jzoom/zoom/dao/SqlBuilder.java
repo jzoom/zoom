@@ -220,7 +220,7 @@ public interface SqlBuilder {
 	
 	SqlBuilder min(String field);
 
-	SqlBuilder count(String field);
+	SqlBuilder count();
 	
 	SqlBuilder avg(String field);
 	

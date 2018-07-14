@@ -1,15 +1,15 @@
-<div class="flex column container">
+<div>
     <curd-pane module="/mod" comment="模块" :current="current"></curd-pane>
-    
-    <div class="flex" style="background: #fff; padding:10px; flex:1; overflow:auto">
-        <el-tree 
-            @node-click="handleSelect" 
-            :highlight-current="true" 
-            :expand-on-click-node="false"
-            default-expand-all 
-            style="width:100%" 
-            :data="list">
-            
-        </el-tree>
-    </div>
+    <el-tree 
+        @node-click="handleSelect" 
+        :highlight-current="true" 
+        :expand-on-click-node="false"
+        default-expand-all 
+        style="width:100%" 
+        :data="list">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <i :class="node.icon"></i>
+            <span style="font-size: 14px">{{ node.label }}</span>
+        </span>
+    </el-tree>
 </div>

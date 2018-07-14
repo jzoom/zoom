@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.jzoom.zoom.admin.models.BaseDao;
 import com.jzoom.zoom.dao.Dao;
+import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.ioc.IocContainer;
 import com.jzoom.zoom.ioc.annonation.Inject;
@@ -56,10 +57,10 @@ public class AutoController {
 
 	@Mapping(value = "{dao}/{module}/index", method = { Mapping.POST })
 	@JsonResponse
-	public List<Record> list(
+	public Page<Record> list(
 			@Param(name="{dao}") String dao,
 			@Param(name = "{module}") String module,@Param(name="@")Map<String, Object> search) throws NotFoundException {
-		return getDao(dao,module).getList(search );
+		return getDao(dao,module).getPage(search );
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.jzoom.zoom.admin.models.BaseDao;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.dao.Dao;
+import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.web.annotation.JsonResponse;
@@ -16,9 +17,9 @@ import com.jzoom.zoom.web.utils.WebUtils;
 public class BaseDaoController<T extends BaseDao> {
 	
 	@Inject("admin")
-	private Dao baseDao;
+	protected Dao baseDao;
 
-	private T model;
+	protected T model;
 	
 	
 	@SuppressWarnings("unchecked")
@@ -49,13 +50,18 @@ public class BaseDaoController<T extends BaseDao> {
 		return null;
 	}
 	
+	@Mapping(value="list",method= {Mapping.POST})
+	@JsonResponse
+	public List<Record> list(@Param(name="@")Map<String, Object> params){
+		return model.getList(  params );
+	}
 	
 	
 	
 	@Mapping(value="index",method= {Mapping.POST})
 	@JsonResponse
-	public List<Record> list(){
-		return model.getList();
+	public Page<Record> index(@Param(name="@")Map<String, Object> params){
+		return model.getPage(  params );
 	}
 	
 	/**

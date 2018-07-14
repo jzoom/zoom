@@ -31,7 +31,7 @@ public class AdminActionInterceptor extends ActionInterceptorAdapter {
 			String method = parts[1];
 			if("add".equals(method) || "index".equals(method) || "edit".equals(method)
 					|| "put".equals(method) || "del".equals(method)
-					|| "get".equals(method)) {
+					|| "get".equals(method) || "list".equals(method)) {
 				
 				int n;
 				if( ((n = path.indexOf('/')) > 0) ) {

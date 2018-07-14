@@ -17,6 +17,7 @@ import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
 import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.Dao;
+import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
@@ -61,7 +62,7 @@ public class DecoTableController {
 	
 	@JsonResponse
 	@Mapping(value="index",method= {Mapping.POST})
-	public Collection<Record> list( @Param(name="@") Map<String, Object> params ){
+	public Page<Record> list( @Param(name="@") Map<String, Object> params ){
 		DbStructFactory factory = dao.getDbStructFactory();
 		Collection<Record> records= factory.getNameAndComments(dao.ar());
 		final String name = (String) params.get("name");
@@ -92,7 +93,9 @@ public class DecoTableController {
 				src.put("decoration", true);
 			}
 		}
-		return records;
+		List<Record> list = new ArrayList<Record>();
+		list.addAll(records);
+		return new Page<Record>(list, 0, 0, 0);
 	}
 	
 	//查询所有的表和所有的deco整合起来

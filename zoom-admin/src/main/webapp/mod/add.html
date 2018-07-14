@@ -5,5 +5,5 @@
     <form-input label="路由" v-model="form.url" />
     <form-input label="顺序" v-model="form.sort" />
     <form-switch label="是否菜单" v-model="form.menu"/>
-    <tree-select label="父级模块" placeholder="请选择" api="/mod/index" v-model="form.p_id"></tree-select>
+    <tree-select label="父级模块" placeholder="请选择" api="/mod/list" v-model="form.p_id"></tree-select>
 </el-form>
