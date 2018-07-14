@@ -24,13 +24,19 @@
     </el-table-column>
     <el-table-column label="组件">
       <template slot-scope="scope">
-        <api-select   
-          :search="{_select:'id,comment'}" 
+        <api-select
+          @selecteded="(event)=>{scope.row.prop=event.prop}"   
+          :search="{_select:'id,comment,prop'}" 
           api="sys_type/index" 
           v-model="scope.row.type" 
           size="small" 
           labelField="id">
         </api-select>
+      </template>
+    </el-table-column>
+    <el-table-column label="属性">
+      <template slot-scope="scope">
+        <el-input size="small" v-model="scope.row.prop"></el-input>
       </template>
     </el-table-column>
   </el-table>

@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.jzoom.zoom.admin.entities.DecoTableVo;
 import com.jzoom.zoom.admin.entities.DecoTableVo.DecoColumn;
+import com.jzoom.zoom.common.json.JSON;
 import com.jzoom.zoom.common.utils.MapUtils;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
@@ -25,6 +27,7 @@ public class TableModel {
 	@Inject("admin")
 	private Dao admin;
 	
+	@SuppressWarnings("unchecked")
 	public DecoTableVo getTable(String table ) {
 		TableMeta data =  dao.getDbStructFactory().getTableMeta(dao.ar(), table);
 		//NameAdapter adapter = dao.getPolicy(table);
@@ -55,6 +58,15 @@ public class TableModel {
 					DecoColumn decoColumn = map.get(name);
 					decoColumn.setComment(record2.getString("comment"));
 					decoColumn.setType(record2.getString("type"));
+					String prop = record2.getString("prop");
+					if(prop!=null) {
+						try {
+							Map<String, Object> propMap = JSON.parse(prop,Map.class);
+							decoColumn.setProp( propMap );
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		}

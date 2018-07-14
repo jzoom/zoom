@@ -36,6 +36,7 @@ public class DebugServer implements Service, FileAlterationListener {
 	private int interval = 3000;
 
 	public DebugServer(final AbsServer server) {
+		this.scanFilter = PatternFilterFactory.createFilter("!/.*&&!*.log&&!*.db&&!*.git*");
 		this.classPath = ServerUtils.getClassPath();
 		this.monitorPath = ServerUtils.getMonitorPath(classPath);
 		this.server = server;
@@ -70,14 +71,13 @@ public class DebugServer implements Service, FileAlterationListener {
 	
 	}
 	
+	
 	public void setScanFilter(String filter) {
 		this.scanFilter = PatternFilterFactory.createFilter(filter);
 	}
 	
 	private Filter<String> getScanFilter(){
-		if(this.scanFilter==null) {
-			this.scanFilter = PatternFilterFactory.createFilter("!/.*&&!*.log&&!*.db&&!*.git*");
-		}
+		
 		return this.scanFilter;
 	}
 

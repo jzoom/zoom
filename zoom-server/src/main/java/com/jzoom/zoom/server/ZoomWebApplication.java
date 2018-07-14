@@ -9,6 +9,7 @@ public class ZoomWebApplication {
 		app.setContextPath("/");
 		app.setResourceBase("src/main/webapp");
 		DebugServer server = new DebugServer(app) ;
+		server.setScanFilter("!.*&!*.log&!*.db&!*.git*&!*.html");
 		server.setInterval(1000);
 		server.startup();
 	}

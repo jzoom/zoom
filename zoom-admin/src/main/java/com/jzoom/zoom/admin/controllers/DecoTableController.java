@@ -2,15 +2,24 @@ package com.jzoom.zoom.admin.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.jzoom.zoom.admin.entities.DecoTableVo;
 import com.jzoom.zoom.admin.entities.DecoTableVo.DecoColumn;
 import com.jzoom.zoom.admin.models.TableModel;
+import com.jzoom.zoom.common.filter.ArrayFilter;
+import com.jzoom.zoom.common.filter.Filter;
+import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
+import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
+import com.jzoom.zoom.dao.SqlBuilder.Like;
+import com.jzoom.zoom.dao.SqlBuilder.Sort;
 import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.driver.DbStructFactory;
 import com.jzoom.zoom.dao.meta.ColumnMeta;
@@ -52,11 +61,26 @@ public class DecoTableController {
 	
 	@JsonResponse
 	@Mapping(value="index",method= {Mapping.POST})
-	public Collection<Record> list(){
+	public Collection<Record> list( @Param(name="@") Map<String, Object> params ){
 		DbStructFactory factory = dao.getDbStructFactory();
 		Collection<Record> records= factory.getNameAndComments(dao.ar());
+		final String name = (String) params.get("name");
+		
+		if(name != null) {
+			final Filter<String> filter = PatternFilterFactory.createFilter("*"+name+"*");
+			records = ArrayFilter.filter(records, new Filter<Record>() {
+				@Override
+				public boolean accept(Record value) {
+					return filter.accept((String)value.get("name"));
+				}
+				
+			});
+		}
+		Ar ar = admin.table("sys_deco_table")
+				.select("target_table as table,comment")
+				.orderBy("target_table", Sort.ASC );
 		//查询表
-		List<Record> decos = admin.table("sys_deco_table").select("target_table as table,comment").get();
+		List<Record> decos = ar.get();
 		
 		Map<Object, Record> map = DaoUtils.list2map(decos, "table");
 		

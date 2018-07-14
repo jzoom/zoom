@@ -38,6 +38,40 @@
         }
     })
 
+    Vue.component('action-button-pannel',{
+        template: `<div class="action-button-pannel">
+        <add-button 
+            :fullscreen="fullscreen"
+            size="small"
+            :templateUrl="module+'/add'" 
+            :api="module+'/add'" 
+            :title="'增加'+comment" />
+        <edit-button 
+            :fullscreen="fullscreen"
+            v-if="current != null" 
+            size="small"
+            :api="module+'/put/'+current.id"
+            :templateUrl="module+'/edit'" 
+            :dataUrl="module+'/get/'+current.id" 
+            :title="'修改'+comment" />
+        <del-button  
+            size="small"
+            v-if="current != null" 
+            :api="module+'/del/'+current.id" 
+            confirm="真的要删除吗,本操作不能撤销?" 
+            :title="'删除'+comment" />
+
+            <slot></slot>
+            
+    </div>`,
+        props: [
+            'module', //模块  /mod
+            'comment', //模块名称(中文注释)
+            'current',
+            'fullscreen'
+        ],
+    });
+
     Vue.component('curd-pane', {
         template: `<div class="curd-pan">
         <add-button 
@@ -127,7 +161,7 @@
      */
     Vue.component('api-button', {
         props: ['api', 'title', 'confirm', 'data', 'label', 'fullscreen', 'refresh', 'icon', 'type', 'click', 'form'],
-        template: `<el-button :type="type" size="medium" :icon="icon" @click="callapi">{{this.label}}</el-button>`,
+        template: `<el-button :type="type" size="mini" :icon="icon" @click="callapi">{{this.label}}</el-button>`,
         methods: {
             callapi() {
                 if (this.confirm) {
@@ -176,7 +210,7 @@
             'form' //表单数据
         ],
 
-        template: `<el-button :type="type" size="medium" :icon="icon" @click="checkOpen">
+        template: `<el-button :type="type" size="mini" :icon="icon" @click="checkOpen">
         {{this.label}}
         </el-button>`,
         data() {
@@ -259,6 +293,7 @@
             })
         }
     });
+
 
     /**
      * 表单编辑表格
@@ -392,6 +427,10 @@
         props: ['label', 'value'],
     });
 
+    Vue.component('quick-filter-pane',{
+        
+    });
+
     Vue.component('form-image', {
         template: `<el-form-item :label="label" label-width="120px">
         <div>
@@ -515,7 +554,7 @@
                 //data
                 for (var i in this.data) {
                     if (event == this.data[i].id) {
-                        this.$emit('change', this.data[i]);
+                        this.$emit('selecteded', this.data[i]);
                         break;
                     }
                 }
@@ -836,6 +875,7 @@
     Vue.component('simple-list', {
         template: `<div class="flex column" style="overflow:auto">
         <simple-table 
+        style="width:100%;" 
         :list="list" 
         :loading="loading" 
         @change="$emit('change',$event)"   
@@ -843,7 +883,6 @@
         />
     <simple-pagination 
         @refresh="$emit('refresh',$event)"  
-       
         :search="search" :total="total" />
         </div>`,
         props: ['loading', 'list', 'columns', "search", "total"],

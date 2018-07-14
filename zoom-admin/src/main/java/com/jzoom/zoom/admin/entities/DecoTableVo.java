@@ -1,6 +1,7 @@
 package com.jzoom.zoom.admin.entities;
 
 import java.util.List;
+import java.util.Map;
 
 public class DecoTableVo {
 	
@@ -10,6 +11,7 @@ public class DecoTableVo {
 		private String name;
 		private String type;
 		private String comment;
+		private Map<String, Object> prop;
 		
 		public String getType() {
 			return type;
@@ -34,6 +36,12 @@ public class DecoTableVo {
 		}
 		public void setColumn(String column) {
 			this.column = column;
+		}
+		public Map<String, Object> getProp() {
+			return prop;
+		}
+		public void setProp(Map<String, Object> prop) {
+			this.prop = prop;
 		}
 		
 	}

@@ -189,5 +189,17 @@ public class PatternFilterFactoryTest {
 		filter = PatternFilterFactory.createFilter("*api*controllers*");
 		assertTrue(filter.accept("com.czc.ecard.api.shimin.controllers.ShiminController"));
 	}
+	
+	@Test
+	public void test3() {
+		Filter<String> filter;
+		filter = PatternFilterFactory.createFilter("!.*&!*.log&!*.db&!*.git*&!*.html*");
+		assertTrue(!filter.accept("1.html"));
+		assertTrue(!filter.accept(".html"));
+		assertTrue(!filter.accept("1.log"));
+		assertTrue(!filter.accept("2.db"));
+		assertTrue(!filter.accept(".git"));
+		assertTrue(filter.accept("2.class"));
+	}
 
 }
