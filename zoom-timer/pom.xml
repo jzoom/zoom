@@ -2,11 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
+<parent>
+			<groupId>com.joom.zoom</groupId>
+			<artifactId>zoom-parent</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
 	<groupId>com.jzoom.zoom</groupId>
 	<artifactId>zoom-timer</artifactId>
-	<version>${zoomVersion}</version>
 	<packaging>jar</packaging>
 
 	<name>zoom-timer</name>
@@ -30,13 +33,13 @@
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-common</artifactId>
-			<version>${zoomVersion}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-aop</artifactId>
-			<version>${zoomVersion}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 
@@ -51,7 +54,7 @@
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-ioc</artifactId>
-			<version>${zoomVersion}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 

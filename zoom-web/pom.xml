@@ -3,16 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 
 
+	<parent>
+		<groupId>com.joom.zoom</groupId>
+		<artifactId>zoom-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<zoomVersion>0.0.1-SNAPSHOT</zoomVersion>
 	</properties>
 
-
-	<groupId>com.jzoom.zoom</groupId>
+	<groupId>com.joom.zoom</groupId>
 	<artifactId>zoom-web</artifactId>
 	<packaging>jar</packaging>
-	<version>${zoomVersion}</version>
 
 
 	<name>zoom-web</name>
@@ -48,22 +51,18 @@
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-common</artifactId>
-			<version>${zoomVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-aop</artifactId>
-			<version>${zoomVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-timer</artifactId>
-			<version>${zoomVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-ioc</artifactId>
-			<version>${zoomVersion}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>

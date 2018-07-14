@@ -2,9 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>com.joom.zoom</groupId>
+		<artifactId>zoom-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
 	<groupId>com.jzoom.zoom</groupId>
 	<artifactId>zoom-http</artifactId>
-	<version>${zoomVersion}</version>
 	<packaging>jar</packaging>
 
 	<name>zoom-http</name>
@@ -27,7 +32,6 @@
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-common</artifactId>
-			<version>${zoomVersion}</version>
 		</dependency>
 
 	</dependencies>

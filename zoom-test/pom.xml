@@ -4,7 +4,7 @@
 
 	<groupId>com.jzoom.zoom</groupId>
 	<artifactId>zoom-test</artifactId>
-	<version>${zoomVersion}</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>zoom-test</name>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-web</artifactId>
-			<version>${zoomVersion}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->

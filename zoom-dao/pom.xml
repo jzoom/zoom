@@ -4,7 +4,7 @@
 
 	<groupId>com.jzoom.zoom</groupId>
 	<artifactId>zoom-dao</artifactId>
-	<version>${zoomVersion}</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>zoom-dao</name>
@@ -22,7 +22,7 @@
 
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-common</artifactId>
-			<version>${zoomVersion}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
