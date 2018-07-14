@@ -3,13 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jzoom</groupId>
-	<artifactId>zoom-admin</artifactId>
+	<artifactId>zoom-admin-web</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
-
+	<name>zoom-admin-web</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<zoomVersion>0.0.1-SNAPSHOT</zoomVersion>
 	</properties>
 
 	<repositories>
@@ -127,6 +126,11 @@
 			<artifactId>zoom-http</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-server</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
@@ -171,7 +175,12 @@
 		<dependency>
 			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-token</artifactId>
-			<version>${zoomVersion}</version>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jzoom.zoom</groupId>
+			<artifactId>zoom-admin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
@@ -188,5 +197,5 @@
 		</dependency>
 
 	</dependencies>
-	<name>zoom-admin</name>
+
 </project>

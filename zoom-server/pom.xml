@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.joom.zoom</groupId>
+		<groupId>com.jzoom.zoom</groupId>
 		<artifactId>zoom-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -16,7 +16,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jettyVersion>8.1.8.v20121106</jettyVersion>
-		<zoomVersion>0.0.1-SNAPSHOT</zoomVersion>
 	</properties>
 
 
@@ -49,7 +48,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.joom.zoom</groupId>
+			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-web</artifactId>
 		</dependency>
 

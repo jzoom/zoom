@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 <parent>
-			<groupId>com.joom.zoom</groupId>
+			<groupId>com.jzoom.zoom</groupId>
 			<artifactId>zoom-parent</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 	</parent>

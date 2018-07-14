@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.joom.zoom</groupId>
+	<groupId>com.jzoom.zoom</groupId>
 	<artifactId>zoom-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>zoom-parent</name>
 
 	<modules>
-		<module>zoom-web</module>
+
 		<module>zoom-caster</module>
 		<module>zoom-ioc</module>
 		<module>zoom-aop</module>
@@ -18,7 +18,9 @@
 		<module>zoom-server</module>
 		<module>zoom-http</module>
 		<module>zoom-timer</module>
-		<module>zoom-admin</module>
+		<module>zoom-admin-web</module>
+		<module>zoom-web</module>
+		<module>zoom-token</module>
 	</modules>
 
 	<!-- maven依赖 -->
@@ -74,6 +76,11 @@
 			<dependency>
 				<groupId>com.jzoom.zoom</groupId>
 				<artifactId>zoom-web</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jzoom.zoom</groupId>
+				<artifactId>zoom-token</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

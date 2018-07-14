@@ -4,7 +4,7 @@
 
 
 	<parent>
-		<groupId>com.joom.zoom</groupId>
+		<groupId>com.jzoom.zoom</groupId>
 		<artifactId>zoom-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -12,7 +12,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+	
+	<groupId>com.jzoom.zoom</groupId>
 	<artifactId>zoom-web</artifactId>
 	<packaging>jar</packaging>
 
