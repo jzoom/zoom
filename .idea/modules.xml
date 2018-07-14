@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/zoom-host/!zoom-host.iml" filepath="$PROJECT_DIR$/zoom-host/!zoom-host.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-admin/zoom-admin-web.iml" filepath="$PROJECT_DIR$/zoom-admin/zoom-admin-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-aop/zoom-aop.iml" filepath="$PROJECT_DIR$/zoom-aop/zoom-aop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-async/zoom-async.iml" filepath="$PROJECT_DIR$/zoom-async/zoom-async.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-caster/zoom-caster.iml" filepath="$PROJECT_DIR$/zoom-caster/zoom-caster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-common/zoom-common.iml" filepath="$PROJECT_DIR$/zoom-common/zoom-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-dao/zoom-dao.iml" filepath="$PROJECT_DIR$/zoom-dao/zoom-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-http/zoom-http.iml" filepath="$PROJECT_DIR$/zoom-http/zoom-http.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-ioc/zoom-ioc.iml" filepath="$PROJECT_DIR$/zoom-ioc/zoom-ioc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-parent.iml" filepath="$PROJECT_DIR$/zoom-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-server/zoom-server.iml" filepath="$PROJECT_DIR$/zoom-server/zoom-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-test/zoom-test.iml" filepath="$PROJECT_DIR$/zoom-test/zoom-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-timer/zoom-timer.iml" filepath="$PROJECT_DIR$/zoom-timer/zoom-timer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-token/zoom-token.iml" filepath="$PROJECT_DIR$/zoom-token/zoom-token.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zoom-web/zoom-web.iml" filepath="$PROJECT_DIR$/zoom-web/zoom-web.iml" />
+    </modules>
+  </component>
+</project>

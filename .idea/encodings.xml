@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/zoom-aop" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-async" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-caster" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-http" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-ioc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-timer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-token" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zoom-web" charset="UTF-8" />
+  </component>
+</project>
