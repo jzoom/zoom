@@ -40,6 +40,12 @@
         <dependent-module archiveName="zoom-admin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zoom-admin/zoom-admin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="zoom-plugin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zoom-plugin/zoom-plugin">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zoom-pluginloader-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zoom-pluginloader/zoom-pluginloader">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/apihost/target/classes"/>
         <property name="context-root" value="zoom-admin-web"/>
     </wb-module>

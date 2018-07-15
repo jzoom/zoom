@@ -1,0 +1,20 @@
+<div>
+    <curd-pane module="/plugin" 
+        :fullscreen="true" 
+        comment="插件" 
+        :refresh="refresh"
+        :search="search"
+        :columns="[['title','标题']]"
+        :current="current">
+    </curd-pane>
+
+    <simple-list
+        :list="list" 
+        :search="search"
+        :loading="loading" 
+        @change="handleSelect" 
+        :columns="[['id','编号'],['title','名称'],['uri','路径']]" ></simple-list>
+   
+
+   
+</div>

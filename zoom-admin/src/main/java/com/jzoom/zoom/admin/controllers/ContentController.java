@@ -40,6 +40,7 @@ public class ContentController {
 		module2table.put("sys_usecase", "sys_usecase");
 		module2table.put("sys_component", "sys_component");
 		module2table.put("sys_dic", "sys_dic");
+		module2table.put("sys_plugin", "sys_plugin");
 	}
 	
 	

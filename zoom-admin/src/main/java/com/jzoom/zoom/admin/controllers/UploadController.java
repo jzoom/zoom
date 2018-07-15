@@ -28,4 +28,15 @@ public class UploadController {
 		
 	}
 	
+	@JsonResponse
+	public String jar( FileItem file ) throws IOException {
+		String name = HashStr.md5(UUID.randomUUID().toString()) + ".jar";
+		FileUtils.copyInputStreamToFile(file.getInputStream(), 
+				new File("/Users/jzoom/SourceCode/mirror/centos6.9/www/uploads",
+						name
+						));
+		
+		return "http://localhost:8070/uploads/"+name;
+		
+	}
 }

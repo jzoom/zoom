@@ -443,11 +443,47 @@
         
     });
 
+    Vue.component('form-jar',{
+        template: `<el-form-item :label="label" label-width="120px">
+        <div>
+        <el-upload
+            action="/upload/jar"
+            :show-file-list="false"
+            :on-success="handleSuccess"
+            :on-preview="handlePreview">
+            <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+            <a v-if="url" :href="url">下载</a>
+            <input type="hidden" :value="value" />
+        </div>
+    </el-form-item>`,
+        props: ['label', 'value'],
+        data(){
+            return {
+                url:''
+            }
+        },
+        mounted(){
+            if(this.value){
+                this.url = this.value;
+            }
+        },
+        methods: {
+            handleSuccess(res,file){
+              console.log(res);
+              this.url = res;
+              this.$emit('input', this.url);
+            },
+            handlePreview(file) {
+              console.log(file);
+            },
+          }
+    });
+
     Vue.component('form-image', {
         template: `<el-form-item :label="label" label-width="120px">
         <div>
         <el-upload
-            class="upload-demo"
             action="/upload/image"
             :show-file-list="false"
             :on-success="handleSuccess"

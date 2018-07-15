@@ -1,0 +1,12 @@
+<el-form :model="form">
+    <div class="flex container column" style="height:500px;width:100%">
+        <form-input label="路由" v-model="form.url" />
+        <div class="flex container">
+            <code-editor 
+                v-model="form.template"
+                language="html" 
+                theme="vs" 
+                class="flex container" 
+                style="border: 1px solid #ccc" />
+            </div>
+</el-form>

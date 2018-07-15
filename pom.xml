@@ -23,6 +23,8 @@
 		<module>zoom-admin-web</module>
 		<module>zoom-web</module>
 		<module>zoom-token</module>
+		<module>zoom-plugin</module>
+		<module>zoom-pluginloader</module>
 	</modules>
 
 	<!-- maven依赖 -->
@@ -93,6 +95,16 @@
 			<dependency>
 				<groupId>com.jzoom.zoom</groupId>
 				<artifactId>zoom-test</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jzoom.zoom</groupId>
+				<artifactId>zoom-plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.jzoom.zoom</groupId>
+				<artifactId>zoom-pluginloader</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
