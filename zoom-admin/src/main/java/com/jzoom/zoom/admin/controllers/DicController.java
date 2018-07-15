@@ -4,6 +4,6 @@ import com.jzoom.zoom.admin.models.DicDao;
 import com.jzoom.zoom.web.annotation.Controller;
 
 @Controller(key="sys_dic")
-public class DicController extends BaseDaoController<DicDao> {
+public class DicController extends BaseDaoController<DicDao> implements AdminController {
 
 }

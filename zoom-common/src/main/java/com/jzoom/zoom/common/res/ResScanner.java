@@ -25,9 +25,9 @@ import org.jzoom.zoom.common.Destroyable;
 
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
+import com.jzoom.zoom.common.io.Io;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.common.utils.Visitor;
-import com.sun.tools.javac.util.Name;
 
 /**
  * 资源扫描器 用于在项目启动的时候扫描所有资源 1、扫描所有class并记录 2、扫描jar内部class并记录 3、扫描其他类型文件，并记录
@@ -215,13 +215,19 @@ public class ResScanner implements Destroyable {
 	}
 
 	public void scan(InputStream is,ClassLoader classLoader) throws IOException {
-		ZipInputStream inputStream = new ZipInputStream(is);
-		ZipEntry entry;
-		while((entry = inputStream.getNextEntry() ) != null) {
-			String name = entry.getName();
-			if(name.endsWith("class")) {
-				addClass(name.replace(".class", "").replace("/", "."),classLoader, null);
+		ZipInputStream inputStream = null;
+		try {
+			inputStream = new ZipInputStream(is);
+			ZipEntry entry;
+			while((entry = inputStream.getNextEntry() ) != null) {
+				String name = entry.getName();
+				if(name.endsWith("class")) {
+					addClass(name.replace(".class", "").replace("/", "."),classLoader, null);
+				}
 			}
+			
+		}finally {
+			Io.close(inputStream);
 		}
 		
 	}

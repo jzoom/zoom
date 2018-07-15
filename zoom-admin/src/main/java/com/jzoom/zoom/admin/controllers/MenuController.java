@@ -14,7 +14,7 @@ import com.jzoom.zoom.web.annotation.Mapping;
 import com.jzoom.zoom.web.annotation.Param;
 
 @Controller(key="menu")
-public class MenuController {
+public class MenuController implements AdminController{
 
 	@Inject
 	ModDao moduleDao;

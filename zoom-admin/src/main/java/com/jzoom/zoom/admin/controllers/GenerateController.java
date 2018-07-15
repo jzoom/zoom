@@ -28,7 +28,7 @@ import com.jzoom.zoom.web.view.impl.StringView;
 import com.mchange.v2.beans.BeansUtils;
 
 @Controller(key="gen")
-public class GenerateController {
+public class GenerateController  implements AdminController{
 	public GroupTemplate group;
 	public GenerateController() {
 		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();

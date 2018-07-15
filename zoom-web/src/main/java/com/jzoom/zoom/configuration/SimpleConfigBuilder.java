@@ -175,6 +175,7 @@ public class SimpleConfigBuilder extends ClassResolver {
 		}
 		
 
+		list.clear();
 		
 	}
 }

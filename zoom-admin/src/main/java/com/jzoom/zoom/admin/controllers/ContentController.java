@@ -18,7 +18,7 @@ import com.jzoom.zoom.web.exception.StatusException.NotFoundException;
 import com.jzoom.zoom.web.view.impl.StringView;
 
 @Controller(key = "")
-public class ContentController {
+public class ContentController  implements AdminController{
 	
 	public ContentController() {
 		module2table.put("module", "sys_module");

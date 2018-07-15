@@ -5,17 +5,17 @@ import java.util.List;
 
 import com.jzoom.zoom.aop.AopMaker;
 import com.jzoom.zoom.aop.MethodInterceptor;
-import com.jzoom.zoom.common.filter.impl.ClassAndMethodFilter;
+import com.jzoom.zoom.common.filter.impl.PatternClassAndMethodFilter;
 
 public class FilterMethodAopMaker implements AopMaker {
 	
 
-	private ClassAndMethodFilter filter;
+	private PatternClassAndMethodFilter filter;
 	private MethodInterceptor interceptor;
 	
 	
 	public FilterMethodAopMaker(String pattern,MethodInterceptor interceptor) {
-		filter = new ClassAndMethodFilter(pattern);
+		filter = new PatternClassAndMethodFilter(pattern);
 		this.interceptor = interceptor;
 	}
 	

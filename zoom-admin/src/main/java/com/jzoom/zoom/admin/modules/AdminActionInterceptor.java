@@ -73,15 +73,14 @@ public class AdminActionInterceptor extends ActionInterceptorAdapter {
 			path = path.substring(1);
 		}
 		String url = getUrl(path);
-		if(!"menu/list".equals(url)) {
-			Ar ar = dao.table("sys_mod").where("url", url);
-			if(!url.equals(path)) {
-				ar.orWhere("url", path);
-			}
-			String id = ar.getValue("id", String.class);
-			if(ArrayUtils.indexOf(parts, id) < 0) {
-				throw new StatusException.AuthException();
-			}
+		Ar ar = dao.table("sys_mod").where("url", url);
+		if(!url.equals(path)) {
+			ar.orWhere("url", path);
+		}
+		ar.orWhere("url",context.getAction().getPath());
+		String id = ar.getValue("id", String.class);
+		if(ArrayUtils.indexOf(parts, id) < 0) {
+			throw new StatusException.AuthException();
 		}
 		
 		//dao.table("sys_mod").where("", context.getAction().getUrl());

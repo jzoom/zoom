@@ -11,7 +11,6 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.beetl.core.lab.TestUser;
 import org.jzoom.zoom.common.Service;
 
 import com.jzoom.zoom.common.filter.Filter;

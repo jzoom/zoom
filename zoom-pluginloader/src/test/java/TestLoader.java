@@ -16,7 +16,7 @@ public class TestLoader {
 	public void testLoader() throws Exception {
 		ZoomWeb web = new ZoomWeb();
 		web.init();
-		URL url = new URL("file:///Users/jzoom/eclipse-workspace/zoom-weixin/target/zoom-weixin-0.0.1-SNAPSHOT.jar");
+		URL url = new URL("file:///Users/jzoom/SourceCode/work/ecard-api/wx-plugin/target/wx-plugin-1.0.0.jar");
 		
 		
 		SimplePluginHost host = new SimplePluginHost( web.getIoc().get(ClassResolvers.class) );

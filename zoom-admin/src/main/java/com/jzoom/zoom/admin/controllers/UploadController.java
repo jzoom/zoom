@@ -13,7 +13,7 @@ import com.jzoom.zoom.web.annotation.Controller;
 import com.jzoom.zoom.web.annotation.JsonResponse;
 
 @Controller(key="upload")
-public class UploadController {
+public class UploadController implements AdminController {
 
 	
 	@JsonResponse

@@ -58,7 +58,11 @@ public class SimpleClassInfo implements ClassInfo{
 
 			int pos = Modifier.isStatic(cm.getModifiers()) ? 0 : 1;
 			for (int i = 0; i < len; i++) {
-				names[i] = attr.variableName(i + pos );
+				String name = attr.variableName(i + pos );
+				if(name == null) {
+					throw new RuntimeException("名称为null");
+				}
+				names[i] = name;
 			}
 			return names;
 		}catch (Exception e) {

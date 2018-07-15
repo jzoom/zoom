@@ -28,7 +28,7 @@ public class AutoParameterParser implements ParameterParser ,Destroyable {
 		this.names = names;
 		for (String name : names) {
 			if(name==null) {
-				throw new RuntimeException("name 不能为null");
+				throw new RuntimeException("name 不能为null " + controllerClass + ":" + method);
 			}
 		}
 	}

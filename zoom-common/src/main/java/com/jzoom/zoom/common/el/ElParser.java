@@ -3,8 +3,6 @@ package com.jzoom.zoom.common.el;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import com.jzoom.zoom.common.config.ConfigReader;
 
 public class ElParser {

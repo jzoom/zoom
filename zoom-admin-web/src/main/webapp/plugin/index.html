@@ -6,6 +6,8 @@
         :search="search"
         :columns="[['title','标题']]"
         :current="current">
+        <api-button type="info" label="安装"  v-if="current" :api="'plugin/install/'+current.id"></api-button>
+        <api-button type="warning" label="加载" confirm="是否要加载"  v-if="current" :api="'plugin/active/'+current.id"></api-button>
     </curd-pane>
 
     <simple-list

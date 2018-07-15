@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import org.jzoom.zoom.common.Destroyable;
 
+import com.jzoom.zoom.common.filter.ClassAndMethodFilter;
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
 
@@ -14,7 +15,7 @@ import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
  * @author jzoom
  *
  */
-public class ClassAndMethodFilter implements Filter<Class<?>>,Destroyable {
+public class PatternClassAndMethodFilter implements ClassAndMethodFilter,Destroyable {
 	
 	private Filter<String> classNameFilter;
 	private Filter<String> methodNameFilter;
@@ -25,7 +26,7 @@ public class ClassAndMethodFilter implements Filter<Class<?>>,Destroyable {
 	 * 
 	 * @param pattern
 	 */
-	public ClassAndMethodFilter(String pattern) {
+	public PatternClassAndMethodFilter(String pattern) {
 		if(!pattern.contains("#")) {
 			//默认方法*
 			methodNameFilter = PatternFilterFactory.createFilter("*");

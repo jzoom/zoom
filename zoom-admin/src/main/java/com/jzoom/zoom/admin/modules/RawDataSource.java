@@ -18,6 +18,10 @@ public class RawDataSource implements DataSource {
 		this.name = name;
 		this.pwd = pwd;
 	}
+	
+	public Object getParentLogger(){
+		return null;
+	}
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {

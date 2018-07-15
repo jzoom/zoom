@@ -19,7 +19,7 @@ import com.jzoom.zoom.web.exception.StatusException.NotFoundException;
 import com.jzoom.zoom.web.view.impl.StringView;
 
 @Controller()
-public class AutoController {
+public class AutoController implements AdminController {
 	
 	@Inject
 	private IocContainer ioc;

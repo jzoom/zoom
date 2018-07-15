@@ -2547,3 +2547,22 @@ SELECT * FROM sys_page WHERE _PAGESIZE=? AND _PAGE=? AND url LIKE ? ORDER BY ID 
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543)
 	at java.lang.Thread.run(Thread.java:695)
+07-15 15:11:39 jdbc[3]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-176]
+	at org.h2.message.DbException.get(DbException.java:178)
+	at org.h2.message.DbException.get(DbException.java:154)
+	at org.h2.message.DbException.get(DbException.java:143)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:173)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:118)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:91)
+	at org.h2.Driver.connect(Driver.java:74)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:684)
+	at org.h2.server.web.WebApp.login(WebApp.java:958)
+	at org.h2.server.web.WebApp.process(WebApp.java:212)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:171)
+	at org.h2.server.web.WebThread.process(WebThread.java:138)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: org.h2.jdbc.JdbcSQLException: The connection was not closed by the application and is garbage collected [90018-176]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:344)
+	... 14 more

@@ -4,14 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.dyuproject.protostuff.LinkedBuffer;
-import com.dyuproject.protostuff.ProtostuffIOUtil;
-import com.dyuproject.protostuff.Schema;
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
-import com.jzoom.zoom.common.codec.Hex;
-
 
 /**
  * 思路：

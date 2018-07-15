@@ -56,6 +56,8 @@ public class SimpleAopFactory extends AbsAopFactory {
 		}
 		
 		this.classPool = null;
+		
+		JavassistUtils.destroy();
 	}
 
 	@Override

@@ -7,7 +7,9 @@
 .code{
   border:1px solid #ccc
 }
-
+.el-button--mini,.el-button--mini.is-round {
+  padding: 7px ;
+}
 
 pre{
   font-size: 12px;

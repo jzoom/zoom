@@ -4,7 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jzoom.zoom.common.filter.impl.ClassAndMethodFilter;
+import com.jzoom.zoom.common.filter.ClassAndMethodFilter;
+import com.jzoom.zoom.common.filter.impl.PatternClassAndMethodFilter;
 import com.jzoom.zoom.common.utils.OrderedList;
 import com.jzoom.zoom.web.action.ActionInterceptor;
 import com.jzoom.zoom.web.action.ActionInterceptorFactory;
@@ -16,9 +17,9 @@ class SimpleActionInterceptorFactory implements ActionInterceptorFactory {
 	private List<ActionInterceptor> tmp;
 	
 	private static class InterceptorInfo{
-		InterceptorInfo(ActionInterceptor interceptor,String pattern) {
+		InterceptorInfo(ActionInterceptor interceptor,ClassAndMethodFilter filter) {
 			this.interceptor = interceptor;
-			this.filter = new ClassAndMethodFilter(pattern);
+			this.filter = filter;
 		}
 		
 		ActionInterceptor interceptor;
@@ -33,8 +34,15 @@ class SimpleActionInterceptorFactory implements ActionInterceptorFactory {
 	
 	@Override
 	public void add(ActionInterceptor interceptor, String pattern, int order) {
-		list.add(new InterceptorInfo(interceptor, pattern), order);
+		list.add(new InterceptorInfo(interceptor, new PatternClassAndMethodFilter(pattern)), order);
 	}
+	
+
+	@Override
+	public void add(ActionInterceptor interceptor, ClassAndMethodFilter filter, int order) {
+		list.add(new InterceptorInfo(interceptor, filter),order) ;
+	}
+
 
 	@Override
 	public ActionInterceptor[] create(Class<?> controllerClass, Method method) {
@@ -59,6 +67,7 @@ class SimpleActionInterceptorFactory implements ActionInterceptorFactory {
 		
 		return tmp.toArray( new ActionInterceptor[ tmp.size() ] );
 	}
+
 
 	
 

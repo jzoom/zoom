@@ -14,7 +14,7 @@ import com.jzoom.zoom.web.annotation.Mapping;
 import com.jzoom.zoom.web.annotation.Param;
 import com.jzoom.zoom.web.utils.WebUtils;
 
-public class BaseDaoController<T extends BaseDao> {
+public class BaseDaoController<T extends BaseDao>  implements AdminController{
 	
 	@Inject("admin")
 	protected Dao baseDao;

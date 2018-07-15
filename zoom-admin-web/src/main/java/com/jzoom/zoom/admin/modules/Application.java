@@ -1,13 +1,7 @@
 package com.jzoom.zoom.admin.modules;
 
 
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -16,7 +10,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.jzoom.zoom.admin.controllers.AdminController;
 import com.jzoom.zoom.aop.AopFactory;
+import com.jzoom.zoom.common.filter.ClassAndMethodFilter;
+import com.jzoom.zoom.common.res.ClassResolvers;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.driver.mysql.MysqlConnDescription;
 import com.jzoom.zoom.dao.driver.oracle.OracleConnDescription;
@@ -26,6 +23,8 @@ import com.jzoom.zoom.ioc.IocContainer;
 import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.ioc.annonation.IocBean;
 import com.jzoom.zoom.ioc.annonation.Module;
+import com.jzoom.zoom.plugin.PluginHost;
+import com.jzoom.zoom.pluginloader.impl.SimplePluginHost;
 import com.jzoom.zoom.server.ZoomWebApplication;
 import com.jzoom.zoom.web.action.ActionContext;
 import com.jzoom.zoom.web.action.ActionInterceptorAdapter;
@@ -110,10 +109,27 @@ public class Application{
 //		}, "*", 0);
 	}
 	
+	
+	@IocBean
+	public PluginHost getPluginHost(ClassResolvers resolvers) {
+		return new SimplePluginHost(resolvers);
+	}
+	
 
 	@Inject
 	public void config( ActionInterceptorFactory factory ,IocContainer ioc) {
-		factory.add(ioc.get(AdminActionInterceptor.class), "!*LoginController*&!*UploadController*#*", 1);
+		factory.add(ioc.get(AdminActionInterceptor.class), new ClassAndMethodFilter() {
+			
+			@Override
+			public boolean accept(Method method) {
+				return true;
+			}
+			
+			@Override
+			public boolean accept(Class<?> clazz) {
+				return AdminController.class.isAssignableFrom(clazz);
+			}
+		}  , 1);
 		factory.add(new ActionInterceptorAdapter() {
 			 
 			

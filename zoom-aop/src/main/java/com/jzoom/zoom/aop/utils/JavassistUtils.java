@@ -14,5 +14,9 @@ public class JavassistUtils {
 		}
 		return pool;
 	}
+	
+	public static void destroy() {
+		pool = null;
+	}
 
 }

@@ -33,7 +33,7 @@ import com.jzoom.zoom.web.annotation.Mapping;
 import com.jzoom.zoom.web.annotation.Param;
 
 @Controller(key="deco_table")
-public class DecoTableController {
+public class DecoTableController  implements AdminController{
 
 	@Inject
 	private Dao dao;

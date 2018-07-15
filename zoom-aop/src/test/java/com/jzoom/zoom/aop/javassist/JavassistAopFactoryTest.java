@@ -222,13 +222,13 @@ public class JavassistAopFactoryTest {
 					invoker.invoke();
 				}catch (Throwable e) {
 					log.error("When error invoke method:"+invoker.getMethod());
+					throw e;
 				}finally {
 					log.error("When complete invoke method:"+invoker.getMethod());
 				}
 				
 			}
 		}, "*",  0 );		//The LogMethodCallback will apply to every public method enhanced by the AopFactory
-		Class<?> enhancedAClass = factory.enhance(A.class);
 		
 		
 		

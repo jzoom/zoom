@@ -892,12 +892,25 @@
             @current-change="handleSelect">
            <slot>
             <template v-for="(val,index) in columns">
-                <el-table-column sortable :fixed="index===0" :prop="val[0]" :label="val[1]">
+                <el-table-column sortable :prop="val[0]" :label="val[1]">
                 </el-table-column>
             </template>
            </slot>
+           <el-table-column
+           v-if="actions"
+           width="100"
+           fixed="right"
+            label="操作">
+            <template slot-scope="scope">
+                <el-button-group>
+                    <el-button type="info" size="mini" icon="el-icon-edit" />
+                    <el-button type="danger" size="mini" icon="el-icon-delete" />
+                </el-button-group>
+            </template>
+           </el-table-column>
+
         </el-table>`,
-        props: ['loading', 'list', 'columns'],
+        props: ['loading', 'list', 'columns','actions'],
         methods: {
             handleSelect(row) {
                 this.$emit('change', row);
