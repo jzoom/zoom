@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
+import com.jzoom.zoom.dao.SqlBuilder.Symbo;
 
 /**
  * ActiveRecord 接口
@@ -114,8 +115,8 @@ public interface Ar extends Trans  {
 	 * @param value
 	 * @return
 	 */
-	Ar like(String name,Like like,String value);
+	Ar like(String name,Like like,Object value);
 	
-	
-	
+	Ar whereCondition(String key,Object...values);
+	Ar where(String key, Symbo symbo, Object value);
 }

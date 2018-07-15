@@ -9,7 +9,9 @@ import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
+import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
+import com.jzoom.zoom.dao.SqlBuilder.Symbo;
 
 public class BaseDao implements AdminModel<Record> {
 
@@ -44,13 +46,40 @@ public class BaseDao implements AdminModel<Record> {
 			
 		}
 		for (Entry<String, Object> entry : search.entrySet()) {
-
+			parseKeyAndValue(ar, entry.getKey(), entry.getValue());
 		}
 		ar.orderBy(idName, Sort.DESC);
 		return ar;
 		
 	}
 	
+	
+	
+	private void parseKeyAndValue( Ar ar, String key,Object value ) {
+		if(key.contains("@")) {
+			String[] parts = key.split("@");
+			parseKeyAndValue(ar,parts[0],parts[1],value);
+		}else {
+			if(!key.startsWith("_")) {
+				ar.where(key, value);
+			}
+		}
+	}
+	
+	private void parseKeyAndValue(Ar ar, String sign, String key, Object value) {
+		if("like".equals(sign)) {
+			ar.like(key, Like.BOTH, value);
+		}else{
+			Symbo symbo = Symbo.parse(sign);
+			if(symbo!=null) {
+				ar.where(key,symbo ,value );
+			}else {
+				throw new RuntimeException("不支持的操作符:"+sign);
+			}
+			
+		}
+	}
+
 	public Page<Record> getPage(Map<String, Object> search){
 		Ar ar = parseSearch(search);
 		int pageSize = Caster.to(search.get("_pageSize"), int.class);

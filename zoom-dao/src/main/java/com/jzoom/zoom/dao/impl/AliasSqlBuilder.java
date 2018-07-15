@@ -2,7 +2,9 @@ package com.jzoom.zoom.dao.impl;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 
+import com.jzoom.zoom.dao.DaoException;
 import com.jzoom.zoom.dao.SqlBuilder;
 import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.alias.AliasPolicyManager;
@@ -63,6 +65,42 @@ public class AliasSqlBuilder extends SimpleSqlBuilder {
 		name = nameAdapter.getColumnName(name);
 		return super.set(name, value);
 	}
+	
+	protected String getName(String column) {
+		if( column.contains("(")) {
+			throw new DaoException("不支持函数，如要使用函数，请使用selctX版本的方法,或使用selectRaw");
+		}
+		String name = nameAdapter.getColumnName(column);
+		return name;
+	}
+	
+	
+	@Override
+	protected void parseSelect(StringBuilder sql, String select) {
+		if ("*".equals(select)) {
+			sql.append("*");
+			return;
+		}
+		String[] parts = select.split(",");
+		Matcher matcher = null;
+		boolean first = true;
+		for (String part : parts) {
+			if (first) {
+				first = false;
+			} else {
+				sql.append(",");
+			}
+			if ((matcher = BuilderKit.AS_PATTERN.matcher(part)).matches()) {
+				driver.protectColumn(sql,getName(matcher.group(1)));
+				sql.append(" AS ");
+				driver.protectColumn(sql, matcher.group(2));
+			} else {
+				driver.protectColumn(sql, getName(part));
 
+			}
+		}
+	}
+	
+	
 	
 }

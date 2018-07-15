@@ -55,7 +55,7 @@ public class GenerateController {
 		
 		//查询一下template是否存在
 		List<Record> list = tableModel.getTempltes(type);
-		DecoTableVo data = tableModel.getTable(table);
+		DecoTableVo data = tableModel.getTable(table,true);
 		
 		for (Record record : list) {
 			Template t = group.getTemplate(record.getString("content"));

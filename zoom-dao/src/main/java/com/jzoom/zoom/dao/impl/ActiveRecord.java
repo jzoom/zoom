@@ -21,6 +21,7 @@ import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder;
 import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
+import com.jzoom.zoom.dao.SqlBuilder.Symbo;
 import com.jzoom.zoom.dao.alias.AliasPolicy;
 import com.jzoom.zoom.dao.alias.AliasPolicyMaker;
 import com.jzoom.zoom.dao.alias.AliasPolicyManager;
@@ -171,7 +172,7 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		
 		try {
 			List<Record> list = executeQuery(builder.sql.toString(), builder.values, false);
-			int total = getValue("count(*) AS COUNT", int.class);
+			int total = getCount();
 			int page = builder.getPageFromPosition(position, pageSize);
 			return new Page<Record>( list,page,pageSize,total  );
 		}finally {
@@ -282,6 +283,11 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		builder.select(select);
 		return this;
 	}
+	
+	public Ar selectRaw(String select) {
+		builder.selectRaw(select);
+		return this;
+	}
 
 	@Override
 	public List<Record> executeQuery(String sql, Object... args) {
@@ -309,6 +315,14 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 		String as = BuilderKit.parseAs(select);
 		return record.get(as,classOfT);
 	}
+	
+	public int getCount() {
+		Record record = selectRaw("count(*)").fetch();
+		if(record==null) {
+			return Caster.to(null, int.class);
+		}
+		return record.get("count(*)",int.class);
+	}
 
 	@Override
 	public Ar whereIn(String key, Object... values) {
@@ -317,8 +331,20 @@ public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, Con
 	}
 
 	@Override
-	public Ar like(String name, Like like, String value) {
+	public Ar like(String name, Like like, Object value) {
 		builder.like(name, like, value);
+		return this;
+	}
+
+	@Override
+	public Ar whereCondition(String key, Object... values) {
+		builder.whereCondition(key, values);
+		return this;
+	}
+
+	@Override
+	public Ar where(String key, Symbo symbo, Object value) {
+		builder.where(key, symbo,value);
 		return this;
 	}
 

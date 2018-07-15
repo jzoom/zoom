@@ -2,6 +2,9 @@
     <curd-pane module="/page" 
         :fullscreen="true" 
         comment="页面" 
+        :refresh="refresh"
+        :search="search"
+        :columns="[['like@url','路径']]"
         :current="current">
         <add-button 
             :fullscreen="true"
@@ -16,7 +19,5 @@
         :columns="[['id','编号'],['url','路径']]" 
         >
     </simple-table>
-        
-        <simple-pagination :search="search" :total="total" @refresh="refresh" />
-    
+    <simple-pagination :search="search" :total="total" @refresh="refresh" />
 </div>

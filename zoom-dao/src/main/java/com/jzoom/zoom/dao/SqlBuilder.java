@@ -48,6 +48,28 @@ public interface SqlBuilder {
 		public String value() {
 			return value;
 		}
+		
+		public static Symbo parse(String value) {
+			if(">".equals(value)) {
+				return GT;
+			}
+			if("<".equals(value)){
+				return LT;
+			}
+			if(">=".equals(value)){
+				return GTE;
+			}
+			if("<=".equals(value)){
+				return LTE;
+			}
+			if("<>".equals(value)){
+				return NEQ;
+			}
+			if("=".equals(value)) {
+				return EQ;
+			}
+			return null;
+		}
 	}
 	
 	/**
@@ -79,46 +101,46 @@ public interface SqlBuilder {
 	}
 	/**
 	 * 等于
-	 * @param name
+	 * @param key
 	 * @param value
 	 * @return
 	 */
-	SqlBuilder where(String name,Object value);
+	SqlBuilder where(String key,Object value);
 	
 	/**
 	 * 
-	 * @param name
+	 * @param key
 	 * @param like
 	 * @param value
 	 * @return
 	 */
-	SqlBuilder like(String name,Like like,String value);
+	SqlBuilder like(String key,Like like,Object value);
 	
 	
 	/**
 	 * 
-	 * @param name
+	 * @param key
 	 * @param symbo		> < >= <= <> =
 	 * @param value
 	 * @return
 	 */
-	SqlBuilder where(String name,Symbo symbo,Object value);
+	SqlBuilder where(String key,Symbo symbo,Object value);
 	
 	
 	/**
-	 * where {name} is null
-	 * @param name
+	 * where {key} is null
+	 * @param key
 	 * @return
 	 */
-	SqlBuilder whereNull(String name);
+	SqlBuilder whereNull(String key);
 	
 	/**
-	 * where {name} in (  ?,?,?  ), 1,2,3
-	 * @param name
+	 * where {key} in (  ?,?,?  ), 1,2,3
+	 * @param key
 	 * @param values
 	 * @return
 	 */
-	SqlBuilder whereIn(String name,Object...values);
+	SqlBuilder whereIn(String key,Object...values);
 	
 	/**
 	 * 相当于 where    (    condition     ) 
@@ -133,12 +155,12 @@ public interface SqlBuilder {
 	 * 
 	 * @return
 	 */
-	SqlBuilder having(String name,Symbo symbo,Object value);
+	SqlBuilder having(String key,Symbo symbo,Object value);
 	
 	
-	SqlBuilder orWhere(String name,Object value);
+	SqlBuilder orWhere(String key,Object value);
 	
-	SqlBuilder orWhere(String name,Symbo symbo,Object value);
+	SqlBuilder orWhere(String key,Symbo symbo,Object value);
 	
 	/**
 	 * whereCondition ("a=? and b=? and c=?", 1 , 2, 3)
@@ -159,20 +181,20 @@ public interface SqlBuilder {
 	
 	
 	
-	SqlBuilder whereNotNull(String name);
+	SqlBuilder whereNotNull(String key);
 	
 	
 	
-	SqlBuilder whereNotIn(String name,Object...values);
+	SqlBuilder whereNotIn(String key,Object...values);
 	
 	/**
 	 * 
-	 * @param name
+	 * @param key
 	 * @param like
 	 * @param value
 	 * @return
 	 */
-	SqlBuilder notLike(String name,Like like,Object value);
+	SqlBuilder notLike(String key,Like like,Object value);
 	
 	
 	/**
@@ -232,7 +254,7 @@ public interface SqlBuilder {
 	SqlBuilder select(String...fields);
 	
 	
-	SqlBuilder set(String name,Object value);
+	SqlBuilder set(String key,Object value);
 
 	SqlBuilder setAll( Map<String, Object> data );
 	

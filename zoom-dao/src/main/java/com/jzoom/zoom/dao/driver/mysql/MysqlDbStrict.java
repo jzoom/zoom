@@ -46,7 +46,7 @@ public class MysqlDbStrict implements DbStructFactory {
 					rs = statement.executeQuery();
 					ResultSetMetaData data = rs.getMetaData();
 					List<ColumnMeta> columnMetas = new ArrayList<ColumnMeta>(data.getColumnCount());
-					for (int i = 1, c = data.getColumnCount(); i < c; ++i) {
+					for (int i = 1, c = data.getColumnCount(); i <= c; ++i) {
 						ColumnMeta column = new ColumnMeta();
 						String className = data.getColumnClassName(i);
 						column.setClazz(Classes.forName(className));

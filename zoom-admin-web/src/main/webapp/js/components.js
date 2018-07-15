@@ -72,32 +72,46 @@
     });
 
     Vue.component('curd-pane', {
-        template: `<div class="curd-pan">
-        <add-button 
-            :fullscreen="fullscreen"
-            :templateUrl="module+'/add'" 
-            :api="module+'/add'" 
-            :title="'增加'+comment" />
-        <edit-button 
-            :fullscreen="fullscreen"
-            v-if="current != null" 
-            :api="module+'/put/'+current.id"
-            :templateUrl="module+'/edit'" 
-            :dataUrl="module+'/get/'+current.id" 
-            :title="'修改'+comment" />
-        <del-button  
-            v-if="current != null" 
-            :api="module+'/del/'+current.id" 
-            confirm="真的要删除吗,本操作不能撤销?" 
-            :title="'删除'+comment" />
-            <slot></slot>
+        template: `<div class="table-title">
+            <div class="action-button-pannel">
+                <add-button 
+                    :fullscreen="fullscreen"
+                    :templateUrl="module+'/add'" 
+                    :api="module+'/add'" 
+                    :title="'增加'+comment" />
+                <edit-button 
+                    :fullscreen="fullscreen"
+                    v-if="current != null" 
+                    :api="module+'/put/'+current.id"
+                    :templateUrl="module+'/edit'" 
+                    :dataUrl="module+'/get/'+current.id" 
+                    :title="'修改'+comment" />
+                <del-button  
+                    v-if="current != null" 
+                    :api="module+'/del/'+current.id" 
+                    confirm="真的要删除吗,本操作不能撤销?" 
+                    :title="'删除'+comment" />
+                <slot></slot>
+            </div>
+            <template v-if="columns&&search" v-for="(column,index) in columns">
+                <el-input
+                    :placeholder="column[1]" 
+                    @input="()=>{search[column[0]]=event.target.value}"
+                    :value="search[column[0]]"
+                    style="width:100px;margin-right:3px" 
+                    size="mini" />
+            </template>
             
-    </div>`,
+            <el-button v-if="refresh" @click="refresh" type="primary" size="mini" icon="el-icon-edit">筛选</el-button>
+        </div>`,
         props: [
             'module', //模块  /mod
             'comment', //模块名称(中文注释)
             'current',
-            'fullscreen'
+            'refresh',
+            'fullscreen',
+            'search',
+            'columns'
         ],
     });
 
@@ -441,7 +455,7 @@
             <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
             <img v-if="url" :src="url" width="200" height="130" style="margin-top:3px" />
-            <el-input :value="value" auto-complete="off"></el-input>
+            <input type="hidden" :value="value" />
         </div>
     </el-form-item>`,
         props: ['label', 'value'],
@@ -506,7 +520,7 @@
     Vue.component('form-select', {
         props: ['search', 'label', 'placeholder', 'api', 'value', 'labelField', 'size'],
         template: `<el-form-item :label="label" label-width="120px">
-            <api-select :api="api" :search="search" :labelField="labelField" :value="value" :size="size" @change="change" :placeholder="placeholder" />
+            <api-select :api="api" :search="search" :labelField="labelField" :value="value" :size="size" @selecteded="change" :placeholder="placeholder" />
         </el-form-item>`,
         methods: {
             change(event) {
@@ -574,6 +588,12 @@
     Vue.component('icon-selector',{
         
     });
+
+    Vue.component('simple-action-list',{
+        template:``,
+    });
+
+    
 
     Vue.component('side-bar', {
         template: ` 
@@ -732,7 +752,7 @@
 
     Vue.component('form-html',{
         template:`<el-form-item :label="label" label-width="120px"><vue-html5-editor :content="text" :height="300" :show-module-name="false"
-        zIndex="2002"
+        :zIndex="4000"
         @change="change" ref="editor"></vue-html5-editor></el-form-item>`,
         props:['value','label'],
         data(){

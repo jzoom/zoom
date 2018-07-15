@@ -238,7 +238,7 @@ class BuilderKit {
 		sql.append("DELETE FROM ").append(table).append(where);
 	}
 	
-	public static final Pattern AS_PATTERN = Pattern.compile("([a-zA-Z_\\(\\)\\.\\[\\]]+[\\s]+as[\\s]+)([a-zA-Z_]+)",Pattern.CASE_INSENSITIVE);
+	public static final Pattern AS_PATTERN = Pattern.compile("([a-zA-Z_\\(\\)\\.\\[\\]]+)[\\s]+as[\\s]+([a-zA-Z_]+)",Pattern.CASE_INSENSITIVE);
 	
 
 	/**

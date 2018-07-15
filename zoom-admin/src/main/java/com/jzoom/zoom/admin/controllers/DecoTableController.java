@@ -103,7 +103,7 @@ public class DecoTableController {
 	@Mapping(value="get/{table}",method=Mapping.POST)
 	public DecoTableVo get( @Param(name="{table}") String table  ) {
 		
-		return tableModel.getTable(table);
+		return tableModel.getTable(table,false);
 	}
 	
 	@JsonResponse

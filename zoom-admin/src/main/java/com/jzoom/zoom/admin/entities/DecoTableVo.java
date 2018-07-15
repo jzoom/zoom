@@ -11,7 +11,7 @@ public class DecoTableVo {
 		private String name;
 		private String type;
 		private String comment;
-		private Map<String, Object> prop;
+		private Object prop;
 		
 		public String getType() {
 			return type;
@@ -37,10 +37,10 @@ public class DecoTableVo {
 		public void setColumn(String column) {
 			this.column = column;
 		}
-		public Map<String, Object> getProp() {
+		public Object getProp() {
 			return prop;
 		}
-		public void setProp(Map<String, Object> prop) {
+		public void setProp(Object prop) {
 			this.prop = prop;
 		}
 		

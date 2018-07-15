@@ -72,12 +72,12 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	}
 
 	@Override
-	public SqlBuilder like(String name, Like like, String value) {
-		assert (name != null && like != null);
+	public SqlBuilder like(String key, Like like, Object value) {
+		assert (key != null && like != null);
 		checkValue(value);
 		andWhere();
-		where.append(name).append(" LIKE ?");
-		addValue(name, like.toValue(value));
+		where.append(key).append(" LIKE ?");
+		addValue(key, like.toValue(value));
 		return this;
 	}
 
@@ -88,19 +88,19 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	}
 
 	@Override
-	public SqlBuilder where(String name, Symbo symbo, Object value) {
-		assert (name != null && symbo != null);
+	public SqlBuilder where(String key, Symbo symbo, Object value) {
+		assert (key != null && symbo != null);
 
-		return whereImpl(name, symbo, value, " AND ");
+		return whereImpl(key, symbo, value, " AND ");
 
 	}
 
 	@Override
-	public SqlBuilder where(String name, Object value) {
-		return whereImpl(name, Symbo.EQ, value, " AND ");
+	public SqlBuilder where(String key, Object value) {
+		return whereImpl(key, Symbo.EQ, value, " AND ");
 	}
 
-	protected SqlBuilder whereImpl(String name, Symbo symbo, Object value, String relation) {
+	protected SqlBuilder whereImpl(String key, Symbo symbo, Object value, String relation) {
 		checkValue(value);
 
 		if (where.length() == 0) {
@@ -108,40 +108,40 @@ public class SimpleSqlBuilder implements SqlBuilder {
 		} else {
 			where.append(relation);
 		}
-		where.append(name).append(symbo.value()).append("?");
-		addValue(name, value);
+		where.append(key).append(symbo.value()).append("?");
+		addValue(key, value);
 		return this;
 	}
 
 	@Override
-	public SqlBuilder orWhere(String name, Object value) {
+	public SqlBuilder orWhere(String key, Object value) {
 
-		return orWhere(name, Symbo.EQ, value);
+		return orWhere(key, Symbo.EQ, value);
 	}
 
 	@Override
-	public SqlBuilder orWhere(String name, Symbo symbo, Object value) {
-		return whereImpl(name, symbo, value, " OR ");
+	public SqlBuilder orWhere(String key, Symbo symbo, Object value) {
+		return whereImpl(key, symbo, value, " OR ");
 	}
 
 	@Override
-	public SqlBuilder whereNull(String name) {
+	public SqlBuilder whereNull(String key) {
 		andWhere();
-		where.append(" IS NULL");
+		where.append(key).append(" IS NULL");
 		return this;
 	}
 
 	@Override
-	public SqlBuilder whereNotNull(String name) {
+	public SqlBuilder whereNotNull(String key) {
 		andWhere();
-		where.append(" NOT (").append(name).append(" IS NULL)");
+		where.append(" NOT (").append(key).append(" IS NULL)");
 		return this;
 	}
 
 	@Override
-	public SqlBuilder whereIn(String name, Object... values) {
+	public SqlBuilder whereIn(String key, Object... values) {
 		andWhere();
-		where.append(name).append(" IN (");
+		where.append(key).append(" IN (");
 		boolean first = true;
 		for (Object object : values) {
 			if (first) {
@@ -150,7 +150,7 @@ public class SimpleSqlBuilder implements SqlBuilder {
 				where.append(",");
 			}
 			where.append("?");
-			this.addValue(name, object);
+			this.addValue(key, object);
 		}
 		where.append(')');
 
@@ -168,7 +168,7 @@ public class SimpleSqlBuilder implements SqlBuilder {
 		return this;
 	}
 
-	private void addValue(String name, Object value) {
+	private void addValue(String key, Object value) {
 
 		this.values.add(value);
 	}
@@ -180,13 +180,13 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	}
 
 	@Override
-	public SqlBuilder having(String name, Symbo symbo, Object value) {
+	public SqlBuilder having(String key, Symbo symbo, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SqlBuilder whereCondition(String value, Object... values) {
+	public SqlBuilder whereCondition(String key, Object... values) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -198,13 +198,13 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	}
 
 	@Override
-	public SqlBuilder whereNotIn(String name, Object... values) {
+	public SqlBuilder whereNotIn(String key, Object... values) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SqlBuilder notLike(String name, Like like, Object value) {
+	public SqlBuilder notLike(String key, Like like, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -275,7 +275,7 @@ public class SimpleSqlBuilder implements SqlBuilder {
 
 	@Override
 	public SqlBuilder count() {
-		select("COUNT(*) AS COUNT");
+		selectRaw("COUNT(*) AS COUNT");
 		return this;
 	}
 
@@ -283,6 +283,14 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	public SqlBuilder avg(String field) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public SqlBuilder selectRaw(String fields) {
+		if(sql.length() == 0) {
+			sql.append("SELECT ");
+		}
+		sql.append(fields);
+		return this;
 	}
 
 	@Override
@@ -308,7 +316,7 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	 * @param sql
 	 * @param select
 	 */
-	private void parseSelect(StringBuilder sql, String select) {
+	protected void parseSelect(StringBuilder sql, String select) {
 		if ("*".equals(select)) {
 			sql.append("*");
 			return;
@@ -323,7 +331,8 @@ public class SimpleSqlBuilder implements SqlBuilder {
 				sql.append(",");
 			}
 			if ((matcher = BuilderKit.AS_PATTERN.matcher(part)).matches()) {
-				sql.append(matcher.group(1));
+				driver.protectColumn(sql,matcher.group(1));
+				sql.append(" AS ");
 				driver.protectColumn(sql, matcher.group(2));
 			} else {
 				if (part.contains("(")) {
@@ -374,8 +383,8 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	}
 
 	@Override
-	public SqlBuilder set(String name, Object value) {
-		record.put(name, value);
+	public SqlBuilder set(String key, Object value) {
+		record.put(key, value);
 		return this;
 	}
 
