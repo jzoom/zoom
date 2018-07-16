@@ -47,17 +47,23 @@ public class DetectPrefixAliasPolicyMaker implements AliasPolicyMaker {
 		//只有最大的为第一个的才行
 		MutableInt first = null;
 		String key = null;
-		for (Entry<String, MutableInt> entry : countMap.entrySet()) {
-			if(first==null) {
-				first = entry.getValue();
-				key = entry.getKey();
-			}else {
-				if(first.intValue() > entry.getValue().intValue()) {
-					aliasPolicy =  new PrefixAliasPolicy(new StringBuilder(key).append("_").toString());
+		if(countMap.size() == 1) {
+			key = countMap.keySet().iterator().next();
+			aliasPolicy =  new PrefixAliasPolicy(new StringBuilder(key).append("_").toString());
+		}else {
+			for (Entry<String, MutableInt> entry : countMap.entrySet()) {
+				if(first==null) {
+					first = entry.getValue();
+					key = entry.getKey();
+				}else {
+					if(first.intValue() > entry.getValue().intValue()) {
+						aliasPolicy =  new PrefixAliasPolicy(new StringBuilder(key).append("_").toString());
+					}
+					break;
 				}
-				break;
 			}
 		}
+		
 		
 		if(aliasPolicy!=null) {
 			Map<String,String> map = new HashMap<String, String>();

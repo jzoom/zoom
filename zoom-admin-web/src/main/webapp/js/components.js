@@ -38,39 +38,7 @@
         }
     })
 
-    Vue.component('action-button-pannel',{
-        template: `<div class="action-button-pannel">
-        <add-button 
-            :fullscreen="fullscreen"
-            size="small"
-            :templateUrl="module+'/add'" 
-            :api="module+'/add'" 
-            :title="'增加'+comment" />
-        <edit-button 
-            :fullscreen="fullscreen"
-            v-if="current != null" 
-            size="small"
-            :api="module+'/put/'+current.id"
-            :templateUrl="module+'/edit'" 
-            :dataUrl="module+'/get/'+current.id" 
-            :title="'修改'+comment" />
-        <del-button  
-            size="small"
-            v-if="current != null" 
-            :api="module+'/del/'+current.id" 
-            confirm="真的要删除吗,本操作不能撤销?" 
-            :title="'删除'+comment" />
-            <slot></slot>
-            
-    </div>`,
-        props: [
-            'module', //模块  /mod
-            'comment', //模块名称(中文注释)
-            'current',
-            'fullscreen'
-        ],
-    });
-
+    
     Vue.component('curd-pane', {
         template: `<div class="table-title">
             <div class="action-button-pannel">
@@ -82,13 +50,13 @@
                 <edit-button 
                     :fullscreen="fullscreen"
                     v-if="current != null" 
-                    :api="module+'/put/'+current.id"
+                    :api="module+'/put/'+current[id]"
                     :templateUrl="module+'/edit'" 
-                    :dataUrl="module+'/get/'+current.id" 
+                    :dataUrl="module+'/get/'+current[id]" 
                     :title="'修改'+comment" />
                 <del-button  
                     v-if="current != null" 
-                    :api="module+'/del/'+current.id" 
+                    :api="module+'/del/'+current[id]" 
                     confirm="真的要删除吗,本操作不能撤销?" 
                     :title="'删除'+comment" />
                 <slot></slot>
@@ -111,8 +79,18 @@
             'refresh',
             'fullscreen',
             'search',
-            'columns'
+            'columns',
+            'pk'
         ],
+        mounted(){
+            this.id = this.pk || "id"
+        },
+        data(){
+            return {
+                id:null
+            }
+        }
+        
     });
 
     /**

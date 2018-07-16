@@ -64,10 +64,6 @@ public class GenerateController  implements AdminController{
 			//插入记录
 			String name = table + "/" + record.getString("name");
 			tableModel.insertOrUpdate( name, t.render() );
-			
-			
-		//	System.out.print(t.render());
-			//
 		}
 		
 		

@@ -8,6 +8,10 @@ import com.jzoom.zoom.admin.models.BaseDao;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
+import com.jzoom.zoom.dao.adapter.NameAdapter;
+import com.jzoom.zoom.dao.driver.DbStructFactory;
+import com.jzoom.zoom.dao.meta.ColumnMeta;
+import com.jzoom.zoom.dao.meta.TableMeta;
 import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.web.annotation.Controller;
 import com.jzoom.zoom.web.annotation.JsonResponse;
@@ -64,18 +68,38 @@ public class ContentController  implements AdminController{
 	private BaseDao getDao(String module) throws NotFoundException {
 		String table = module2table.get(module);
 		Dao dao;
+		DbStructFactory struct;
 		if (table == null) {
 			//default
 			dao = this.dao;
 			table = module;
+			
 		}else {
 			dao = this.admin;
 		}
 		
+		
 		BaseDao baseDao = daoMap.get(table);
 		if (baseDao == null) {
 			synchronized (daoMap) {
-				baseDao = new BaseDao(table,"id");
+				//查询一下
+				String id;
+				try {
+					struct = dao.getDbStructFactory();
+					TableMeta meta = struct.getTableMeta(dao.ar(), table);
+					struct.fill(dao.ar(), meta);
+					ColumnMeta[] primarys = meta.getPrimaryKeys();
+					if(primarys.length == 0) {
+						throw new RuntimeException("没有定义主键");
+					}
+					ColumnMeta primaryKey = primarys[0];
+					NameAdapter adapter = dao.getNameAdapter(table);
+					id= adapter.getFieldName(primaryKey.getName());
+				}catch (Exception e) {
+					id = "id";
+				}
+				
+				baseDao = new BaseDao(table,id);
 				baseDao.setDao(dao);
 				daoMap.put(table, baseDao);
 			}

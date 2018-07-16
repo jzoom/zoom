@@ -21,10 +21,6 @@ public class ColumnMeta {
 	
 	private int type;
 	
-	/**
-	 * 是否主键
-	 */
-	private boolean primary;
 	
 	private KeyType keyType;
 	
@@ -66,11 +62,7 @@ public class ColumnMeta {
 	}
 
 	public boolean isPrimary() {
-		return primary;
-	}
-
-	public void setPrimary(boolean primary) {
-		this.primary = primary;
+		return keyType == KeyType.PRIMARY;
 	}
 
 	public boolean isAuto() {

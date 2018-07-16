@@ -1,6 +1,8 @@
 package com.jzoom.zoom.dao.meta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,23 @@ public class TableMeta {
 		this.comment = comment;
 	}
 	
+	private ColumnMeta[] primaryKeys;
 	
+	public ColumnMeta[] getPrimaryKeys() {
+		if(primaryKeys==null) {
+			synchronized (this) {
+				List<ColumnMeta> list = new ArrayList<ColumnMeta>(2);
+				for (ColumnMeta columnMeta : columns) {
+					if(columnMeta.isPrimary()) {
+						list.add(columnMeta);
+					}
+				}
+				primaryKeys = list.toArray(new ColumnMeta[ list.size() ]);
+			}
+		}
+		return primaryKeys;
+	}
+	
+
 	
 }

@@ -30,7 +30,7 @@ public class TableModel {
 	public DecoTableVo getTable(String table, boolean getmap) {
 		TableMeta data = dao.getDbStructFactory().getTableMeta(dao.ar(), table);
 		// NameAdapter adapter = dao.getPolicy(table);
-
+		dao.getDbStructFactory().fill(dao.ar(), data);
 		// 下发数据
 		Record record = admin.table("sys_deco_table").where("target_table", table).fetch();
 		List<Record> columns = admin.table("sys_decoration").where("target_table", table).get();
@@ -49,6 +49,8 @@ public class TableModel {
 			list.add(decoColumn);
 		}
 		vo.setColumns(list);
+		ColumnMeta[] primaryKeys = data.getPrimaryKeys();
+		vo.setPrimaryKey(  primaryKeys.length > 0 ? nameAdapter.getFieldName(primaryKeys[0].getName()) : "id" );
 		if (record != null) {
 			vo.setComment(record.getString("comment"));
 			if (columns.size() > 0) {
