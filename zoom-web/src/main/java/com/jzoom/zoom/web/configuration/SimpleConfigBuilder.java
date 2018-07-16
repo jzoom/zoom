@@ -1,4 +1,4 @@
-package com.jzoom.zoom.configuration;
+package com.jzoom.zoom.web.configuration;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

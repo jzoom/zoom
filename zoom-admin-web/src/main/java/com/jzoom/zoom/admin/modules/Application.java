@@ -1,6 +1,7 @@
 package com.jzoom.zoom.admin.modules;
 
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import com.jzoom.zoom.server.ZoomWebApplication;
 import com.jzoom.zoom.web.action.ActionContext;
 import com.jzoom.zoom.web.action.ActionInterceptorAdapter;
 import com.jzoom.zoom.web.action.ActionInterceptorFactory;
+import com.jzoom.zoom.web.utils.WebUtils;
 import com.sun.tools.javac.util.Name;
 
 @Module
@@ -41,11 +43,17 @@ public class Application{
 	@Inject("cfg:mysql")
 	private MysqlConnDescription mysql;
 	
+	@Inject("cfg:work")
+	private MysqlConnDescription work;
+	
 	@Inject("cfg:oracle")
 	private OracleConnDescription oracle;
 	
 	@Inject("cfg:aliyun")
 	private MysqlConnDescription aliyun;
+	
+	@Inject("cfg:zoom.h2")
+	private String dbFile;
 	
 	public Application() {
 		
@@ -59,8 +67,11 @@ public class Application{
 
 	@IocBean(destroy="close",name="defaultDataSource")
 	public DataSource getDataSource() {
-		DruidDataSourceProvider provider = new DruidDataSourceProvider(mysql);
+		DruidDataSourceProvider provider = new DruidDataSourceProvider(work);
 		DruidDataSource dataSource = provider.getDataSource();
+		
+		
+		
 		return dataSource;
 	}
 //	
@@ -81,7 +92,19 @@ public class Application{
 	
 	@IocBean(name="admin")
 	public Dao getDao() {
-		return new ZoomDao(new RawDataSource("jdbc:h2:file:./admin","sa","sa"),false);
+		if(dbFile==null) {
+			dbFile = "./admin";
+		}else {
+			if(!new File(dbFile+".h2.db").exists()) {
+				dbFile = "./admin";
+			}
+		}
+		try {
+			Class.forName("org.h2.Driver");
+		}catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find class org.h2.Driver",e);
+		}
+		return new ZoomDao(new RawDataSource("jdbc:h2:file:"+dbFile,"sa","sa"),false);
 	}
 	
 

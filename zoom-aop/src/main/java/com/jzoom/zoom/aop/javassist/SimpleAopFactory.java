@@ -12,11 +12,13 @@ import com.jzoom.zoom.common.logger.Loggers;
 import com.jzoom.zoom.common.utils.Classes;
 
 import javassist.CannotCompileException;
+import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtMethod;
 import javassist.Modifier;
+import javassist.NotFoundException;
 
 
 /**
@@ -55,7 +57,15 @@ public class SimpleAopFactory extends AbsAopFactory {
 		
 		// 创建一个子类
 		CtClass subClass = classPool.makeClass(src.getName()+TAIL);
-		subClass.setSuperclass(classPool.get(src.getName()));
+		try {
+			CtClass superClass = classPool.get(src.getName());
+			subClass.setSuperclass(superClass);
+		}catch (NotFoundException e) {
+			classPool.appendClassPath(new ClassClassPath(src));
+			CtClass superClass = classPool.get(src.getName());
+			subClass.setSuperclass(superClass);
+		}
+	
 		
 		//创建静态变量 AopConfig[] ,名称为 _$configs
 		CtField field = new CtField(classPool.get( AopConfig[].class.getName()  ), CONFIG_FIELD_NAME, subClass);
