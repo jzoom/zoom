@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.jzoom.zoom.admin.models.BaseDao;
+import com.jzoom.zoom.admin.models.BaseDao.DaoId;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
@@ -83,20 +84,17 @@ public class ContentController  implements AdminController{
 		if (baseDao == null) {
 			synchronized (daoMap) {
 				//查询一下
-				String id;
+				DaoId id;
 				try {
 					struct = dao.getDbStructFactory();
 					TableMeta meta = struct.getTableMeta(dao.ar(), table);
 					struct.fill(dao.ar(), meta);
-					ColumnMeta[] primarys = meta.getPrimaryKeys();
-					if(primarys.length == 0) {
-						throw new RuntimeException("没有定义主键");
-					}
-					ColumnMeta primaryKey = primarys[0];
 					NameAdapter adapter = dao.getNameAdapter(table);
-					id= adapter.getFieldName(primaryKey.getName());
+					
+					id = BaseDao.getDaoId(meta, adapter);
+					
 				}catch (Exception e) {
-					id = "id";
+					id = BaseDao.newDaoId("id");
 				}
 				
 				baseDao = new BaseDao(table,id);

@@ -17,6 +17,21 @@ public interface SqlBuilder {
 		public String value() {
 			return value;
 		}
+
+		public static Sort parse(String sort) {
+			if(sort == null)
+				return DESC;
+			
+			sort = sort.toUpperCase();
+			
+			for (Sort s : values()) {
+				if(s.value.equals(sort)) {
+					return s;
+				}
+			}
+			
+			return DESC;
+		}
 		
 	}
 	

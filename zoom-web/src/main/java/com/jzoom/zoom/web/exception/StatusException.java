@@ -1,7 +1,7 @@
 package com.jzoom.zoom.web.exception;
 
 
-public class StatusException extends Exception implements RestException {
+public class StatusException extends RuntimeException implements RestException {
 
 	/**
 	 * 429 请求过多被限制
