@@ -2,6 +2,8 @@ package com.jzoom.zoom.web.action.impl;
 
 import java.lang.reflect.Method;
 
+import org.jzoom.zoom.common.ConfigurationConstants;
+
 import com.jzoom.zoom.aop.impl.ReflectMethodCaller;
 import com.jzoom.zoom.ioc.IocContainer;
 import com.jzoom.zoom.ioc.annonation.Inject;
@@ -9,7 +11,6 @@ import com.jzoom.zoom.reflect.ClassInfo;
 import com.jzoom.zoom.web.action.Action;
 import com.jzoom.zoom.web.action.ActionFactory;
 import com.jzoom.zoom.web.action.ActionInterceptorFactory;
-import com.jzoom.zoom.web.constants.ConfigurationConstants;
 import com.jzoom.zoom.web.parameter.ParameterParser;
 import com.jzoom.zoom.web.parameter.ParameterParserFactory;
 import com.jzoom.zoom.web.parameter.PreParameterParser;

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jzoom.zoom.common.ConfigurationConstants;
 
 import com.jzoom.zoom.aop.AopFactory;
 import com.jzoom.zoom.aop.javassist.SimpleAopFactory;
@@ -36,7 +37,6 @@ import com.jzoom.zoom.reflect.SimpleClassInfo;
 import com.jzoom.zoom.web.action.ActionHandler;
 import com.jzoom.zoom.web.action.impl.SimpleActionBuilder;
 import com.jzoom.zoom.web.configuration.SimpleConfigBuilder;
-import com.jzoom.zoom.web.constants.ConfigurationConstants;
 import com.jzoom.zoom.web.exception.StatusException;
 import com.jzoom.zoom.web.router.Router;
 import com.jzoom.zoom.web.router.RouterParamRule;

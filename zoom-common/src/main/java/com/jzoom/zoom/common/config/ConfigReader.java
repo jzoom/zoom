@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.jzoom.zoom.common.ConfigurationConstants;
 
 import com.jzoom.zoom.caster.Caster;
 import com.jzoom.zoom.common.filter.Filter;
@@ -44,7 +45,7 @@ public class ConfigReader implements ConfigValueParser{
 		@Override
 		public void load(File file){
 			super.load(file);
-			String env = getString("env");
+			String env = getString( ConfigurationConstants.ENV );
 			if (!StringUtils.isEmpty(env)) {
 				String name = file.getName();
 				int l = name.lastIndexOf('.');
@@ -53,7 +54,11 @@ public class ConfigReader implements ConfigValueParser{
 				String ext = name.substring(l);
 
 				super.load(new File(file.getParent(),
-						new StringBuilder().append(prev).append("-").append(env).append(ext).toString()));
+						new StringBuilder()
+							.append(prev)
+							.append("-")
+							.append(env)
+							.append(ext).toString()));
 
 			}
 
