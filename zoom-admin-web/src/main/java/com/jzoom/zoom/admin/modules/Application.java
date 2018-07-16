@@ -12,6 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.jzoom.zoom.admin.controllers.AdminController;
 import com.jzoom.zoom.aop.AopFactory;
+import com.jzoom.zoom.aop.MethodInterceptor;
+import com.jzoom.zoom.aop.MethodInvoker;
 import com.jzoom.zoom.common.filter.ClassAndMethodFilter;
 import com.jzoom.zoom.common.res.ClassResolvers;
 import com.jzoom.zoom.dao.Dao;
@@ -93,20 +95,21 @@ public class Application{
 	
 	@Inject
 	public void config( AopFactory aopFactory ) {
+		
 		/**
 		 * 生产环境最好不要这么干，*表示所有模型的所有方法都做切面，极大降低系统性能。
 		 */
-//		aopFactory.addFilter(new MethodInterceptor() {
-//			@Override
-//			public void intercept(MethodInvoker invoker) throws Throwable {
-//				try {
-//					invoker.invoke();
-//				}finally {
-//					//System.out.println(invoker.getMethod().getName());
-//				}
-//				
-//			}
-//		}, "*", 0);
+		aopFactory.addFilter(new MethodInterceptor() {
+			@Override
+			public void intercept(MethodInvoker invoker) throws Throwable {
+				try {
+					invoker.invoke();
+				}finally {
+					//System.out.println(invoker.getMethod().getName());
+				}
+				
+			}
+		}, "*", 0);
 	}
 	
 	

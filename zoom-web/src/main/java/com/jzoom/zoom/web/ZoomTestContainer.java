@@ -21,7 +21,6 @@ public class ZoomTestContainer {
 	protected IocContainer ioc;
 	private AopFactory factory;
 
-	private WebClassLoader classLoader;
 
 	public ZoomTestContainer() {
 		loadApplicationConfig();
@@ -44,8 +43,7 @@ public class ZoomTestContainer {
 
 	}
 	private void createAopFactory() {
-		classLoader = new WebClassLoader(ZoomWeb.class.getClassLoader());
-		factory = new SimpleAopFactory(classLoader);
+		factory = new SimpleAopFactory();
 	}
 
 	public class ClassEnhanceAdapter implements ClassEnhance {

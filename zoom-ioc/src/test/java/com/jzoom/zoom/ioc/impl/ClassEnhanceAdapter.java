@@ -8,9 +8,6 @@ import com.jzoom.zoom.ioc.ClassEnhance;
 public class ClassEnhanceAdapter implements ClassEnhance {
 	
 	private AopFactory factory;
-	public ClassEnhanceAdapter(ClassLoader classLoader,AopMaker...makers) {
-		factory = new SimpleAopFactory(classLoader,makers);
-	}
 	public ClassEnhanceAdapter(AopMaker...makers) {
 		factory = new SimpleAopFactory(makers);
 	}

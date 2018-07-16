@@ -64,9 +64,6 @@ public class SimplePluginHolder implements PluginHolder {
 		}finally {
 			Io.close(is);
 		}
-		
-		
-		
 	}
 
 	@Override

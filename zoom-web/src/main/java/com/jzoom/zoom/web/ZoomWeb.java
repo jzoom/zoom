@@ -57,7 +57,6 @@ public class ZoomWeb {
 	private IocContainer ioc;
 	private AopFactory factory;
 
-	private WebClassLoader classLoader;
 
 	private static Log log = LogFactory.getLog(ZoomWeb.class);
 	long first = System.currentTimeMillis();
@@ -113,8 +112,7 @@ public class ZoomWeb {
 	}
 
 	private void createAopFactory() {
-		classLoader = new WebClassLoader(ZoomWeb.class.getClassLoader());
-		factory = new SimpleAopFactory(classLoader);
+		factory = new SimpleAopFactory();
 	}
 
 	private void createIocContainer() {
@@ -127,6 +125,7 @@ public class ZoomWeb {
 		ioc.register(AopFactory.class.getName(), factory);
 		WebUtils.setIoc(ioc);
 
+		
 	}
 
 	public class ClassEnhanceAdapter implements ClassEnhance {
@@ -209,7 +208,6 @@ public class ZoomWeb {
 
 		router = null;
 		factory = null;
-		classLoader = null;
 
 		WebUtils.setIoc(null);
 

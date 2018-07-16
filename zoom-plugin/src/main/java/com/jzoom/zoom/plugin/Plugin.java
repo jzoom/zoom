@@ -5,6 +5,17 @@ import java.util.Map;
 public interface Plugin {
 	
 	/**
+	 * hook point
+	 */
+	public static final String ADD_MENU = "ADD_MENU";
+	/**
+	 * 
+	 */
+	public static final String REMOVE_MENU = "ADD_MENU";
+	
+	
+	
+	/**
 	 * 名称
 	 * @return
 	 */

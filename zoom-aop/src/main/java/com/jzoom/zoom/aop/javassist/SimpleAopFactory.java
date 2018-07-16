@@ -30,30 +30,19 @@ public class SimpleAopFactory extends AbsAopFactory {
 	
 	private static final Logger logger = Loggers.getLogger();
 	
-	private ClassLoader loader;
 	private ClassPool classPool;
 
 	
 	
 	public SimpleAopFactory(AopMaker...makers) {
-		this(SimpleAopFactory.class.getClassLoader(), makers);
-	}
-	
-	public SimpleAopFactory(ClassLoader classLoader,AopMaker...makers) {
 		super(makers);
-		this.loader = classLoader;
 		this.classPool = JavassistUtils.getClassPool();
-		
 	}
+
 	
 	@Override
 	public void destroy() {
 		super.destroy();
-		
-		if(this.loader!=null) {
-			Classes.destroy(this.loader);
-			this.loader = null;
-		}
 		
 		this.classPool = null;
 		
@@ -81,11 +70,10 @@ public class SimpleAopFactory extends AbsAopFactory {
 			subClass.addMethod(toPublic(createRenameMethod(aopConfig.getMethod(), subClass)));
 			subClass.addMethod(toPublic(createMethod(aopConfig.getMethod(), aopConfig.getInterceptors(),subClass,index++)));
 			
-			
 		}
 		
 		// 生成MethodCaller,简单的用反射
-		Class<?> resultClass = subClass.toClass(loader, null);
+		Class<?> resultClass = subClass.toClass(src.getClassLoader(), null);
 		for (AopConfig aopConfig : configs) {
 			final Method newMethod = resultClass.getDeclaredMethod("__"+aopConfig.getMethod().getName(), aopConfig.getMethod().getParameterTypes());
 			aopConfig.setCaller( new ReflectMethodCaller(newMethod) );

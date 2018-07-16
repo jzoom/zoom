@@ -167,8 +167,6 @@ public abstract class AbsAopFactory implements AopFactory,Destroyable {
 	public Class<?> enhance(Class<?> targetClass)  {
 		assert(targetClass!=null);
 		
-		
-		
 		Class<?> enhanced = enhanceMap.get(targetClass);
 		if(enhanced!=null) {
 			return enhanced;
@@ -179,7 +177,7 @@ public abstract class AbsAopFactory implements AopFactory,Destroyable {
 		}
 		
 		try {
-			return Class.forName(targetClass.getName()+TAIL);
+			return Class.forName(targetClass.getName()+TAIL,false,targetClass.getClassLoader());
 		}catch (ClassNotFoundException e) {
 			
 		}
