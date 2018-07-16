@@ -8,7 +8,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 
 import com.jzoom.zoom.common.codec.HashStr;
-import com.jzoom.zoom.common.io.Io;
 import com.jzoom.zoom.web.annotation.Controller;
 import com.jzoom.zoom.web.annotation.JsonResponse;
 

@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.jzoom.zoom.web.action.Action;
 import com.jzoom.zoom.web.action.ActionHandler;
 
 public interface Router {

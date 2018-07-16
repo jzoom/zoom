@@ -1,6 +1,5 @@
 package com.jzoom.zoom.admin.models;
 
-import java.util.List;
 import java.util.Map;
 
 import com.jzoom.zoom.dao.Page;

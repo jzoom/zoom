@@ -1,29 +1,17 @@
 package com.jzoom.zoom.dao.driver.h2;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.dao.Ar;
-import com.jzoom.zoom.dao.ConnectionExecutor;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.driver.AbsDbStruct;
-import com.jzoom.zoom.dao.driver.DbStructFactory;
 import com.jzoom.zoom.dao.meta.ColumnMeta;
 import com.jzoom.zoom.dao.meta.ColumnMeta.KeyType;
 import com.jzoom.zoom.dao.meta.TableMeta;
-import com.jzoom.zoom.dao.utils.DaoUtils;
 
 public class H2DbStrict extends AbsDbStruct {
 

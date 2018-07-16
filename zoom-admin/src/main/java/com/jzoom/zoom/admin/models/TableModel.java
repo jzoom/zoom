@@ -8,14 +8,11 @@ import java.util.Map;
 import com.jzoom.zoom.admin.entities.DecoTableVo;
 import com.jzoom.zoom.admin.entities.DecoTableVo.DecoColumn;
 import com.jzoom.zoom.common.json.JSON;
-import com.jzoom.zoom.common.utils.MapUtils;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
-import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.adapter.NameAdapter;
 import com.jzoom.zoom.dao.meta.ColumnMeta;
 import com.jzoom.zoom.dao.meta.TableMeta;
-import com.jzoom.zoom.dao.utils.TreeUtils;
 import com.jzoom.zoom.ioc.annonation.Inject;
 
 public class TableModel {

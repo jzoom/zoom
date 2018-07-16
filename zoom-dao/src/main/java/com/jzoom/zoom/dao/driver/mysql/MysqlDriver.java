@@ -1,12 +1,7 @@
 package com.jzoom.zoom.dao.driver.mysql;
 
-import java.util.Collection;
-import java.util.List;
-
-import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.adapter.StatementAdapter;
 import com.jzoom.zoom.dao.driver.AbsDriver;
-import com.jzoom.zoom.dao.meta.TableMeta;
 
 public class MysqlDriver  extends AbsDriver{
 

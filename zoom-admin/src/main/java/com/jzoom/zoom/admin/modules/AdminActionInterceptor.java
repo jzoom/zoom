@@ -7,7 +7,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.jzoom.zoom.admin.models.TokenService;
 import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.Dao;
-import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.ioc.annonation.Inject;
 import com.jzoom.zoom.token.hex.ClientToken;
 import com.jzoom.zoom.web.action.ActionContext;

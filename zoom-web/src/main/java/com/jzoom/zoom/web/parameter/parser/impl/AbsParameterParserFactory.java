@@ -4,8 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import javax.xml.bind.DatatypeConverter;
-
 import org.jzoom.zoom.common.Destroyable;
 
 import com.jzoom.zoom.web.annotation.Param;

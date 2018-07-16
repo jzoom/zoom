@@ -3,7 +3,6 @@ package com.jzoom.zoom.web.action;
 import java.lang.reflect.Method;
 
 import com.jzoom.zoom.common.filter.ClassAndMethodFilter;
-import com.jzoom.zoom.common.filter.impl.PatternClassAndMethodFilter;
 
 public interface ActionInterceptorFactory {
 

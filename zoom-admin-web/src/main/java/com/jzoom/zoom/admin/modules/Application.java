@@ -32,8 +32,6 @@ import com.jzoom.zoom.server.ZoomWebApplication;
 import com.jzoom.zoom.web.action.ActionContext;
 import com.jzoom.zoom.web.action.ActionInterceptorAdapter;
 import com.jzoom.zoom.web.action.ActionInterceptorFactory;
-import com.jzoom.zoom.web.utils.WebUtils;
-import com.sun.tools.javac.util.Name;
 
 @Module
 public class Application{

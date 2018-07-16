@@ -1,14 +1,12 @@
 package com.jzoom.zoom.web.parameter.parser.impl;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.jzoom.zoom.caster.Caster;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.web.parameter.adapter.ParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.form.NamedFormParameterAdapter;

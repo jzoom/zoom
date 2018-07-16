@@ -24,7 +24,6 @@ import com.jzoom.zoom.dao.Entity;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.adapter.EntityAdapter;
 import com.jzoom.zoom.dao.adapter.NameAdapter;
-import com.jzoom.zoom.dao.alias.AliasPolicy;
 import com.jzoom.zoom.dao.driver.SqlDriver;
 
 

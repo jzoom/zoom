@@ -9,7 +9,6 @@ import java.sql.Clob;
 import java.sql.NClob;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;

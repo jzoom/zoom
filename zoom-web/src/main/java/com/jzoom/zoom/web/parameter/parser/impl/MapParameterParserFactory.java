@@ -11,7 +11,6 @@ import com.jzoom.zoom.web.parameter.adapter.impl.BasicParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.map.NamedMapParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.map.PathMapParameterAdapter;
 import com.jzoom.zoom.web.parameter.adapter.impl.map.RequestBodyMapAdapter;
-import com.mchange.v2.beans.BeansUtils;
 
 public class MapParameterParserFactory extends AbsParameterParserFactory<Map<String, Object>> {
 

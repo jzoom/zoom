@@ -3,9 +3,6 @@ package com.jzoom.zoom.token.hex;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.codehaus.jackson.map.JsonSerializable;
-
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;

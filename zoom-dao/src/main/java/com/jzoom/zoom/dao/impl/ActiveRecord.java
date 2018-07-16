@@ -18,16 +18,12 @@ import com.jzoom.zoom.dao.DaoException;
 import com.jzoom.zoom.dao.EntityManager;
 import com.jzoom.zoom.dao.Page;
 import com.jzoom.zoom.dao.Record;
-import com.jzoom.zoom.dao.SqlBuilder;
 import com.jzoom.zoom.dao.SqlBuilder.Like;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
 import com.jzoom.zoom.dao.SqlBuilder.Symbo;
-import com.jzoom.zoom.dao.alias.AliasPolicy;
-import com.jzoom.zoom.dao.alias.AliasPolicyMaker;
+import com.jzoom.zoom.dao.Trans;
 import com.jzoom.zoom.dao.alias.AliasPolicyManager;
 import com.jzoom.zoom.dao.driver.SqlDriver;
-import com.jzoom.zoom.dao.Trans;
-import com.jzoom.zoom.dao.meta.TableMeta;
 import com.jzoom.zoom.dao.utils.DaoUtils;
 
 public class ActiveRecord extends ThreadLocalConnectionHolder implements Ar, ConnectionHolder, Trans {

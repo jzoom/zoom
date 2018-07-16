@@ -13,8 +13,6 @@ import com.jzoom.zoom.ioc.IocSettingLoader;
 import com.jzoom.zoom.ioc.impl.SimpleIocClassFactory;
 import com.jzoom.zoom.ioc.impl.SimpleIocContainer;
 import com.jzoom.zoom.ioc.impl.SimpleIocSettingLoader;
-import com.jzoom.zoom.web.ZoomWeb.ClassEnhanceAdapter;
-import com.jzoom.zoom.web.classloader.WebClassLoader;
 import com.jzoom.zoom.web.utils.WebUtils;
 
 public class ZoomTestContainer {

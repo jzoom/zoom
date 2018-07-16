@@ -1,7 +1,6 @@
 package com.jzoom.zoom.admin.entities;
 
 import java.util.List;
-import java.util.Map;
 
 public class DecoTableVo {
 	

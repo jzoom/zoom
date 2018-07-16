@@ -17,7 +17,6 @@ import com.jzoom.zoom.web.annotation.Controller;
 import com.jzoom.zoom.web.annotation.Mapping;
 import com.jzoom.zoom.web.annotation.Template;
 import com.jzoom.zoom.web.router.Router;
-import com.jzoom.zoom.web.router.impl.SimpleRouter;
 
 public class SimpleActionBuilder extends ClassResolver{
 
