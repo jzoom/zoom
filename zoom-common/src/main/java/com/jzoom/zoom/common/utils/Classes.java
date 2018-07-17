@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import org.jzoom.zoom.common.Destroyable;
+import com.jzoom.zoom.common.Destroyable;
+
+import java.util.Set;
 
 public class Classes {
 

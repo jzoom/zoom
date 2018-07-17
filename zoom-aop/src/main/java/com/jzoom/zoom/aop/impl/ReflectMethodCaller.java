@@ -2,9 +2,8 @@ package com.jzoom.zoom.aop.impl;
 
 import java.lang.reflect.Method;
 
-import org.jzoom.zoom.common.Destroyable;
-
 import com.jzoom.zoom.aop.MethodCaller;
+import com.jzoom.zoom.common.Destroyable;
 
 public class ReflectMethodCaller implements MethodCaller,Destroyable {
 	

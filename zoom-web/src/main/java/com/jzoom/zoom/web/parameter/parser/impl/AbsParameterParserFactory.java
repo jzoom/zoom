@@ -4,8 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import org.jzoom.zoom.common.Destroyable;
-
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.web.annotation.Param;
 import com.jzoom.zoom.web.parameter.ParameterParser;
 import com.jzoom.zoom.web.parameter.ParameterParserFactory;

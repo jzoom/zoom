@@ -2,7 +2,8 @@ package com.jzoom.zoom.server;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.jzoom.zoom.common.Service;
+
+import com.jzoom.zoom.common.Service;
 
 
 public abstract class AbsServer implements Service{

@@ -16,12 +16,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.Destroyable;
 
 import com.jzoom.zoom.async.JobExecutor;
 import com.jzoom.zoom.async.JobHandler;
 import com.jzoom.zoom.async.JobQueue;
 import com.jzoom.zoom.async.JobResult;
+import com.jzoom.zoom.common.Destroyable;
 
 /**
  * 异步任务服务

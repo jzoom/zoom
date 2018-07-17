@@ -2,8 +2,7 @@ package com.jzoom.zoom.web.parameter.parser.impl;
 
 import java.lang.reflect.Method;
 
-import org.jzoom.zoom.common.Destroyable;
-
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.web.parameter.ParameterParser;
 import com.jzoom.zoom.web.parameter.ParameterParserFactory;
 

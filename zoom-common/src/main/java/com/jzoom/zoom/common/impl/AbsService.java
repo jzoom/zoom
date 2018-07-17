@@ -1,6 +1,6 @@
-package org.jzoom.zoom.common.impl;
+package com.jzoom.zoom.common.impl;
 
-import org.jzoom.zoom.common.Service;
+import com.jzoom.zoom.common.Service;
 
 public abstract class AbsService implements Service {
 

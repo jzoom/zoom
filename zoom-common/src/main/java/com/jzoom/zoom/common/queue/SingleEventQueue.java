@@ -2,7 +2,8 @@ package com.jzoom.zoom.common.queue;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.Service;
+
+import com.jzoom.zoom.common.Service;
 
 /**
  * 

@@ -15,9 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.jzoom.zoom.common.ConfigurationConstants;
 
 import com.jzoom.zoom.caster.Caster;
+import com.jzoom.zoom.common.ConfigurationConstants;
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
 

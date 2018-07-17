@@ -11,8 +11,8 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.Service;
 
+import com.jzoom.zoom.common.Service;
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
 import com.jzoom.zoom.common.queue.ServiceThread;

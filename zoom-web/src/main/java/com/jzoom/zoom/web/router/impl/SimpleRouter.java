@@ -6,8 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jzoom.zoom.common.Destroyable;
-
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.web.action.ActionHandler;
 import com.jzoom.zoom.web.action.impl.GroupActionHandler;

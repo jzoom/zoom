@@ -1,4 +1,4 @@
-package org.jzoom.zoom.common;
+package com.jzoom.zoom.common;
 
 /**
  * 可被销毁

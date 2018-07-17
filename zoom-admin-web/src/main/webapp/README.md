@@ -1,4 +1,8 @@
-java -classpath /Users/jzoom/.m2/repository/com/h2database/h2/1.3.176/h2-1.3.176.jar org.h2.tools.Console -web
+java -classpath /Users/randyren/.m2/repository/com/h2database/h2/1.3.176/h2-1.3.176.jar org.h2.tools.Console -web
+
+
+java -classpath /Users/renxueliang/.m2/repository/com/h2database/h2/1.3.176/h2-1.3.176.jar org.h2.tools.Console -web
+/SourceCode/GitHub/zoom/zoom-admin-web/admin
 
 /Users/jzoom/working/zoom/zoom-admin/admin
 

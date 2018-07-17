@@ -86,19 +86,19 @@
             var id;
             var pk = this.pk;
             if(typeof pk == 'array'){
-                id =  (data){
+                id =  (data)=>{
                     var str = "";
                     var first = true;
-                    pk.map((p){
+                    pk.map((p)=>{
                         if(first)first = false;
                         else str += "__";
-                        str += p;
+                        str += data[p];
                     });
                     return str;
                 };
             }else{
-                id = (){
-                    return pk || "id";
+                id = (data)=>{
+                    return data[pk || "id"];
                 };
             }
             

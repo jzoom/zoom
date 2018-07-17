@@ -5,8 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jzoom.zoom.common.Destroyable;
-
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.web.action.ActionContext;
 import com.jzoom.zoom.web.parameter.ParameterParser;
 

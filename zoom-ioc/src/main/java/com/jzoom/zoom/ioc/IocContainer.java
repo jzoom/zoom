@@ -1,6 +1,6 @@
 package com.jzoom.zoom.ioc;
 
-import org.jzoom.zoom.common.Destroyable;
+import com.jzoom.zoom.common.Destroyable;
 
 /**
  * ioc 容器

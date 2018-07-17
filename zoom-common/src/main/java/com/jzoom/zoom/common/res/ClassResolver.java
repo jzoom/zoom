@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.Clearable;
-import org.jzoom.zoom.common.Destroyable;
 
+import com.jzoom.zoom.common.Clearable;
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.common.filter.Filter;
 
 /**

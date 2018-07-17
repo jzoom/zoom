@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
-import org.jzoom.zoom.common.ConfigurationConstants;
 
+import com.jzoom.zoom.common.ConfigurationConstants;
 import com.jzoom.zoom.common.codec.HashStr;
 import com.jzoom.zoom.common.config.ConfigReader;
 import com.jzoom.zoom.ioc.annonation.Inject;

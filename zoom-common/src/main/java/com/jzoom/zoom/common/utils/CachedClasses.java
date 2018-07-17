@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.jzoom.zoom.common.res.MethodFilter;
+import com.jzoom.zoom.common.filter.MethodFilter;
 
 public class CachedClasses {
 

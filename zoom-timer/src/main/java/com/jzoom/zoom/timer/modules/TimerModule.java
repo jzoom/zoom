@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jzoom.zoom.common.Destroyable;
 
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.common.el.ElParser;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.ioc.IocContainer;

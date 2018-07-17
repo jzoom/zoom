@@ -2,8 +2,7 @@ package com.jzoom.zoom.common.filter.impl;
 
 import java.lang.reflect.Method;
 
-import org.jzoom.zoom.common.Destroyable;
-
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.common.filter.ClassAndMethodFilter;
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;

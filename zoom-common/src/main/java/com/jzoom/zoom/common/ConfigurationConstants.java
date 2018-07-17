@@ -1,4 +1,4 @@
-package org.jzoom.zoom.common;
+package com.jzoom.zoom.common;
 
 /**
  * 配置常量，存放application配置名称

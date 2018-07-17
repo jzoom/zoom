@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jzoom.zoom.common.res.MethodFilter;
+import com.jzoom.zoom.common.filter.MethodFilter;
 import com.jzoom.zoom.common.utils.CachedClasses;
 import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.ioc.IocContainer;

@@ -3,8 +3,7 @@ package com.jzoom.zoom.common.filter.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
-import org.jzoom.zoom.common.Destroyable;
-
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.common.filter.Filter;
 
 public class AnnotationFilter<T extends AnnotatedElement> implements Filter< T >,Destroyable {

@@ -1,4 +1,4 @@
-package org.jzoom.zoom.common;
+package com.jzoom.zoom.common;
 
 /**
  * 服务,与插件的差别是插件的启动调用早于服务

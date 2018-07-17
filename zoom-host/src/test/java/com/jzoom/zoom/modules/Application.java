@@ -8,8 +8,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.Service;
 
+import com.jzoom.zoom.common.Service;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.driver.mysql.MysqlConnDescription;
 import com.jzoom.zoom.dao.impl.ZoomDao;

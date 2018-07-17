@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.ConfigurationConstants;
 
 import com.jzoom.zoom.aop.AopFactory;
 import com.jzoom.zoom.aop.javassist.SimpleAopFactory;
+import com.jzoom.zoom.common.ConfigurationConstants;
 import com.jzoom.zoom.common.config.ConfigReader;
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.OrFilter;

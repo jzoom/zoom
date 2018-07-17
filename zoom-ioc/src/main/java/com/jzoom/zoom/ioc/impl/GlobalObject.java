@@ -2,8 +2,8 @@ package com.jzoom.zoom.ioc.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jzoom.zoom.common.Destroyable;
 
+import com.jzoom.zoom.common.Destroyable;
 import com.jzoom.zoom.ioc.IocDestroy;
 import com.jzoom.zoom.ioc.IocObject;
 
