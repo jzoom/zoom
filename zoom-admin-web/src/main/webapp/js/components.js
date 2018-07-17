@@ -50,13 +50,13 @@
                 <edit-button 
                     :fullscreen="fullscreen"
                     v-if="current != null" 
-                    :api="module+'/put/'+current[id]"
+                    :api="module+'/put/'+id"
                     :templateUrl="module+'/edit'" 
-                    :dataUrl="module+'/get/'+current[id]" 
+                    :dataUrl="module+'/get/'+id" 
                     :title="'修改'+comment" />
                 <del-button  
                     v-if="current != null" 
-                    :api="module+'/del/'+current[id]" 
+                    :api="module+'/del/'+id" 
                     confirm="真的要删除吗,本操作不能撤销?" 
                     :title="'删除'+comment" />
                 <slot></slot>
@@ -83,7 +83,26 @@
             'pk'
         ],
         mounted(){
-            this.id = this.pk || "id"
+            var id;
+            var pk = this.pk;
+            if(typeof pk == 'array'){
+                id =  (data){
+                    var str = "";
+                    var first = true;
+                    pk.map((p){
+                        if(first)first = false;
+                        else str += "__";
+                        str += p;
+                    });
+                    return str;
+                };
+            }else{
+                id = (){
+                    return pk || "id";
+                };
+            }
+            
+            this.id = id( this.current );
         },
         data(){
             return {
