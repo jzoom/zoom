@@ -50,13 +50,13 @@
                 <edit-button 
                     :fullscreen="fullscreen"
                     v-if="current != null" 
-                    :api="module+'/put/'+id"
+                    :api="module+'/put/'+getId()"
                     :templateUrl="module+'/edit'" 
-                    :dataUrl="module+'/get/'+id" 
+                    :dataUrl="module+'/get/'+getId()" 
                     :title="'修改'+comment" />
                 <del-button  
                     v-if="current != null" 
-                    :api="module+'/del/'+id" 
+                    :api="module+'/del/'+getId()" 
                     confirm="真的要删除吗,本操作不能撤销?" 
                     :title="'删除'+comment" />
                 <slot></slot>
@@ -82,27 +82,30 @@
             'columns',
             'pk'
         ],
-        mounted(){
-            var id;
-            var pk = this.pk;
-            if(typeof pk == 'array'){
-                id =  (data)=>{
-                    var str = "";
-                    var first = true;
-                    pk.map((p)=>{
-                        if(first)first = false;
-                        else str += "__";
-                        str += data[p];
-                    });
-                    return str;
-                };
-            }else{
-                id = (data)=>{
-                    return data[pk || "id"];
-                };
+        methods:{
+            getId(){
+                if(!this.current)return null;
+                var id;
+                var pk = this.pk;
+                if( Array.isArray(pk) ){
+                    id =  (data)=>{
+                        var str = "";
+                        var first = true;
+                        pk.map((p)=>{
+                            if(first)first = false;
+                            else str += "__";
+                            str += data[p];
+                        });
+                        return str;
+                    };
+                }else{
+                    id = (data)=>{
+                        return data[pk || "id"];
+                    };
+                }
+                
+                return id( this.current );
             }
-            
-            this.id = id( this.current );
         },
         data(){
             return {

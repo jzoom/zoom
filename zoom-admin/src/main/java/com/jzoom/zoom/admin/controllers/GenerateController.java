@@ -51,7 +51,7 @@ public class GenerateController  implements AdminController{
 		for (Record record : list) {
 			Template t = group.getTemplate(record.getString("content"));
 			Map<String, String> map = JSON.parse(JSON.stringify(data), Map.class);
-			
+			map.put("primaryKey", getPrimaryKey(data));
 			t.binding(map);
 			//插入记录
 			String name = table + "/" + record.getString("name");
@@ -60,6 +60,34 @@ public class GenerateController  implements AdminController{
 		
 		
 		return 0;
+	}
+	
+	
+	private String getPrimaryKey(DecoTableVo data) {
+		String[] keys = data.getPrimaryKeys();
+		if(keys.length == 0) {
+			return "'id'";
+		}
+		if(keys.length == 1) {
+			return String.format("'%s'", keys[0]);
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		boolean first = true;
+		for (String key : keys) {
+			if(first)
+				first  =false;
+			else {
+				sb.append(",");
+			}
+			sb.append("'");
+			sb.append(key);
+			sb.append("'");
+		}
+		
+		sb.append("]");
+		return sb.toString();
 	}
 	
 }

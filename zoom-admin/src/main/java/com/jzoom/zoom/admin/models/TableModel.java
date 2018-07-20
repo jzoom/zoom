@@ -47,7 +47,14 @@ public class TableModel {
 		}
 		vo.setColumns(list);
 		ColumnMeta[] primaryKeys = data.getPrimaryKeys();
-		vo.setPrimaryKey(  primaryKeys.length > 0 ? nameAdapter.getFieldName(primaryKeys[0].getName()) : "id" );
+		String[] keys = new String[primaryKeys.length];
+		int index = 0;
+		for (ColumnMeta columnMeta : primaryKeys) {
+			keys[index++] = nameAdapter.getFieldName(columnMeta.getName()) ;
+		}
+		
+		vo.setPrimaryKeys(keys);
+		
 		if (record != null) {
 			vo.setComment(record.getString("comment"));
 			if (columns.size() > 0) {

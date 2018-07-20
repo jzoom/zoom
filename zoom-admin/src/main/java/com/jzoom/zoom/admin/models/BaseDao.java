@@ -46,10 +46,16 @@ public class BaseDao implements AdminModel<Record> {
 		public Ar where(Ar ar, Object id) {
 			assert(id instanceof String);
 			String str = (String)id;
-			String[] parts = str.split("-");
+			String[] parts = str.split("__");
 			if(parts.length != idNames.length) {
 				throw new AdminException(String.format("条件值 %s 和 主键 %s 不一致", str, StringUtils.join(idNames) ));
 			}
+			
+			for(int i=0; i < parts.length ; ++i) {
+				ar.where(idNames[i], parts[i]);
+			}
+			
+			
 			return ar;
 			
 		}

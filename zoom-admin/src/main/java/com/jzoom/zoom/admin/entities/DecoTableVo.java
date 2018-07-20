@@ -47,7 +47,7 @@ public class DecoTableVo {
 	
 	private String name;
 	private String comment;
-	private String primaryKey;
+	private String[] primaryKeys;
 	
 	private List<DecoColumn> columns;
 
@@ -75,13 +75,14 @@ public class DecoTableVo {
 		this.name = name;
 	}
 
-	public String getPrimaryKey() {
-		return primaryKey;
+	public String[] getPrimaryKeys() {
+		return primaryKeys;
 	}
 
-	public void setPrimaryKey(String primaryKey) {
-		this.primaryKey = primaryKey;
+	public void setPrimaryKeys(String[] primaryKeys) {
+		this.primaryKeys = primaryKeys;
 	}
+
 	
 	
 	
