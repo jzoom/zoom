@@ -133,7 +133,6 @@ public class BaseDao implements AdminModel<Record> {
 	protected Ar parseSearch(Map<String, Object> search) {
 		Record record = new Record(search);
 		String select = record.getString("_select");
-		
 		String order = Caster.to(search.get("_order"), String.class);
 		String sort = Caster.to(search.get("_sort"), String.class);
 
@@ -143,16 +142,20 @@ public class BaseDao implements AdminModel<Record> {
 		}else {
 			id.order(ar);
 		}
-		for (Entry<String, Object> entry : search.entrySet()) {
-			parseKeyAndValue(ar, entry.getKey(), entry.getValue());
-		}
+		
+		parseWhere(ar, search);
 		return ar;
 		
 	}
 	
+	public static void parseWhere(Ar ar,Map<String, Object> search) {
+		for (Entry<String, Object> entry : search.entrySet()) {
+			parseKeyAndValue(ar, entry.getKey(), entry.getValue());
+		}
+	}
 	
 	
-	private void parseKeyAndValue( Ar ar, String key,Object value ) {
+	public static void parseKeyAndValue( Ar ar, String key,Object value ) {
 		if(key.contains("@")) {
 			String[] parts = key.split("@");
 			parseKeyAndValue(ar,parts[0],parts[1],value);
@@ -163,7 +166,7 @@ public class BaseDao implements AdminModel<Record> {
 		}
 	}
 	
-	private void parseKeyAndValue(Ar ar, String sign, String key, Object value) {
+	public static void parseKeyAndValue(Ar ar, String sign, String key, Object value) {
 		if("like".equals(sign)) {
 			ar.like(key, Like.BOTH, value);
 		}else{

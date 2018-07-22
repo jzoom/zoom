@@ -137,6 +137,7 @@ function getCurdData(url){
 		data:function(){
 			return {
 				url:url,			//url
+				extra:{},			//随便放点啥
 				current:null,		//当前选中的数据
 				list:[],			//列表数据
 				loading:false,		//是否在加载数据

@@ -439,6 +439,51 @@
         props: ['label', 'value'],
     });
 
+
+    Vue.component('dynamic-table',{
+        template:`
+        <div>
+            <el-button @click="handleAdd" type="text">增加</el-button>
+            <el-table
+                size="small"
+                :data="columns"
+                style="width:100%">
+                <el-table-column
+                    label="表"
+                    width="180">
+                    <template slot-scope="scope">
+                        <auto-complete
+                            v-model="scope.row.table"
+                            labelField="table"
+                            idField="table"
+                            keyField="target_table"
+                            api="deco_table/list" />
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="条件">
+                    <template slot-scope="scope">
+                        
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>`,
+        data(){
+            return {
+                columns:[]
+            };
+        },
+        methods:{
+            handleAdd(){
+                this.columns.push({
+                    table:'',
+                    on:''
+                })
+            }
+        }
+
+    })
+
     Vue.component('quick-filter-pane',{
         
     });
@@ -555,13 +600,92 @@
 
     Vue.component('form-select', {
         props: ['search', 'label', 'placeholder', 'api', 'value', 'labelField', 'size'],
-        template: `<el-form-item :label="label" label-width="120px">
-            <api-select :api="api" :search="search" :labelField="labelField" :value="value" :size="size" @selecteded="change" :placeholder="placeholder" />
+        template: 
+        `<el-form-item :label="label" label-width="120px">
+            <api-select 
+                :api="api" 
+                :search="search" 
+                :labelField="labelField" 
+                :value="value" 
+                :size="size" 
+                @selecteded="change" 
+                :placeholder="placeholder" />
         </el-form-item>`,
         methods: {
             change(event) {
                 this.$emit('input', event.id);
             }
+        }
+    });
+
+
+    Vue.component('auto-complete', {
+        props: ['search', 
+            'label', 
+            'placeholder', 
+            'api',
+            'keyField',
+            'value', 
+            'idField',
+            'labelField', 
+            'size'],
+        template:
+            `<el-select 
+                :value="value" 
+                :size="size" 
+                remote
+                filterable
+                reserve-keyword
+                placeholder="请输入关键词"
+                :remote-method="remoteMethod"
+                :loading="loading"
+                @change="change" >
+                    <el-option
+                        v-for="item in data"
+                        :key="item[idField||'id']"
+                        :label="item[labelField]"
+                        :value="item[idField||'id']">
+                    </el-option>
+            </el-select>`,
+        mounted() {
+        },
+        data() {
+            return {
+                data: [],
+                loading: false,
+                search: {},
+            };
+        },
+        methods: {
+            change(event) {
+                console.log('======change===='+event)
+                this.$emit('input', event);
+                //data
+                for (var i in this.data) {
+                    if (event == this.data[i].id) {
+                        this.$emit('selecteded', this.data[i]);
+                        break;
+                    }
+                }
+            },
+            remoteMethod(query) {
+                if (query !== '') {
+                   this.refresh(query);
+                } else {
+                    this.data= [];
+                }
+            },
+            refresh: async function ( query ) {
+                this.loading = true;
+                var self = this;
+                try {
+                    let querydata = {};
+                    querydata['like@'+this.keyField] = query;
+                    this.data = await api(this.api,Object.assign({}, this.search , querydata) );
+                } finally {
+                    self.loading = false;
+                }
+            },
         }
     });
 
@@ -576,6 +700,7 @@
         template: `<el-select 
             :value="value" 
             :size="size" 
+            :loading="loading"
             @change="change" 
             :placeholder="placeholder">
                 <el-option
