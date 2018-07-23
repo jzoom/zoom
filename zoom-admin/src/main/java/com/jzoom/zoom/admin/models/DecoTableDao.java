@@ -39,7 +39,7 @@ public class DecoTableDao {
 	public Page<Record> getList(Map<String, Object> params ) {
 		DbStructFactory factory = dao.getDbStructFactory();
 		Collection<Record> records= factory.getNameAndComments(dao.ar());
-		final String name = (String) params.get("name");
+		final String name = (String) params.get("target_table");
 		
 		if(name != null) {
 			final Filter<String> filter = PatternFilterFactory.createFilter("*"+name+"*");
@@ -64,7 +64,7 @@ public class DecoTableDao {
 		}
 		List<Record> list = new ArrayList<Record>();
 		list.addAll(records);
-		return new Page<Record>(list, 0, 0, 0);
+		return new Page<Record>(list, 1, 1000, list.size());
 	}
 	
 }

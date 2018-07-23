@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.jzoom.zoom.common.io.Io;
 
@@ -59,6 +60,18 @@ public class JSON {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	public static <T> T parse(String src, TypeReference<T> classOfT) {
+		try {
+			return mapper.readValue(src, classOfT);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static <T> T checkParse(String src,Class<T> classOfT) {
+		if(src == null)return null;
+		return parse(src, classOfT);
 	}
 	
 	/**

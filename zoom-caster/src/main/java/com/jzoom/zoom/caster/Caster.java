@@ -3,6 +3,8 @@ package com.jzoom.zoom.caster;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -763,6 +765,40 @@ public class Caster {
 			return (char) 0;
 		}
 		throw new RuntimeException("impossible");
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static <T> T to(Object src, Type targetType) {
+		if(targetType==null) {
+			//这里没有什么好办法，只能先返回null再说
+			return null;
+		}
+		if(targetType instanceof Class) {
+			return to(src,  (Class)targetType );
+		}
+		if(targetType instanceof ParameterizedType) {
+			return to(src,  (ParameterizedType)targetType );
+		}
+		
+
+		return null;
+	}
+	
+	/**
+	 * 转化对象到泛型,比如String转 List<Entity> ,
+	 * 过程为，看下注册的有没有直接转化的，如果有，那么直接转，如果没有那么先转rowType，然后再一个一个元素转
+	 * @param src
+	 * @param targetType
+	 * @return
+	 */
+	private static <T> T to(Object src,ParameterizedType targetType) {
+		String target = targetType.toString();
+		Type rowType = targetType.getRawType();
+		Type[] types = targetType.getActualTypeArguments();
+		
+		
+		
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")

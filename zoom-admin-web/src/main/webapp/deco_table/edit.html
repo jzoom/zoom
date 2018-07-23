@@ -5,7 +5,7 @@
     <el-tab-pane label="表设置" name="first">
       <form-input label="注释" v-model="form.comment" />
       <el-form-item label="关联表" label-width="120px">
-        <dynamic-table />
+        <dynamic-table v-model="form.links" />
       </el-form-item>
     </el-tab-pane>
     <el-tab-pane label="字段设置" name="second">

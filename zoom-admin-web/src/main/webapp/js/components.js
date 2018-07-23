@@ -463,22 +463,29 @@
                 <el-table-column
                     label="条件">
                     <template slot-scope="scope">
-                        
+                        <el-input placeholder="othertable.id=thistable.id" v-model="scope.row.on"  />
                     </template>
                 </el-table-column>
             </el-table>
         </div>`,
+        props:['value'],
         data(){
             return {
                 columns:[]
             };
+        },
+        mounted(){
+            if(Array.isArray(this.value)){
+                this.columns = this.value;
+            }
         },
         methods:{
             handleAdd(){
                 this.columns.push({
                     table:'',
                     on:''
-                })
+                });
+                this.$emit('input',this.columns);
             }
         }
 

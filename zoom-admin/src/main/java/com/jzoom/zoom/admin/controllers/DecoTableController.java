@@ -11,6 +11,7 @@ import com.jzoom.zoom.admin.models.TableModel;
 import com.jzoom.zoom.common.filter.ArrayFilter;
 import com.jzoom.zoom.common.filter.Filter;
 import com.jzoom.zoom.common.filter.pattern.PatternFilterFactory;
+import com.jzoom.zoom.common.json.JSON;
 import com.jzoom.zoom.dao.Ar;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Page;
@@ -77,12 +78,20 @@ public class DecoTableController  implements AdminController{
 	
 	@JsonResponse
 	@Mapping(value="put/{name}",method=Mapping.POST)
-	public int put(@Param(name="{name}") String name,  String comment,  List<Map<String, Object>> columns ) {
+	public int put(@Param(name="{name}") String name,  String comment,  List<Map<String, Object>> columns,List<Map<String, Object>> links ) {
 		
-		int count = admin.table("sys_deco_table").set("comment", comment)
-			.where("target_table", name).update();
+		int count = admin.table("sys_deco_table")
+				.set("comment", comment)
+				.set("links", JSON.stringify(links))
+				.where("target_table", name)
+				.update();
 		if(count <= 0) {
-			admin.table("sys_deco_table").set("comment",comment).set("target_table", name).insert();
+			admin
+				.table("sys_deco_table")
+				.set("links", JSON.stringify(links))
+				.set("comment",comment)
+				.set("target_table", name)
+				.insert();
 		}
 		
 		for (Map<String, Object> map : columns) {

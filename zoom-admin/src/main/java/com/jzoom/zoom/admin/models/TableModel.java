@@ -1,13 +1,20 @@
 package com.jzoom.zoom.admin.models;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.type.TypeReference;
+
 import com.jzoom.zoom.admin.entities.DecoTableVo;
 import com.jzoom.zoom.admin.entities.DecoTableVo.DecoColumn;
+import com.jzoom.zoom.admin.entities.DecoTableVo.Link;
+import com.jzoom.zoom.caster.Caster;
 import com.jzoom.zoom.common.json.JSON;
+import com.jzoom.zoom.common.utils.Classes;
 import com.jzoom.zoom.dao.Dao;
 import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.adapter.NameAdapter;
@@ -35,6 +42,7 @@ public class TableModel {
 		DecoTableVo vo = new DecoTableVo();
 		vo.setComment(data.getComment());
 		vo.setName(data.getName());
+	
 		List<DecoColumn> list = new ArrayList<DecoTableVo.DecoColumn>();
 		Map<String, DecoColumn> map = new HashMap<String, DecoColumn>();
 		for (ColumnMeta columnMeta : data.getColumns()) {
@@ -57,6 +65,8 @@ public class TableModel {
 		
 		if (record != null) {
 			vo.setComment(record.getString("comment"));
+			List<Link> links = JSON.parse(record.getString("links"), new TypeReference<List<DecoTableVo.Link>>() {}) ;
+			vo.setLinks(links);
 			if (columns.size() > 0) {
 				for (Record record2 : columns) {
 					String name = record2.getString("target_column");
@@ -86,7 +96,10 @@ public class TableModel {
 	}
 
 	public List<Record> getTempltes(String template) {
-		List<Record> list = admin.table("sys_template").where("type", template).get();
+		List<Record> list = admin
+				.table("sys_template")
+				.where("type", template)
+				.get();
 
 		return list;
 	}

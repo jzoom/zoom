@@ -4,6 +4,23 @@ import java.util.List;
 
 public class DecoTableVo {
 	
+	public static class Link{
+		private String table;
+		private String on;
+		public String getTable() {
+			return table;
+		}
+		public void setTable(String table) {
+			this.table = table;
+		}
+		public String getOn() {
+			return on;
+		}
+		public void setOn(String on) {
+			this.on = on;
+		}
+	}
+	
 	public static class DecoColumn{
 		
 		private String column;
@@ -48,6 +65,7 @@ public class DecoTableVo {
 	private String name;
 	private String comment;
 	private String[] primaryKeys;
+	private List<Link> links;
 	
 	private List<DecoColumn> columns;
 
@@ -81,6 +99,14 @@ public class DecoTableVo {
 
 	public void setPrimaryKeys(String[] primaryKeys) {
 		this.primaryKeys = primaryKeys;
+	}
+
+	public List<Link> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
 	}
 
 	
