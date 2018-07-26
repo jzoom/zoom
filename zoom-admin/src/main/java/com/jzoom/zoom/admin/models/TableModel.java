@@ -65,8 +65,16 @@ public class TableModel {
 		
 		if (record != null) {
 			vo.setComment(record.getString("comment"));
-			List<Link> links = JSON.parse(record.getString("links"), new TypeReference<List<DecoTableVo.Link>>() {}) ;
-			vo.setLinks(links);
+			String strLinks = record.getString("links");
+			if(strLinks!=null) {
+				try {
+					List<Link> links = JSON.parse(strLinks, new TypeReference<List<DecoTableVo.Link>>() {}) ;
+					vo.setLinks(links);
+				}catch (Throwable e) {
+					// TODO: handle exception
+				}
+			}
+			
 			if (columns.size() > 0) {
 				for (Record record2 : columns) {
 					String name = record2.getString("target_column");
