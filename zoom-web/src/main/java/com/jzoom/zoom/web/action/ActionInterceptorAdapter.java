@@ -16,7 +16,7 @@ public class ActionInterceptorAdapter implements ActionInterceptor {
 
 
 	@Override
-	public void complete() throws Exception {
+	public void complete(ActionContext context) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

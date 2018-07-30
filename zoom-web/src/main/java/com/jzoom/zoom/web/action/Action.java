@@ -158,21 +158,22 @@ public class Action implements ActionHandler,Destroyable {
 		} finally {
 			// 这里可以释放资源等操作
 			context.setState(ActionContext.STATE_AFTER_RENDER);
+		
+			
+			if( this.actionInterceptors!=null ) {
+				for (ActionInterceptor actionInterceptor : actionInterceptors) {
+					try {
+						actionInterceptor.complete(context);
+					} catch (Exception e) {
+						log.fatal("在调用拦截器的complete的时候发生异常",e);
+					}
+				}
+			}
 			try {
 				release(context);
 			} catch (Exception e) {
 				//这里如果有异常,那么只是记录一下
 				log.fatal("在release阶段发生异常",e);
-			}
-			
-			if( this.actionInterceptors!=null ) {
-				for (ActionInterceptor actionInterceptor : actionInterceptors) {
-					try {
-						actionInterceptor.complete();
-					} catch (Exception e) {
-						log.fatal("在调用拦截器的complete的时候发生异常",e);
-					}
-				}
 			}
 		}
 	}
