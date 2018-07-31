@@ -10,6 +10,7 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.StringTemplateResourceLoader;
 
 import com.jzoom.zoom.admin.entities.DecoTableVo;
+import com.jzoom.zoom.admin.entities.DecoTableVo.DecoColumn;
 import com.jzoom.zoom.admin.models.TableModel;
 import com.jzoom.zoom.common.json.JSON;
 import com.jzoom.zoom.dao.Record;
@@ -47,7 +48,14 @@ public class GenerateController  implements AdminController{
 		//查询一下template是否存在
 		List<Record> list = tableModel.getTempltes(type);
 		DecoTableVo data = tableModel.getTable(table,true);
-		
+		for (DecoColumn column : data.getColumns()) {
+			if(column.getComment()!=null) {
+				column.setComment( column.getColumn().replace("\"", "\\\"") );
+			}
+		}
+		if(data.getComment()!=null) {
+			data.setComment( data.getComment().replace("\"","\\\"") );
+		}
 		for (Record record : list) {
 			Template t = group.getTemplate(record.getString("content"));
 			Map<String, String> map = JSON.parse(JSON.stringify(data), Map.class);
