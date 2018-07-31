@@ -60,9 +60,10 @@ public class AdminActionInterceptor extends ActionInterceptorAdapter {
 			throw new StatusException.UnAuthException();
 		}
 		//检查权限是否满足条件
-		String mods = dao.table("sys_user").where("sys_user.id", clientToken.getId())
-			.join( "sys_role","sys_role.id=sys_user.rl_id" )
-			.getValue("mods", String.class);
+		String mods = dao.table("sys_user")
+				.where("sys_user.id", clientToken.getId())
+				.join( "sys_role","sys_role.id=sys_user.rl_id" )
+				.getValue("mods", String.class);
 		if(mods==null) {
 			throw new StatusException.AuthException(  );
 		}

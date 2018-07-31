@@ -8,6 +8,7 @@ import com.jzoom.zoom.dao.Record;
 import com.jzoom.zoom.dao.SqlBuilder.Sort;
 import com.jzoom.zoom.dao.utils.TreeUtils;
 import com.jzoom.zoom.web.action.ActionContext;
+import com.jzoom.zoom.web.exception.StatusException;
 
 public class ModDao extends BaseDao {
 
@@ -18,7 +19,9 @@ public class ModDao extends BaseDao {
 	public List<Record> getMenu(  ){
 		ActionContext context = ActionContext.get();
 		String[] mods = context.get("mods", String[].class);
-		
+		if(mods==null) {
+			throw new StatusException.AuthException();
+		}
 		return TreeUtils.toTree(getDao()
 				.table("sys_mod")
 				.whereIn("id",mods)

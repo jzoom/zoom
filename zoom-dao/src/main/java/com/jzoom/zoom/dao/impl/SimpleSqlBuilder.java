@@ -1,10 +1,12 @@
 package com.jzoom.zoom.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -170,53 +172,6 @@ public class SimpleSqlBuilder implements SqlBuilder {
 		this.values.add(value);
 	}
 
-	@Override
-	public SqlBuilder where(Condition condition) {
-		condition.where(this);
-		return this;
-	}
-
-	@Override
-	public SqlBuilder having(String key, Symbo symbo, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SqlBuilder whereCondition(String key, Object... values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SqlBuilder orWhere(Condition condition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SqlBuilder whereNotIn(String key, Object... values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SqlBuilder notLike(String key, Like like, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SqlBuilder union(SqlBuilder builder) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SqlBuilder unionAll(SqlBuilder builder) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public SqlBuilder orderBy(String field, Sort sort) {
@@ -242,11 +197,6 @@ public class SimpleSqlBuilder implements SqlBuilder {
 		return this;
 	}
 
-	@Override
-	public SqlBuilder sum(String field) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void buildLimit(int position, int pageSize) {
 		buildSelect();
@@ -258,17 +208,7 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	}
 	
 	
-	@Override
-	public SqlBuilder max(String field) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public SqlBuilder min(String field) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public SqlBuilder count() {
@@ -276,11 +216,6 @@ public class SimpleSqlBuilder implements SqlBuilder {
 		return this;
 	}
 
-	@Override
-	public SqlBuilder avg(String field) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public SqlBuilder selectRaw(String fields) {
 		if(sql.length() == 0) {
@@ -389,6 +324,85 @@ public class SimpleSqlBuilder implements SqlBuilder {
 	public SqlBuilder setAll(Map<String, Object> data) {
 		record.putAll(data);
 		return this;
+	}
+	
+	
+	
+	
+	
+
+	@Override
+	public SqlBuilder where(Condition condition) {
+		condition.where(this);
+		return this;
+	}
+
+
+	@Override
+	public SqlBuilder whereCondition(String key, Object... values) {
+		if(where.length() == 0) {
+			where.append("WHERE ");
+		}
+		// parse the key ,it should be  group of
+		// a >/</=/>=/<=/<> ? 
+		// a in ( ?,? )
+		// not a is null
+		// a is null
+		// (group)
+		// group and group
+		// group or group
+		// a in (select xx from b) is not allowed!
+		
+		where.append(key);
+		Collections.addAll(this.values, values);
+		return this;
+	}
+
+	@Override
+	public SqlBuilder orWhere(Condition condition) {
+		throw new NotImplementedException("orWhere");
+	}
+
+	@Override
+	public SqlBuilder whereNotIn(String key, Object... values) {
+		throw new NotImplementedException("whereNotIn");
+	}
+
+	@Override
+	public SqlBuilder having(String key, Symbo symbo, Object value) {
+		throw new NotImplementedException("having");
+	}
+	@Override
+	public SqlBuilder notLike(String key, Like like, Object value) {
+		throw new NotImplementedException("notLike");
+	}
+
+	@Override
+	public SqlBuilder union(SqlBuilder builder) {
+		throw new NotImplementedException("union");
+	}
+
+	@Override
+	public SqlBuilder unionAll(SqlBuilder builder) {
+		throw new NotImplementedException("unionAll");
+	}
+	
+	@Override
+	public SqlBuilder sum(String field) {
+		throw new NotImplementedException("sum");
+	}
+	@Override
+	public SqlBuilder max(String field) {
+		throw new NotImplementedException("max");
+	}
+
+	@Override
+	public SqlBuilder min(String field) {
+		throw new NotImplementedException("min");
+	}
+	@Override
+	public SqlBuilder avg(String field) {
+		throw new NotImplementedException("avg");
 	}
 
 }

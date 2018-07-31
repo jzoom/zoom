@@ -696,6 +696,145 @@
         }
     });
 
+
+    Vue.component('form-status',{
+        props:['value','size','label'],
+        template:`<el-form-item :label="label" label-width="120px">
+                    <data-status :size="size" @input="change" :value="value" />
+                </el-form-item>`,
+        methods:{
+            change(event){
+                this.$emit('input', event);
+            }
+        }
+    });
+
+    var loadingIds = {
+
+    };
+
+    //id分组
+    Vue.component('table-id',{
+        props:['value','api','search'],
+        template:`{{ this.label }}`,
+        data(){
+            return {
+                label:'loading...',
+            }
+        },
+        mounted(){
+            this.loadIds();
+        },
+        methods:{
+            loadIds(){
+                var ids = loadingIds[this.api];
+                if(ids){
+                    ids.push( this.value );
+                }else{
+                    loadingIds[this.api] = [this.value];
+                }
+                api(this.api,{
+                    _search:this.search
+                });
+            }
+        }
+    });
+
+    Vue.component('table-online',{
+        props:['value'],
+        template:`<el-tag :type="getType()" size="medium">{{ getText(value) }}</el-tag>`,
+
+        methods:{
+            getType(){
+                switch(this.value){
+                    case 0:
+                        return 'info';
+                    case 1:
+                        return 'success';
+                }
+            },
+            getText(){
+                switch(this.value){
+                    case 0:
+                         return '下线';
+                    case 1:
+                        return '上线';
+                }
+            }
+        }
+    })
+
+    Vue.component('table-status',{
+        props:['value'],
+        template:`<el-tag :type="getType()" size="medium">{{ getText(value) }}</el-tag>`,
+
+        methods:{
+            getType(){
+                switch(this.value){
+                    case 0:
+                    case 1:
+                        return 'info';
+                    case 2:
+                        return 'warning';
+                    case 3:
+                        return 'success';
+                    case 4:
+                        return 'info';
+                }
+            },
+            getText(){
+                switch(this.value){
+                    case 0:
+                    case 1:
+                        return '新建';
+                    case 2:
+                        return '审核中';
+                    case 3:
+                        return '上线';
+                    case 4:
+                        return '下线';
+                }
+            }
+        }
+    });
+
+    Vue.component('data-status',{
+        props:['value','size','label'],
+        template:`
+        <data-select 
+            :data="[{id:1,label:'新建'},{id:2,label:'审核中'},{id:3,label:'上线'},{id:4,label:'下线'}]"
+            labelField="label" 
+            :value="value" 
+            :size="size" 
+            @input="change"  />`,
+        methods:{
+            change(event){
+                this.$emit('input', event);
+            }
+        }
+    });
+
+    Vue.component('data-select',{
+        props:['value','data','size','placeholder','labelField'],
+        template:`<el-select 
+        :value="value" 
+        :size="size" 
+        @change="change" 
+        :placeholder="placeholder">
+            <el-option
+                v-for="item in data"
+                :key="item.id"
+                :label="item[labelField]"
+                :value="item.id">
+            </el-option>
+    </el-select>`,
+        methods:{
+            change(event){
+                this.$emit('input', event);
+            }
+        }
+    });
+
     Vue.component('api-select', {
         props: ['search', 
             'label', 
@@ -938,6 +1077,32 @@
                 this.text = data
                 this.$emit('input', this.text);
             }
+        },
+    });
+
+    
+
+
+    Vue.component('form-code',{
+        props:['value','size','language','label'],
+        template:`<el-form-item :label="label" label-width="120px"><code-editor 
+            :value="value" 
+            :style="'height:'+this.getHeight()"
+            @input="change" 
+            :language="language"></code-editor></el-form-item>`,
+        
+        methods:{
+            getHeight(){
+                switch(this.size){
+                    case 'small':
+                        return "100px";
+                    case 'large':
+                        return "500px";
+                }
+            },
+            change(value) {
+                this.$emit('input', value);
+            },
         },
     });
 
