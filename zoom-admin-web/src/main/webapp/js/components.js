@@ -1230,8 +1230,9 @@
     </div>`,
         props: ["search","total"],
         methods: {
-            handle() {
-                this.$emit('refresh');
+            handle(value) {
+                this.search._page = value;
+                this.$emit('refresh',value);
             }
         }
     });
@@ -1246,10 +1247,16 @@
         :columns="columns" 
         />
     <simple-pagination 
-        @refresh="$emit('refresh',$event)"  
-        :search="search" :total="total" />
+        @refresh="refresh"  
+        :search="search" 
+        :total="total" />
         </div>`,
         props: ['loading', 'list', 'columns', "search", "total"],
+        methods:{
+            refresh(value){
+                this.$emit('refresh',value);
+            }
+        }
 
     });
 
