@@ -44,6 +44,6 @@ public interface ActionInterceptor {
 	 * 完成一次request
 	 * @throws Exception
 	 */
-	void complete() throws Exception;
+	void complete(ActionContext context) throws Exception;
 	
 }

@@ -208,12 +208,13 @@ public abstract class AbsAopFactory implements AopFactory,Destroyable {
 				try {
 					enhanced= enhance(targetClass,configs.toArray(new AopConfig[configs.size()]));
 					
-					createdConfigs.addAll(configs);
-					createdClasses.add(targetClass);
 					
 				} catch (Exception e) {
 					throw new RuntimeException("增强类失败",e);
 				}
+
+				createdConfigs.addAll(configs);
+				createdClasses.add(targetClass);
 				enhanceMap.put(targetClass, enhanced);
 				this.configs.addAll(configs);
 				return enhanced;
