@@ -50,7 +50,7 @@ public class GenerateController  implements AdminController{
 		DecoTableVo data = tableModel.getTable(table,true);
 		for (DecoColumn column : data.getColumns()) {
 			if(column.getComment()!=null) {
-				column.setComment( column.getColumn().replace("\"", "\\\"") );
+				column.setComment( column.getComment().replace("\"", "\\\"") );
 			}
 		}
 		if(data.getComment()!=null) {
