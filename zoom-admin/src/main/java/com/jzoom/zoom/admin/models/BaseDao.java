@@ -135,6 +135,7 @@ public class BaseDao implements AdminModel<Record> {
 		String select = record.getString("_select");
 		String order = Caster.to(search.get("_order"), String.class);
 		String sort = Caster.to(search.get("_sort"), String.class);
+		
 
 		Ar ar = dao.table(table).select(select == null ? "*" : select);
 		if(order!=null && sort!=null) {
@@ -142,6 +143,7 @@ public class BaseDao implements AdminModel<Record> {
 		}else {
 			id.order(ar);
 		}
+		
 		
 		parseWhere(ar, search);
 		return ar;
@@ -187,6 +189,9 @@ public class BaseDao implements AdminModel<Record> {
 			pageSize = 30;
 		}
 		int page = Caster.to(search.get("_page"), int.class);
+		if(page<=0) {
+			page = 1;
+		}
 		return ar.page(page, pageSize);
 	}
 
